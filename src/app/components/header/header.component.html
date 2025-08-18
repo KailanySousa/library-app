@@ -7,7 +7,7 @@
         class="cursor-pointer px-3 py-1.5 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white select-none flex items-center gap-1"
         aria-haspopup="menu"
       >
-        Minha estante
+        Já lidos na estante
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-4 w-4 opacity-80"
@@ -21,7 +21,7 @@
           />
         </svg>
       </summary>
-      <div
+      <!-- <div
         class="absolute left-0 mt-2 w-56 rounded-xl bg-white text-slate-800 shadow-lg ring-1 ring-black/5 p-1 z-50"
         role="menu"
       >
@@ -35,43 +35,7 @@
         >
           Ator 2
         </button>
-      </div>
-    </details>
-
-    <details class="relative group dropdown">
-      <summary
-        class="cursor-pointer px-3 py-1.5 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white select-none flex items-center gap-1"
-        aria-haspopup="menu"
-      >
-        Já lidos
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4 opacity-80"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </summary>
-      <div
-        class="absolute left-0 mt-2 w-56 rounded-xl bg-white text-slate-800 shadow-lg ring-1 ring-black/5 p-1 z-50"
-        role="menu"
-      >
-        <button
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
-        >
-          Livro 1
-        </button>
-        <button
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
-        >
-          Livro 2
-        </button>
-      </div>
+      </div> -->
     </details>
 
     <details class="relative group dropdown">
@@ -93,7 +57,28 @@
           />
         </svg>
       </summary>
-      <div
+    </details>
+
+    <details class="relative group dropdown">
+      <summary
+        class="cursor-pointer px-3 py-1.5 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white select-none flex items-center gap-1"
+        aria-haspopup="menu"
+      >
+        Faltando na estante
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 opacity-80"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </summary>
+      <!-- <div
         class="absolute left-0 mt-2 w-56 rounded-xl bg-white text-slate-800 shadow-lg ring-1 ring-black/5 p-1 z-50"
         role="menu"
       >
@@ -107,14 +92,7 @@
         >
           Desejo 2
         </button>
-      </div>
+      </div> -->
     </details>
   </nav>
 </header>
-
-<!-- Opcional: esconder o marcador padrão do <summary> nos navegadores WebKit -->
-<style>
-  .dropdown > summary::-webkit-details-marker {
-    display: none;
-  }
-</style>

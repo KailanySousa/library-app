@@ -1,0 +1,167 @@
+<app-header></app-header>
+<section class="container mx-auto px-6 py-8 space-y-10">
+  <!-- Seção: Já lidos -->
+  <div>
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800">Já lidos</h2>
+        <p class="text-slate-500 text-sm">
+          Leituras concluídas recentemente — o que ficou na memória (e no
+          coração).
+        </p>
+      </div>
+
+      <a
+        routerLink="/lidos"
+        class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
+      >
+        Ver mais
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-4 h-4"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1
+          1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </div>
+
+    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <article
+        *ngFor="let b of jaLidos"
+        class="h-[320px] rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden flex flex-col"
+      >
+        <div class="p-4">
+          <h3 class="text-slate-800 font-semibold leading-tight line-clamp-2">
+            {{ b.titulo }}
+          </h3>
+          <p class="text-slate-500 text-sm">{{ b.autor }}</p>
+        </div>
+        <img
+          class="h-[140px] w-full object-cover"
+          [src]="b.capa"
+          [alt]="'Capa do livro ' + b.titulo"
+        />
+        <div class="p-4 mt-auto">
+          <p class="text-[13px] text-slate-600 truncate">{{ b.descricao }}</p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- Seção: Lista de desejos -->
+  <div>
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800">Lista de desejos</h2>
+        <p class="text-slate-500 text-sm">
+          Títulos que sussurram o meu nome — prontos para a próxima aventura.
+        </p>
+      </div>
+
+      <a
+        routerLink="/desejos"
+        class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
+      >
+        Ver mais
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-4 h-4"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1
+          1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </div>
+
+    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <article
+        *ngFor="let b of desejos"
+        class="h-[320px] rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden flex flex-col"
+      >
+        <div class="p-4">
+          <h3 class="text-slate-800 font-semibold leading-tight line-clamp-2">
+            {{ b.titulo }}
+          </h3>
+          <p class="text-slate-500 text-sm">{{ b.autor }}</p>
+        </div>
+        <img
+          class="h-[140px] w-full object-cover"
+          [src]="b.capa"
+          [alt]="'Capa do livro ' + b.titulo"
+        />
+        <div class="p-4 mt-auto">
+          <p class="text-[13px] text-slate-600 truncate">{{ b.descricao }}</p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- Seção: Faltando na estante -->
+  <div>
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-xl font-semibold text-slate-800">
+          Faltando na estante
+        </h2>
+        <p class="text-slate-500 text-sm">
+          Já lidos, mas ainda não chegaram na prateleira física.
+        </p>
+      </div>
+
+      <a
+        routerLink="/faltando"
+        class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
+      >
+        Ver mais
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-4 h-4"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1
+          1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </div>
+
+    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <article
+        *ngFor="let b of faltando"
+        class="h-[320px] rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden flex flex-col"
+      >
+        <div class="p-4">
+          <h3 class="text-slate-800 font-semibold leading-tight line-clamp-2">
+            {{ b.titulo }}
+          </h3>
+          <p class="text-slate-500 text-sm">{{ b.autor }}</p>
+        </div>
+        <img
+          class="h-[140px] w-full object-cover"
+          [src]="b.capa"
+          [alt]="'Capa do livro ' + b.titulo"
+        />
+        <div class="p-4 mt-auto">
+          <p class="text-[13px] text-slate-600 truncate">{{ b.descricao }}</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

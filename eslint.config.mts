@@ -46,6 +46,7 @@ export default defineConfig([
     },
     rules: {
       ...angular.configs.recommended.rules,
+      "@angular-eslint/prefer-inject": "off",
 
       // Ajuste seu prefixo de componentes/diretivas aqui
       "@angular-eslint/component-selector": [

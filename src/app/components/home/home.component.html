@@ -1,39 +1,36 @@
-<div
-  class="p-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
->
+<section class="relative isolate">
   <div
-    class="w-[220px] h-[320px] rounded-2xl shadow border border-slate-200 bg-white flex flex-col justify-between"
+    class="h-[45vh] md:h-[100vh] w-full overflow-hidden shadow bg-fuchsia-600 bg-cover bg-center bg-no-repeat bg-[url('/assets/books.jpg')]"
+    aria-label="Livros empilhados ao fundo"
   >
-    <div class="p-4">
-      <h3 class="font-semibold text-slate-800 leading-snug">
-        Angular Essencial
-      </h3>
-      <p class="text-sm text-slate-500">Rodrigo Branas</p>
-    </div>
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-fuchsia-700/70 via-fuchsia-600/40 to-violet-700/70"
+    ></div>
 
-    <img
-      class="h-[140px] w-full object-cover"
-      src="URL_DA_CAPA"
-      alt="Capa do livro"
-    />
+    <div class="relative z-10 h-full flex items-center">
+      <div class="container mx-auto px-6">
+        <h1 class="text-white text-3xl md:text-5xl font-bold drop-shadow">
+          Do “já li” ao “quero ler”: tudo aqui.
+        </h1>
+        <p class="mt-3 text-white/90 max-w-xl">
+          Leio, registro e me perco — de propósito
+        </p>
 
-    <div class="p-4">
-      <p class="text-[13px] text-slate-600 truncate line-clamp-2">
-        Um guia prático para aprender Angular do zero ao avançado.
-      </p>
-      <div class="mt-3 flex gap-2">
-        <button
-          class="px-3 py-1.5 rounded-lg bg-brand text-brand-text hover:bg-brand-hover focus:outline-none focus:ring-2 focus:ring-brand-focus"
-        >
-          Ver detalhes
-        </button>
-
-        <button
-          class="px-3 py-1.5 rounded-lg bg-brand-secondary text-white hover:bg-brand-secondaryHover"
-        >
-          Remover
-        </button>
+        <div class="mt-6 flex gap-3">
+          <button
+            routerLink="/explorar"
+            class="px-4 py-2 rounded-xl bg-white text-fuchsia-700 font-medium hover:bg-white/90"
+          >
+            Explorar
+          </button>
+          <button
+            routerLink="/novo"
+            class="px-4 py-2 rounded-xl border border-white/80 text-white hover:bg-white/10"
+          >
+            Adicionar livro
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</section>
