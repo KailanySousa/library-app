@@ -19,7 +19,8 @@ import { STATUS_OPTIONS } from '../../consts/status.const';
 })
 export class NovoComponent implements OnInit {
   // TODO: listar categorias
-  // TODO: alterar hint para anoFim >= anoInicio
+
+  readonly currentYear = new Date().getFullYear();
 
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
@@ -38,8 +39,6 @@ export class NovoComponent implements OnInit {
   }
 
   setupForm() {
-    const currentYear = new Date().getFullYear();
-
     this.form = this.fb.group({
       titulo: ['', [this.requiredHelper, Validators.minLength(2)]],
       autor: ['', [this.requiredHelper]],
@@ -48,13 +47,16 @@ export class NovoComponent implements OnInit {
         [
           this.requiredHelper,
           Validators.min(1800),
-          Validators.max(currentYear),
+          Validators.max(this.currentYear),
         ],
       ],
       categoria: ['', [this.requiredHelper]],
       status: [EStatus.DESEJO, this.requiredHelper],
       paginas: [null as number | null, [Validators.min(1)]],
-      anoInicio: [null as string | null, [Validators.min(2019)]],
+      anoInicio: [
+        null as string | null,
+        [Validators.min(2019), Validators.max(this.currentYear)],
+      ],
       anoFim: [null as string | null],
       capaUrl: [''],
       descricao: [''],
@@ -75,7 +77,10 @@ export class NovoComponent implements OnInit {
   verifyAnoInicioRequired(status: EStatus) {
     const anoInicioControl = this.form.get('anoInicio');
     if (status !== EStatus.DESEJO) {
-      anoInicioControl?.setValidators(this.requiredHelper);
+      anoInicioControl?.setValidators([
+        this.requiredHelper,
+        Validators.min(2019),
+      ]);
     } else {
       anoInicioControl?.removeValidators(this.requiredHelper);
       anoInicioControl?.markAsTouched();
@@ -100,6 +105,7 @@ export class NovoComponent implements OnInit {
 
   async submit() {
     if (this.form.invalid) {
+      console.log(this.form.get('anoFim'));
       this.form.markAllAsTouched();
       return;
     }
