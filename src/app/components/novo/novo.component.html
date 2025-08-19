@@ -21,12 +21,9 @@
           class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
           placeholder="Ex.: Dom Casmurro"
         />
-        <p
-          *ngIf="form.get('titulo')?.touched && form.get('titulo')?.invalid"
-          class="mt-1 text-sm text-rose-600"
-        >
-          Informe um título (mín. 2 caracteres).
-        </p>
+        @if (form.get('titulo')?.touched && form.get('titulo')?.invalid) {
+        <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
+        }
       </div>
 
       <div>
@@ -37,27 +34,27 @@
           class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
           placeholder="Ex.: Machado de Assis"
         />
-        <p
-          *ngIf="form.get('autor')?.touched && form.get('autor')?.invalid"
-          class="mt-1 text-sm text-rose-600"
+        @if (form.get('autor')?.touched && form.get('autor')?.invalid) {
+        <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700"
+          >URL da capa</label
         >
-          Informe o autor.
+        <input
+          type="url"
+          formControlName="capaUrl"
+          class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+          placeholder="https://..."
+        />
+        <p class="mt-1 text-xs text-slate-500">
+          Cole a URL para visualizar a capa ao lado.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700">Ano *</label>
-          <input
-            type="number"
-            formControlName="ano"
-            min="1800"
-            step="1"
-            inputmode="numeric"
-            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-            placeholder="AAAA"
-          />
-        </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-slate-700"
             >Categoria *</label
@@ -76,17 +73,32 @@
           >
           <select
             formControlName="status"
+            (change)="onChangeStatus()"
             class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
           >
-            <option value="desejo">Lista de desejos</option>
-            <option value="lendo">Lendo</option>
-            <option value="lido">Já lido</option>
-            <option value="faltando">Faltando na estante</option>
+            @for(status of statusOptions; track $index) {
+            <option [value]="status.option">{{ status.label }}</option>
+            }
           </select>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Ano *</label>
+          <input
+            type="number"
+            formControlName="ano"
+            min="1800"
+            step="1"
+            inputmode="numeric"
+            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+            placeholder="AAAA"
+          />
+          @if (form.get('ano')?.touched && form.get('ano')?.invalid) {
+          <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
+          }
+        </div>
         <div>
           <label class="block text-sm font-medium text-slate-700"
             >Páginas</label
@@ -98,10 +110,16 @@
             class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
             placeholder="Ex.: 320"
           />
+          @if (form.get('paginas')?.touched && form.get('paginas')?.invalid) {
+          <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
+          }
         </div>
+        @if (form.get('status')?.value !== 'desejo') {
 
         <div>
-          <label class="block text-sm font-medium text-slate-700">Início</label>
+          <label class="block text-sm font-medium text-slate-700"
+            >Início *</label
+          >
           <input
             type="number"
             formControlName="anoInicio"
@@ -111,37 +129,31 @@
             class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
             placeholder="AAAA"
           />
+          @if (form.get('anoInicio')?.touched && form.get('anoInicio')?.invalid)
+          {
+          <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
+          }
         </div>
-
+        } @if(form.get('status')?.value !== 'desejo' &&
+        form.get('status')?.value !== 'lendo') {
         <div>
           <label class="block text-sm font-medium text-slate-700"
-            >Término</label
+            >Término *</label
           >
           <input
             type="number"
             formControlName="anoFim"
-            min="2019"
+            [min]="form.get('anoInicio')?.value"
             step="1"
             inputmode="numeric"
             class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
             placeholder="AAAA"
           />
+          @if (form.get('anoFim')?.touched && form.get('anoFim')?.invalid) {
+          <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
+          }
         </div>
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-slate-700"
-          >URL da capa *</label
-        >
-        <input
-          type="url"
-          formControlName="capaUrl"
-          class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-          placeholder="https://..."
-        />
-        <p class="mt-1 text-xs text-slate-500">
-          Cole a URL para visualizar a capa ao lado.
-        </p>
+        }
       </div>
 
       <div>
@@ -181,19 +193,19 @@
           <h3 class="text-slate-800 font-semibold">Pré-visualização</h3>
           <p class="text-slate-500 text-sm">Como o card pode ficar.</p>
         </div>
+        @if (coverPreview) {
         <img
-          *ngIf="coverPreview; else placeholder"
           [src]="coverPreview!"
           alt="Pré-visualização da capa"
           class="h-[180px] w-full object-cover"
         />
-        <ng-template #placeholder>
-          <div
-            class="h-[180px] w-full bg-gradient-to-r from-fuchsia-200 to-violet-200 grid place-content-center text-slate-600"
-          >
-            Sem capa
-          </div>
-        </ng-template>
+        } @else {
+        <div
+          class="h-[180px] w-full bg-gradient-to-r from-fuchsia-200 to-violet-200 grid place-content-center text-slate-600"
+        >
+          Sem capa
+        </div>
+        }
         <div class="p-4">
           <h4 class="font-medium text-slate-800">
             {{ form.value.titulo || "Título do livro" }}

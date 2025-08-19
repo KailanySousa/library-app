@@ -8,6 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { EStatus } from '../../enums/status.enum';
+import { STATUS_OPTIONS } from '../../consts/status.const';
 
 @Component({
   selector: 'app-novo',
@@ -16,9 +18,13 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './novo.component.html',
 })
 export class NovoComponent implements OnInit {
+  // TODO: listar categorias
+  // TODO: alterar hint para anoFim >= anoInicio
+
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
 
+  readonly statusOptions = STATUS_OPTIONS;
   form!: FormGroup;
   coverPreview: string | null = null;
 
@@ -28,21 +34,68 @@ export class NovoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.setupForm();
+  }
+
+  setupForm() {
+    const currentYear = new Date().getFullYear();
+
     this.form = this.fb.group({
       titulo: ['', [this.requiredHelper, Validators.minLength(2)]],
       autor: ['', [this.requiredHelper]],
+      ano: [
+        '',
+        [
+          this.requiredHelper,
+          Validators.min(1800),
+          Validators.max(currentYear),
+        ],
+      ],
       categoria: ['', [this.requiredHelper]],
-      status: ['desejo', this.requiredHelper], // 'lido' | 'lendo' | 'desejo' | 'faltando'
+      status: [EStatus.DESEJO, this.requiredHelper],
       paginas: [null as number | null, [Validators.min(1)]],
-      anoInicio: [null as string | null],
+      anoInicio: [null as string | null, [Validators.min(2019)]],
       anoFim: [null as string | null],
-      capaUrl: ['', [this.requiredHelper]],
+      capaUrl: [''],
       descricao: [''],
     });
 
     this.form.get('capaUrl')!.valueChanges.subscribe((url) => {
       this.coverPreview = url ? String(url) : null;
     });
+  }
+
+  onChangeStatus() {
+    const status: EStatus = this.form.get('status')?.value as EStatus;
+
+    this.verifyAnoInicioRequired(status);
+    this.verifyAnoFimRequired(status);
+  }
+
+  verifyAnoInicioRequired(status: EStatus) {
+    const anoInicioControl = this.form.get('anoInicio');
+    if (status !== EStatus.DESEJO) {
+      anoInicioControl?.setValidators(this.requiredHelper);
+    } else {
+      anoInicioControl?.removeValidators(this.requiredHelper);
+      anoInicioControl?.markAsTouched();
+    }
+    anoInicioControl?.setValue(null);
+  }
+
+  verifyAnoFimRequired(status: EStatus) {
+    const anoFimControl = this.form.get('anoFim');
+    if (status !== EStatus.DESEJO && status !== EStatus.LENDO) {
+      const anoInicioValue = this.form.get('anoInicio')?.value as number;
+      anoFimControl?.setValidators([
+        this.requiredHelper,
+        Validators.min(anoInicioValue),
+      ]);
+    } else {
+      anoFimControl?.removeValidators(this.requiredHelper);
+      anoFimControl?.markAsTouched();
+    }
+    anoFimControl?.setValue(null);
   }
 
   async submit() {
