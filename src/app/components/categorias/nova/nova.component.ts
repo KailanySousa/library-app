@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CategoriaService } from '../../../categoria.service';
 import ICategoria from '../../../interfaces/categoria.interface';
 
@@ -25,7 +25,8 @@ export class NovaComponent implements OnInit {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly service: CategoriaService
+    private readonly service: CategoriaService,
+    private readonly router: Router
   ) {}
 
   ngOnInit() {
@@ -54,6 +55,7 @@ export class NovaComponent implements OnInit {
     this.service.post(body).subscribe({
       next: () => {
         this.form.reset({ cor: '#F0ABFC' });
+        void this.router.navigate(['/categorias/lista']);
       },
       error: (e) => {
         console.log('Erro ao cadastrar a categoria', e);

@@ -79,13 +79,17 @@ export class DetalheComponent implements OnInit {
     const body: ICategoria = this.form.getRawValue() as ICategoria;
     this.service.put(this.categoria.id!, body).subscribe({
       next: () => void this.router.navigate(['/categorias/lista']),
-      error: (e) => console.log('Erro ao cadastrar a categoria', e),
+      error: (e) => console.log('Erro ao editar a categoria', e),
     });
   }
 
   remover() {
     if (!this.categoria) return;
     if (confirm('Remover esta categoria? (não remove livros)')) {
+      this.service.delete(this.categoria.id!).subscribe({
+        next: () => void this.router.navigate(['/categorias/lista']),
+        error: (e) => console.log('Erro ao remover a categoria', e),
+      });
     }
   }
 }

@@ -10,7 +10,7 @@
           c.nome
         }}</a>
       </h3>
-      <p class="text-sm text-slate-500 line-clamp-2">
+      <p class="text-sm text-slate-500 line-clamp-2" style="min-height: 40px">
         {{ c.descricao || "—" }}
       </p>
 
@@ -30,9 +30,11 @@
             Ver mais
           </a>
           <button
+            *ngIf="c.id"
             type="button"
             class="text-slate-400 hover:text-rose-600 text-sm"
             title="Remover"
+            (click)="remover(c.id)"
           >
             Remover
           </button>

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, signal } from '@angular/core';
 import ICategoria from './interfaces/categoria.interface';
-import { filter, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +16,8 @@ export class CategoriaService {
   constructor(private readonly http: HttpClient) {}
 
   getItem(id: number): ICategoria {
-    return this.listaCategorias.call(
-      filter((categoria: ICategoria) => categoria?.id === id)
+    return this.listaCategorias().filter(
+      (categoria: ICategoria) => categoria.id == id
     )[0];
   }
 
