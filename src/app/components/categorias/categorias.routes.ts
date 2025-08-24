@@ -16,6 +16,11 @@ export const categoriasRoutes: Routes = [
         loadComponent: () =>
           import('./lista/lista.component').then((m) => m.ListaComponent),
       },
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./detalhe/detalhe.component').then((m) => m.DetalheComponent),
+      },
     ],
   },
 ];

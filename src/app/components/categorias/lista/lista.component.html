@@ -5,7 +5,11 @@
   >
     <div class="w-2" [style.background]="c.cor || '#F0ABFC'"></div>
     <div class="p-4 flex-1">
-      <h3 class="text-slate-800 font-semibold leading-tight">{{ c.nome }}</h3>
+      <h3 class="text-slate-800 font-semibold leading-tight">
+        <a [routerLink]="['/categorias', c.id]" class="hover:underline">{{
+          c.nome
+        }}</a>
+      </h3>
       <p class="text-sm text-slate-500 line-clamp-2">
         {{ c.descricao || "—" }}
       </p>
