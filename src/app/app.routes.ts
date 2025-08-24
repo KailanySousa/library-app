@@ -16,12 +16,12 @@ export const routes: Routes = [
   {
     path: 'livros',
     loadChildren: () =>
-      import('./components/livros/livros.routes').then((m) => m.livrosRoutes),
+      import('./features/livros/livros.routes').then((m) => m.livrosRoutes),
   },
   {
     path: 'categorias',
     loadChildren: () =>
-      import('./components/categorias/categorias.routes').then(
+      import('./features/categorias/categorias.routes').then(
         (m) => m.categoriasRoutes
       ),
   },

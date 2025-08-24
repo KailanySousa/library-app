@@ -12,11 +12,11 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-detalhe',
+  selector: 'app-detalhe-categoria',
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './detalhe.component.html',
 })
-export class DetalheComponent implements OnInit {
+export class DetalheCategoriaComponent implements OnInit {
   categoria!: ICategoria;
 
   private readonly requiredHelper = (c: AbstractControl) =>

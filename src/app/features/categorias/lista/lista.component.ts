@@ -10,7 +10,7 @@ import ICategoria from '../../../interfaces/categoria.interface';
   imports: [RouterModule, CommonModule],
   templateUrl: './lista.component.html',
 })
-export class ListaComponent implements OnInit {
+export class ListaCategoriasComponent implements OnInit {
   categorias!: ICategoria[];
   constructor(
     private readonly service: CategoriaService,

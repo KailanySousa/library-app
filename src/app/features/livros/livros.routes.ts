@@ -4,7 +4,7 @@ export const livrosRoutes: Routes = [
   {
     path: 'novo',
     loadComponent: () =>
-      import('./novo/novo.component').then((m) => m.NovoComponent),
+      import('./novo/novo.component').then((m) => m.NovoLivroComponent),
   },
 
   { path: '', redirectTo: 'home', pathMatch: 'full' },

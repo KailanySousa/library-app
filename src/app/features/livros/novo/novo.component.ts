@@ -12,15 +12,15 @@ import { EStatus } from '../../../enums/status.enum';
 import { STATUS_OPTIONS } from '../../../consts/status.const';
 import { CategoriaService } from '../../../categoria.service';
 import ICategoria from '../../../interfaces/categoria.interface';
-import { HeaderComponent } from '../../header/header.component';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
 
 @Component({
-  selector: 'app-novo',
+  selector: 'app-novo-livro',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
   templateUrl: './novo.component.html',
 })
-export class NovoComponent implements OnInit {
+export class NovoLivroComponent implements OnInit {
   readonly currentYear = new Date().getFullYear();
 
   private readonly requiredHelper = (c: AbstractControl) =>

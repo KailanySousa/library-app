@@ -17,7 +17,7 @@ import ICategoria from '../../../interfaces/categoria.interface';
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './nova.component.html',
 })
-export class NovaComponent implements OnInit {
+export class NovaCategoriaComponent implements OnInit {
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
 

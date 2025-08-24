@@ -9,17 +9,21 @@ export const categoriasRoutes: Routes = [
       {
         path: 'nova',
         loadComponent: () =>
-          import('./nova/nova.component').then((m) => m.NovaComponent),
+          import('./nova/nova.component').then((m) => m.NovaCategoriaComponent),
       },
       {
         path: 'lista',
         loadComponent: () =>
-          import('./lista/lista.component').then((m) => m.ListaComponent),
+          import('./lista/lista.component').then(
+            (m) => m.ListaCategoriasComponent
+          ),
       },
       {
         path: ':id',
         loadComponent: () =>
-          import('./detalhe/detalhe.component').then((m) => m.DetalheComponent),
+          import('./detalhe/detalhe.component').then(
+            (m) => m.DetalheCategoriaComponent
+          ),
       },
     ],
   },
