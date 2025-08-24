@@ -18,5 +18,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/novo/novo.component').then((m) => m.NovoComponent),
   },
+  {
+    path: 'categorias',
+    loadChildren: () =>
+      import('./components/categorias/categorias.routes').then(
+        (m) => m.categoriasRoutes
+      ),
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
