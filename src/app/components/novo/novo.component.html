@@ -59,12 +59,17 @@
           <label class="block text-sm font-medium text-slate-700"
             >Categoria *</label
           >
-          <input
+          <select
             type="text"
             formControlName="categoria"
             class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
             placeholder="Ex.: Romance, Técnica…"
-          />
+          >
+            <option value="">Selecione...</option>
+            @for(categoria of categorias; track $index) {
+            <option [value]="categoria.id">{{ categoria.nome }}</option>
+            }
+          </select>
         </div>
 
         <div>

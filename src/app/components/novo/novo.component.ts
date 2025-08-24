@@ -10,6 +10,8 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { EStatus } from '../../enums/status.enum';
 import { STATUS_OPTIONS } from '../../consts/status.const';
+import { CategoriaService } from '../../categoria.service';
+import ICategoria from '../../interfaces/categoria.interface';
 
 @Component({
   selector: 'app-novo',
@@ -18,24 +20,28 @@ import { STATUS_OPTIONS } from '../../consts/status.const';
   templateUrl: './novo.component.html',
 })
 export class NovoComponent implements OnInit {
-  // TODO: listar categorias
-
   readonly currentYear = new Date().getFullYear();
 
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
 
   readonly statusOptions = STATUS_OPTIONS;
+  categorias!: ICategoria[];
   form!: FormGroup;
   coverPreview: string | null = null;
 
   constructor(
     private readonly router: Router,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly categoriaService: CategoriaService
   ) {}
 
   ngOnInit() {
     this.setupForm();
+
+    this.categoriaService
+      .getAll()
+      .subscribe((data) => (this.categorias = data));
   }
 
   setupForm() {
