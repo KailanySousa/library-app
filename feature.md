@@ -1,0 +1,2 @@
+- [ ] _Categorias_: implementar fluxo para editar uma categoria
+- [ ] _Categorias_: implementar fluxo para remover uma categoria
