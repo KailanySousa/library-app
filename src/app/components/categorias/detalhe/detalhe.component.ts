@@ -34,13 +34,21 @@ export class DetalheComponent implements OnInit {
   ngOnInit() {
     this.setupForm();
 
-    const categoria = this.route.snapshot.paramMap.get('id');
-    if (!categoria) {
-      void this.router.navigate(['/categorias']);
+    const categoriaId = this.route.snapshot.paramMap.get(
+      'id'
+    ) as unknown as number;
+    if (!categoriaId) {
+      void this.router.navigate(['/categorias/lista']);
       return;
     }
 
-    //this.updateForm(categoria);
+    this.categoria = this.service.getItem(categoriaId);
+
+    if (!this.categoria) {
+      void this.router.navigate(['/categorias/lista']);
+      return;
+    }
+    this.updateForm();
   }
 
   private setupForm() {
@@ -54,21 +62,30 @@ export class DetalheComponent implements OnInit {
     });
   }
 
-  updateForm(categoria: ICategoria) {
+  updateForm() {
     this.form.patchValue({
-      nome: categoria.nome,
-      descricao: categoria.descricao ?? '',
-      cor: categoria.cor ?? '#F0ABFC',
+      nome: this.categoria.nome,
+      descricao: this.categoria.descricao ?? '',
+      cor: this.categoria.cor ?? '#F0ABFC',
     });
   }
 
-  salvar() {}
+  salvar() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const body: ICategoria = this.form.getRawValue() as ICategoria;
+    this.service.put(this.categoria.id!, body).subscribe({
+      next: () => void this.router.navigate(['/categorias/lista']),
+      error: (e) => console.log('Erro ao cadastrar a categoria', e),
+    });
+  }
 
   remover() {
     if (!this.categoria) return;
     if (confirm('Remover esta categoria? (não remove livros)')) {
-      // service
-      void this.router.navigate(['/categorias/listar']);
     }
   }
 }
