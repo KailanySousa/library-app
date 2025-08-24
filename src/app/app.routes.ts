@@ -14,9 +14,9 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'novo',
-    loadComponent: () =>
-      import('./components/novo/novo.component').then((m) => m.NovoComponent),
+    path: 'livros',
+    loadChildren: () =>
+      import('./components/livros/livros.routes').then((m) => m.livrosRoutes),
   },
   {
     path: 'categorias',

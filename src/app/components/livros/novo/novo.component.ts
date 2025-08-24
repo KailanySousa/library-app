@@ -8,11 +8,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { EStatus } from '../../enums/status.enum';
-import { STATUS_OPTIONS } from '../../consts/status.const';
-import { CategoriaService } from '../../categoria.service';
-import ICategoria from '../../interfaces/categoria.interface';
-import { HeaderComponent } from '../header/header.component';
+import { EStatus } from '../../../enums/status.enum';
+import { STATUS_OPTIONS } from '../../../consts/status.const';
+import { CategoriaService } from '../../../categoria.service';
+import ICategoria from '../../../interfaces/categoria.interface';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-novo',
