@@ -8,8 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { CategoriaService } from '../../../categoria.service';
-import ICategoria from '../../../interfaces/categoria.interface';
+import { CategoriaService } from '../../../shared/services/categoria.service';
+import ICategoria from '../../../shared/interfaces/categoria.interface';
 
 @Component({
   selector: 'app-nova-categoria',
@@ -52,14 +52,15 @@ export class NovaCategoriaComponent implements OnInit {
 
     const body: ICategoria = this.form.getRawValue() as ICategoria;
 
-    this.service.post(body).subscribe({
-      next: () => {
+    this.service.post(
+      body,
+      () => {
         this.form.reset({ cor: '#F0ABFC' });
         void this.router.navigate(['/categorias/lista']);
       },
-      error: (e) => {
+      (e) => {
         console.log('Erro ao cadastrar a categoria', e);
-      },
-    });
+      }
+    );
   }
 }

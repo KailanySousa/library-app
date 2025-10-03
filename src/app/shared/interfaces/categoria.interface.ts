@@ -1,5 +1,5 @@
 export default interface ICategoria {
-  id?: number;
+  id: number;
   nome: string;
   descricao?: string;
   cor?: string;

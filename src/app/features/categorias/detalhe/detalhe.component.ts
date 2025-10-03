@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import ICategoria from '../../../interfaces/categoria.interface';
+import ICategoria from '../../../shared/interfaces/categoria.interface';
 import {
   AbstractControl,
   FormBuilder,
@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CategoriaService } from '../../../categoria.service';
+import { CategoriaService } from '../../../shared/services/categoria.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -77,19 +77,21 @@ export class DetalheCategoriaComponent implements OnInit {
     }
 
     const body: ICategoria = this.form.getRawValue() as ICategoria;
-    this.service.put(this.categoria.id!, body).subscribe({
-      next: () => void this.router.navigate(['/categorias/lista']),
-      error: (e) => console.log('Erro ao editar a categoria', e),
-    });
+    this.service.put(
+      body,
+      () => void this.router.navigate(['/categorias/lista']),
+      (e) => console.log('Erro ao editar a categoria', e)
+    );
   }
 
   remover() {
     if (!this.categoria) return;
     if (confirm('Remover esta categoria? (não remove livros)')) {
-      this.service.delete(this.categoria.id!).subscribe({
-        next: () => void this.router.navigate(['/categorias/lista']),
-        error: (e) => console.log('Erro ao remover a categoria', e),
-      });
+      this.service.delete(
+        this.categoria.id,
+        () => void this.router.navigate(['/categorias/lista']),
+        (e) => console.log('Erro ao remover a categoria', e)
+      );
     }
   }
 }

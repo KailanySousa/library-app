@@ -10,8 +10,8 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { EStatus } from '../../../enums/status.enum';
 import { STATUS_OPTIONS } from '../../../consts/status.const';
-import { CategoriaService } from '../../../categoria.service';
-import ICategoria from '../../../interfaces/categoria.interface';
+import { CategoriaService } from '../../../shared/services/categoria.service';
+import ICategoria from '../../../shared/interfaces/categoria.interface';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 
 @Component({
@@ -40,9 +40,7 @@ export class NovoLivroComponent implements OnInit {
   ngOnInit() {
     this.setupForm();
 
-    this.categoriaService
-      .getAll()
-      .subscribe((data) => (this.categorias = data));
+    this.categorias = this.categoriaService.getAll();
   }
 
   setupForm() {
