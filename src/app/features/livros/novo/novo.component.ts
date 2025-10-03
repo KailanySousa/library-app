@@ -65,12 +65,7 @@ export class NovoLivroComponent implements OnInit {
         [Validators.min(2019), Validators.max(this.currentYear)],
       ],
       anoFim: [null as string | null],
-      capaUrl: [''],
       descricao: [''],
-    });
-
-    this.form.get('capaUrl')!.valueChanges.subscribe((url) => {
-      this.coverPreview = url ? String(url) : null;
     });
   }
 
@@ -112,7 +107,6 @@ export class NovoLivroComponent implements OnInit {
 
   async submit() {
     if (this.form.invalid) {
-      console.log(this.form.get('anoFim'));
       this.form.markAllAsTouched();
       return;
     }

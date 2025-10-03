@@ -25,5 +25,10 @@ export const routes: Routes = [
         (m) => m.categoriasRoutes
       ),
   },
+  {
+    path: 'autores',
+    loadChildren: () =>
+      import('./features/autores/autores.routes').then((m) => m.autoresRoutes),
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];

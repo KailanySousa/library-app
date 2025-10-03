@@ -7,13 +7,8 @@
     <p class="text-slate-500">Preencha os detalhes e adicione à sua estante.</p>
   </header>
 
-  <form
-    [formGroup]="form"
-    (ngSubmit)="submit()"
-    class="grid md:grid-cols-3 gap-8"
-  >
-    <!-- Coluna esquerda (form) -->
-    <div class="md:col-span-2 space-y-4">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="grid gap-2">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div>
         <label class="block text-sm font-medium text-slate-700">Título *</label>
         <input
@@ -39,87 +34,86 @@
         <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
         }
       </div>
-
       <div>
         <label class="block text-sm font-medium text-slate-700"
-          >URL da capa</label
+          >Categoria *</label
         >
-        <input
-          type="url"
-          formControlName="capaUrl"
+        <select
+          type="text"
+          formControlName="categoria"
           class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-          placeholder="https://..."
+          placeholder="Ex.: Romance, Técnica…"
+        >
+          <option value="">Selecione...</option>
+          @for(categoria of categorias; track $index) {
+          <option [value]="categoria.id">{{ categoria.nome }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Ano *</label>
+        <input
+          type="number"
+          formControlName="ano"
+          min="1800"
+          step="1"
+          inputmode="numeric"
+          class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+          placeholder="AAAA"
         />
-        <p class="mt-1 text-xs text-slate-500">
-          Cole a URL para visualizar a capa ao lado.
-        </p>
+        @if (form.get('ano')?.touched && form.get('ano')?.invalid) {
+        <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
+        }
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Páginas</label>
+        <input
+          type="number"
+          min="1"
+          formControlName="paginas"
+          class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+          placeholder="Ex.: 320"
+        />
+        @if (form.get('paginas')?.touched && form.get('paginas')?.invalid) {
+        <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
+        }
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700"
-            >Categoria *</label
-          >
-          <select
-            type="text"
-            formControlName="categoria"
-            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-            placeholder="Ex.: Romance, Técnica…"
-          >
-            <option value="">Selecione...</option>
-            @for(categoria of categorias; track $index) {
-            <option [value]="categoria.id">{{ categoria.nome }}</option>
-            }
-          </select>
-        </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Status *</label>
+        <select
+          formControlName="status"
+          (change)="onChangeStatus()"
+          class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+        >
+          @for(status of statusOptions; track $index) {
+          <option [value]="status.option">{{ status.label }}</option>
+          }
+        </select>
+      </div>
+    </div>
 
-        <div>
-          <label class="block text-sm font-medium text-slate-700"
-            >Status *</label
-          >
-          <select
-            formControlName="status"
-            (change)="onChangeStatus()"
-            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-          >
-            @for(status of statusOptions; track $index) {
-            <option [value]="status.option">{{ status.label }}</option>
-            }
-          </select>
-        </div>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-{{
+        form.get('status')?.value !== 'desejo' ? 2 : 1
+      }} gap-4"
+    >
+      <div>
+        <label class="block text-sm font-medium text-slate-700"
+          >Descrição / Notas</label
+        >
+        <textarea
+          rows="7"
+          formControlName="descricao"
+          class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+          placeholder="Impressões, quotes, por que entrou na lista…"
+        ></textarea>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700">Ano *</label>
-          <input
-            type="number"
-            formControlName="ano"
-            min="1800"
-            step="1"
-            inputmode="numeric"
-            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-            placeholder="AAAA"
-          />
-          @if (form.get('ano')?.touched && form.get('ano')?.invalid) {
-          <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
-          }
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700"
-            >Páginas</label
-          >
-          <input
-            type="number"
-            min="1"
-            formControlName="paginas"
-            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-            placeholder="Ex.: 320"
-          />
-          @if (form.get('paginas')?.touched && form.get('paginas')?.invalid) {
-          <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
-          }
-        </div>
+      <div class="grid grid-rows-1 sm:grid-rows-2 gap-4">
         @if (form.get('status')?.value !== 'desejo') {
 
         <div>
@@ -174,69 +168,21 @@
         </div>
         }
       </div>
-
-      <div>
-        <label class="block text-sm font-medium text-slate-700"
-          >Descrição / Notas</label
-        >
-        <textarea
-          rows="4"
-          formControlName="descricao"
-          class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-          placeholder="Impressões, quotes, por que entrou na lista…"
-        ></textarea>
-      </div>
-
-      <div class="pt-2 flex gap-3">
-        <button
-          type="submit"
-          class="px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
-        >
-          Salvar
-        </button>
-        <a
-          [routerLink]="['/livros']"
-          class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50"
-        >
-          Cancelar
-        </a>
-      </div>
     </div>
 
-    <!-- Coluna direita (preview) -->
-    <aside class="space-y-3">
-      <div
-        class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden"
+    <div class="pt-2 flex gap-3">
+      <button
+        type="submit"
+        class="px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
       >
-        <div class="p-4">
-          <h3 class="text-slate-800 font-semibold">Pré-visualização</h3>
-          <p class="text-slate-500 text-sm">Como o card pode ficar.</p>
-        </div>
-        @if (coverPreview) {
-        <img
-          [src]="coverPreview!"
-          alt="Pré-visualização da capa"
-          class="h-[180px] w-full object-cover"
-        />
-        } @else {
-        <div
-          class="h-[180px] w-full bg-gradient-to-r from-fuchsia-200 to-violet-200 grid place-content-center text-slate-600"
-        >
-          Sem capa
-        </div>
-        }
-        <div class="p-4">
-          <h4 class="font-medium text-slate-800">
-            {{ form.value.titulo || "Título do livro" }}
-          </h4>
-          <p class="text-sm text-slate-500">
-            {{ form.value.autor || "Autor" }}
-          </p>
-          <p class="mt-2 text-[13px] text-slate-600 line-clamp-2">
-            {{ form.value.descricao || "Descrição / notas…" }}
-          </p>
-        </div>
-      </div>
-    </aside>
+        Salvar
+      </button>
+      <a
+        [routerLink]="['/livros']"
+        class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50"
+      >
+        Cancelar
+      </a>
+    </div>
   </form>
 </section>
