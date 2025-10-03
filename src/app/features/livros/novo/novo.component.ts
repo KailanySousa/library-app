@@ -54,7 +54,7 @@ export class NovoLivroComponent implements OnInit {
   setupForm() {
     this.form = this.fb.group({
       titulo: ['', [this.requiredHelper, Validators.minLength(2)]],
-      autor: ['', [this.requiredHelper]],
+      autorId: ['', [this.requiredHelper]],
       ano: [
         '',
         [
@@ -63,7 +63,7 @@ export class NovoLivroComponent implements OnInit {
           Validators.max(this.currentYear),
         ],
       ],
-      categoria: ['', [this.requiredHelper]],
+      categoriaId: ['', [this.requiredHelper]],
       status: [EStatus.DESEJO, this.requiredHelper],
       paginas: [null as number | null, [Validators.min(1)]],
       anoInicio: [

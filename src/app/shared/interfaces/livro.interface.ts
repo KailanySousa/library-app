@@ -1,10 +1,10 @@
 export default interface ILivro {
   id: number;
   ano: string;
-  anoFim: number;
-  anoInicio: number;
-  autor: string;
-  categoria: string;
+  anoFim: string;
+  anoInicio: string;
+  autorId: number;
+  categoriaId: number;
   descricao?: string;
   paginas?: number;
   status: string;

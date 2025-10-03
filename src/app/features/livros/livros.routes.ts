@@ -6,6 +6,10 @@ export const livrosRoutes: Routes = [
     loadComponent: () =>
       import('./novo/novo.component').then((m) => m.NovoLivroComponent),
   },
-
+  {
+    path: 'lista',
+    loadComponent: () =>
+      import('./lista/lista.component').then((m) => m.ListaLivrosComponent),
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
