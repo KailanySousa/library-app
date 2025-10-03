@@ -13,6 +13,10 @@ import { STATUS_OPTIONS } from '../../../consts/status.const';
 import { CategoriaService } from '../../../shared/services/categoria.service';
 import ICategoria from '../../../shared/interfaces/categoria.interface';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { AutorService } from '../../../shared/services/autor.service';
+import IAutor from '../../../shared/interfaces/autor.interface';
+import ILivro from '../../../shared/interfaces/livro.interface';
+import { LivroService } from '../../../shared/services/livro.service';
 
 @Component({
   selector: 'app-novo-livro',
@@ -28,19 +32,23 @@ export class NovoLivroComponent implements OnInit {
 
   readonly statusOptions = STATUS_OPTIONS;
   categorias!: ICategoria[];
+  autores!: IAutor[];
   form!: FormGroup;
   coverPreview: string | null = null;
 
   constructor(
     private readonly router: Router,
     private readonly fb: FormBuilder,
-    private readonly categoriaService: CategoriaService
+    private readonly categoriaService: CategoriaService,
+    private readonly autorService: AutorService,
+    private readonly service: LivroService
   ) {}
 
   ngOnInit() {
     this.setupForm();
 
     this.categorias = this.categoriaService.getAll();
+    this.autores = this.autorService.getAll();
   }
 
   setupForm() {
@@ -103,11 +111,22 @@ export class NovoLivroComponent implements OnInit {
     anoFimControl?.setValue(null);
   }
 
-  async submit() {
+  submit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    await this.router.navigate(['/livros']);
+
+    const body: ILivro = this.form.getRawValue() as ILivro;
+    this.service.post(
+      body,
+      () => {
+        this.form.reset({ cor: '#F0ABFC' });
+        void this.router.navigate(['/livros/lista']);
+      },
+      (e) => {
+        console.log('Erro ao cadastrar o livro', e);
+      }
+    );
   }
 }

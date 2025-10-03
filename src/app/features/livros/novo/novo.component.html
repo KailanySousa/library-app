@@ -24,12 +24,15 @@
 
       <div>
         <label class="block text-sm font-medium text-slate-700">Autor *</label>
-        <input
-          type="text"
+        <select
           formControlName="autor"
           class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-          placeholder="Ex.: Machado de Assis"
-        />
+        >
+          <option value="">Selecione...</option>
+          @for(autor of autores; track $index) {
+          <option [value]="autor.id">{{ autor.nome }}</option>
+          }
+        </select>
         @if (form.get('autor')?.touched && form.get('autor')?.invalid) {
         <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
         }
@@ -39,10 +42,8 @@
           >Categoria *</label
         >
         <select
-          type="text"
           formControlName="categoria"
           class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-          placeholder="Ex.: Romance, Técnica…"
         >
           <option value="">Selecione...</option>
           @for(categoria of categorias; track $index) {
@@ -113,7 +114,7 @@
         ></textarea>
       </div>
 
-      <div class="grid grid-rows-1 sm:grid-rows-2 gap-4">
+      <div class="flex flex-col gap-2">
         @if (form.get('status')?.value !== 'desejo') {
 
         <div>
