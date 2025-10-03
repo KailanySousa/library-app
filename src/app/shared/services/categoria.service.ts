@@ -7,9 +7,12 @@ import ICategoria from '../interfaces/categoria.interface';
 export class CategoriaService {
   private proximoId = computed(() => {
     const categorias = this.getAll();
-    const ultima = categorias[categorias.length - 1];
+    if (categorias.length > 0) {
+      const ultima = categorias[categorias.length - 1];
 
-    return ultima.id + 1;
+      return ultima.id + 1;
+    }
+    return 1;
   });
 
   constructor() {}
@@ -40,13 +43,12 @@ export class CategoriaService {
       request.id = this.proximoId();
 
       if (categorias) {
-        localStorage.setItem(
-          'categorias',
-          JSON.stringify([...categorias, request])
-        );
+        categorias.push(request);
+        localStorage.setItem('categorias', JSON.stringify(categorias));
+      } else {
+        localStorage.setItem('categorias', JSON.stringify([request]));
       }
 
-      localStorage.setItem('categorias', JSON.stringify([request]));
       onSucess();
     } catch (error) {
       onError(error);

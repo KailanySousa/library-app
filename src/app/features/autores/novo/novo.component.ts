@@ -8,6 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import IAutor from '../../../shared/interfaces/autor.interface';
+import { AutorService } from '../../../shared/services/autor.service';
 
 @Component({
   selector: 'app-nova-autor',
@@ -23,7 +25,8 @@ export class NovoAutorComponent implements OnInit {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly service: AutorService
   ) {}
 
   ngOnInit() {
@@ -47,16 +50,17 @@ export class NovoAutorComponent implements OnInit {
       return;
     }
 
-    // const body: ICategoria = this.form.getRawValue() as ICategoria;
+    const body: IAutor = this.form.getRawValue() as IAutor;
 
-    // this.service.post(body).subscribe({
-    //   next: () => {
-    //     this.form.reset({ cor: '#F0ABFC' });
-    //     void this.router.navigate(['/categorias/lista']);
-    //   },
-    //   error: (e) => {
-    //     console.log('Erro ao cadastrar a categoria', e);
-    //   },
-    // });
+    this.service.post(
+      body,
+      () => {
+        this.form.reset({ cor: '#F0ABFC' });
+        void this.router.navigate(['/autores/lista']);
+      },
+      (e) => {
+        console.log('Erro ao cadastrar o autor', e);
+      }
+    );
   }
 }
