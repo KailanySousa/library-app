@@ -1,8 +1,8 @@
 <app-header></app-header>
 <section class="container mx-auto px-6 py-10 flex justify-center items-center">
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for(c of categorias; track $index) {
     <article
-      *ngFor="let c of categorias"
       class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden flex"
     >
       <div class="w-2" [style.background]="c.cor || '#F0ABFC'"></div>
@@ -44,5 +44,6 @@
         </div>
       </div>
     </article>
+    }
   </div>
 </section>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -8,8 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { EStatus } from '../../../enums/status.enum';
-import { STATUS_OPTIONS } from '../../../consts/status.const';
+import { EStatus } from '../../../shared/enums/status.enum';
+import { STATUS_OPTIONS } from '../../../shared/consts/status.const';
 import { CategoriaService } from '../../../shared/services/categoria.service';
 import ICategoria from '../../../shared/interfaces/categoria.interface';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
@@ -19,6 +19,7 @@ import ILivro from '../../../shared/interfaces/livro.interface';
 import { LivroService } from '../../../shared/services/livro.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-novo-livro',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import ICategoria from '../../../shared/interfaces/categoria.interface';
 import {
   AbstractControl,
@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-detalhe-categoria',
   imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
   templateUrl: './detalhe.component.html',

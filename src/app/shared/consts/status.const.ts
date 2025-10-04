@@ -1,5 +1,5 @@
 import { EStatus } from '../enums/status.enum';
-import IStatus from '../shared/interfaces/status.interface';
+import IStatus from '../interfaces/status.interface';
 
 export const STATUS_OPTIONS: IStatus[] = Object.values(EStatus).map(
   (status) => ({

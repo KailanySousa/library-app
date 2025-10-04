@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CategoriaService } from '../../../shared/services/categoria.service';
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,7 @@ import ICategoria from '../../../shared/interfaces/categoria.interface';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-lista-categorias',
   standalone: true,
   imports: [RouterModule, CommonModule, HeaderComponent],

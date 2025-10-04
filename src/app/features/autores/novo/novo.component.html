@@ -12,12 +12,11 @@
       class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
       placeholder="Ex.: Machado de Assis"
     />
-    <p
-      *ngIf="form.get('nome')?.touched && form.get('nome')?.invalid"
-      class="mt-1 text-sm text-rose-600"
-    >
+    @if(form.get('nome')?.touched && form.get('nome')?.invalid) {
+    <p class="mt-1 text-sm text-rose-600">
       Informe um nome com pelo menos 2 caracteres.
     </p>
+    }
   </div>
 
   <div>
@@ -45,12 +44,9 @@
         placeholder="#F0ABFC"
       />
     </div>
-    <p
-      *ngIf="form.get('cor')?.touched && form.get('cor')?.invalid"
-      class="mt-1 text-sm text-rose-600"
-    >
-      Use um HEX válido (ex.: #F0ABFC).
-    </p>
+    @if(form.get('cor')?.touched && form.get('cor')?.invalid) {
+    <p class="mt-1 text-sm text-rose-600">Use um HEX válido (ex.: #F0ABFC).</p>
+    }
   </div>
 
   <div class="md:col-span-3 flex gap-3 pt-2">

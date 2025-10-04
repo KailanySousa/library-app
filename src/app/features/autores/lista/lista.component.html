@@ -1,8 +1,8 @@
 <app-header></app-header>
 <section class="container mx-auto px-6 py-8 space-y-10">
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for(a of autores; track $index) {
     <article
-      *ngFor="let a of autores"
       class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden flex"
     >
       <div class="w-2" [style.background]="a.cor || '#F0ABFC'"></div>
@@ -45,5 +45,6 @@
         </div>
       </div>
     </article>
+    }
   </div>
 </section>

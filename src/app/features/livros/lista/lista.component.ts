@@ -1,4 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import ILivro from '../../../shared/interfaces/livro.interface';
@@ -8,6 +13,7 @@ import { AutorPipe } from '../../../shared/pipes/autor.pipe';
 import { CategoriaPipe } from '../../../shared/pipes/categoria.pipe';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-lista-livros',
   standalone: true,
   imports: [

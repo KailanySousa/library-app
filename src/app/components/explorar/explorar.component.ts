@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../shared/components/header/header.component';
@@ -6,6 +6,7 @@ import { HeaderComponent } from '../../shared/components/header/header.component
 type Livro = { titulo: string; autor: string; capa: string; descricao: string };
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-explorar',
   standalone: true,
   imports: [CommonModule, RouterModule, HeaderComponent],
