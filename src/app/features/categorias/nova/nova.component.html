@@ -1,69 +1,70 @@
-<form
-  [formGroup]="form"
-  (ngSubmit)="salvar()"
-  class="rounded-2xl border border-slate-200 bg-white shadow p-5 grid md:grid-cols-3 gap-4"
->
-  <div>
-    <label class="block text-sm font-medium text-slate-700">Nome *</label>
-    <input
-      type="text"
-      formControlName="nome"
-      class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-      placeholder="Ex.: Romance, Técnica, Distopia"
-    />
-    <p
-      *ngIf="form.get('nome')?.touched && form.get('nome')?.invalid"
-      class="mt-1 text-sm text-rose-600"
-    >
-      Informe um nome com pelo menos 2 caracteres.
-    </p>
-  </div>
-
-  <div>
-    <label class="block text-sm font-medium text-slate-700">Descrição</label>
-    <input
-      type="text"
-      formControlName="descricao"
-      class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-      placeholder="Opcional"
-    />
-  </div>
-
-  <div>
-    <label class="block text-sm font-medium text-slate-700">Cor</label>
-    <div class="mt-1 flex items-center gap-3">
-      <input
-        type="color"
-        formControlName="cor"
-        class="h-10 w-14 rounded border border-slate-300"
-      />
+<app-header></app-header>
+<section class="container mx-auto px-6 py-10 flex justify-center items-center">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="salvar()"
+    class="rounded-2xl border border-slate-200 bg-white shadow p-5 flex flex-col gap-2"
+  >
+    <div>
+      <label class="block text-sm font-medium text-slate-700">Nome *</label>
       <input
         type="text"
-        formControlName="cor"
-        class="flex-1 rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-        placeholder="#F0ABFC"
+        formControlName="nome"
+        class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+        placeholder="Ex.: Romance, Técnica, Distopia"
+      />
+      @if(form.get('nome')?.touched && form.get('nome')?.invalid) {
+      <p class="mt-1 text-sm text-rose-600">
+        Informe um nome com pelo menos 2 caracteres.
+      </p>
+      }
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-slate-700">Descrição</label>
+      <input
+        type="text"
+        formControlName="descricao"
+        class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+        placeholder="Opcional"
       />
     </div>
-    <p
-      *ngIf="form.get('cor')?.touched && form.get('cor')?.invalid"
-      class="mt-1 text-sm text-rose-600"
-    >
-      Use um HEX válido (ex.: #F0ABFC).
-    </p>
-  </div>
 
-  <div class="md:col-span-3 flex gap-3 pt-2">
-    <button
-      type="submit"
-      class="px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
-    >
-      Cadastrar
-    </button>
-    <button
-      type="reset"
-      class="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50"
-    >
-      Limpar
-    </button>
-  </div>
-</form>
+    <div>
+      <label class="block text-sm font-medium text-slate-700">Cor</label>
+      <div class="mt-1 flex items-center gap-3">
+        <input
+          type="color"
+          formControlName="cor"
+          class="h-10 w-14 rounded border border-slate-300"
+        />
+        <input
+          type="text"
+          formControlName="cor"
+          class="flex-1 rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+          placeholder="#F0ABFC"
+        />
+      </div>
+      @if(form.get('cor')?.touched && form.get('cor')?.invalid){
+      <p class="mt-1 text-sm text-rose-600">
+        Use um HEX válido (ex.: #F0ABFC).
+      </p>
+      }
+    </div>
+
+    <div class="grid grid-cols-2 gap-1 pt-2">
+      <button
+        type="submit"
+        class="px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
+      >
+        Cadastrar
+      </button>
+      <button
+        type="reset"
+        class="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50"
+      >
+        Limpar
+      </button>
+    </div>
+  </form>
+</section>

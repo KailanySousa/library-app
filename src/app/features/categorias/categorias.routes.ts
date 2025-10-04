@@ -1,10 +1,8 @@
 import { Routes } from '@angular/router';
-import { CategoriasComponent } from './categorias.component';
 
 export const categoriasRoutes: Routes = [
   {
     path: '',
-    component: CategoriasComponent,
     children: [
       {
         path: 'nova',

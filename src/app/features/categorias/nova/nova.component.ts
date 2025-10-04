@@ -10,11 +10,12 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { CategoriaService } from '../../../shared/services/categoria.service';
 import ICategoria from '../../../shared/interfaces/categoria.interface';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
 
 @Component({
   selector: 'app-nova-categoria',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
   templateUrl: './nova.component.html',
 })
 export class NovaCategoriaComponent implements OnInit {
