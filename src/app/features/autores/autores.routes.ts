@@ -1,10 +1,8 @@
 import { Routes } from '@angular/router';
-import { AutoresComponent } from './autores.component';
 
 export const autoresRoutes: Routes = [
   {
     path: '',
-    component: AutoresComponent,
     children: [
       {
         path: 'novo',

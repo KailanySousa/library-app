@@ -10,11 +10,12 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import IAutor from '../../../shared/interfaces/autor.interface';
 import { AutorService } from '../../../shared/services/autor.service';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
 
 @Component({
   selector: 'app-nova-autor',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
   templateUrl: './novo.component.html',
 })
 export class NovoAutorComponent implements OnInit {

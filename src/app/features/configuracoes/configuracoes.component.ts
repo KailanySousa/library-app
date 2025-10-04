@@ -3,9 +3,8 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 
 @Component({
-  selector: 'app-categorias',
-  standalone: true,
+  selector: 'app-configuracoes',
   imports: [RouterModule, HeaderComponent],
-  templateUrl: './autores.component.html',
+  templateUrl: './configuracoes.component.html',
 })
-export class AutoresComponent {}
+export class ConfiguracoesComponent {}

@@ -1,0 +1,109 @@
+<app-header></app-header>
+
+<section class="container mx-auto px-6 py-10 space-y-8">
+  <header>
+    <h1 class="text-2xl md:text-3xl font-semibold">
+      <span class="from-fuchsia-600 to-violet-600 bg-clip-text">
+        Configurações
+      </span>
+    </h1>
+    <p class="text-slate-500">Gerencie livros, categorias e autores.</p>
+  </header>
+
+  <ul class="space-y-6">
+    <!-- LIVROS -->
+    <li class="flex items-center justify-between">
+      <div class="flex items-center gap-3 min-w-0">
+        <span
+          class="h-6 w-1 rounded-full bg-gradient-to-b from-fuchsia-600 to-violet-600"
+        ></span>
+        <div class="min-w-0">
+          <h2 class="text-slate-800 font-medium">Livros</h2>
+          <p class="text-slate-500 text-sm truncate">
+            Listar ou cadastrar novos livros.
+          </p>
+        </div>
+      </div>
+      <nav class="flex gap-4 shrink-0">
+        <a
+          [routerLink]="['/livros/lista']"
+          class="font-medium bg-gradient-to-r from-fuchsia-600 to-violet-600 bg-clip-text text-transparent hover:underline"
+        >
+          Ver todos
+        </a>
+        <a
+          [routerLink]="['/livros/novo']"
+          class="font-medium bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent hover:underline"
+        >
+          Cadastrar
+        </a>
+      </nav>
+    </li>
+
+    <hr
+      class="h-px border-0 bg-gradient-to-r from-fuchsia-200 via-slate-200 to-violet-200"
+    />
+
+    <!-- CATEGORIAS -->
+    <li class="flex items-center justify-between">
+      <div class="flex items-center gap-3 min-w-0">
+        <span
+          class="h-6 w-1 rounded-full bg-gradient-to-b from-fuchsia-600 to-violet-600"
+        ></span>
+        <div class="min-w-0">
+          <h2 class="text-slate-800 font-medium">Categorias</h2>
+          <p class="text-slate-500 text-sm truncate">
+            Organize seus livros por temas.
+          </p>
+        </div>
+      </div>
+      <nav class="flex gap-4 shrink-0">
+        <a
+          [routerLink]="['/categorias/lista']"
+          class="font-medium bg-gradient-to-r from-fuchsia-600 to-violet-600 bg-clip-text text-transparent hover:underline"
+        >
+          Ver todas
+        </a>
+        <a
+          [routerLink]="['/categorias/nova']"
+          class="font-medium bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent hover:underline"
+        >
+          Cadastrar
+        </a>
+      </nav>
+    </li>
+
+    <hr
+      class="h-px border-0 bg-gradient-to-r from-fuchsia-200 via-slate-200 to-violet-200"
+    />
+
+    <!-- AUTORES -->
+    <li class="flex items-center justify-between">
+      <div class="flex items-center gap-3 min-w-0">
+        <span
+          class="h-6 w-1 rounded-full bg-gradient-to-b from-fuchsia-600 to-violet-600"
+        ></span>
+        <div class="min-w-0">
+          <h2 class="text-slate-800 font-medium">Autores</h2>
+          <p class="text-slate-500 text-sm truncate">
+            Gerencie sua base de autores.
+          </p>
+        </div>
+      </div>
+      <nav class="flex gap-4 shrink-0">
+        <a
+          [routerLink]="['/autores/lista']"
+          class="font-medium bg-gradient-to-r from-fuchsia-600 to-violet-600 bg-clip-text text-transparent hover:underline"
+        >
+          Ver todos
+        </a>
+        <a
+          [routerLink]="['/autores/novo']"
+          class="font-medium bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent hover:underline"
+        >
+          Cadastrar
+        </a>
+      </nav>
+    </li>
+  </ul>
+</section>

@@ -1,3 +1,4 @@
+<app-header></app-header>
 <section class="container mx-auto px-6 py-8 space-y-6" *ngIf="categoria as c">
   <!-- Header -->
   <header class="flex items-start justify-between gap-4">
@@ -13,20 +14,7 @@
       </div>
     </div>
 
-    <div class="flex gap-2">
-      <a
-        [routerLink]="['/categorias/lista']"
-        class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50"
-        >Voltar</a
-      >
-      <button
-        type="button"
-        (click)="remover()"
-        class="px-4 py-2 rounded-xl border border-rose-200 text-rose-700 hover:bg-rose-50"
-      >
-        Remover
-      </button>
-    </div>
+    <div class="flex gap-2"></div>
   </header>
 
   <div class="grid md:grid-cols-3 gap-8">
@@ -85,12 +73,24 @@
         </p>
       </div>
 
-      <div class="pt-2">
+      <div class="pt-2 flex gap-2">
+        <a
+          [routerLink]="['/categorias/lista']"
+          class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50"
+          >Voltar</a
+        >
+        <button
+          type="button"
+          (click)="remover()"
+          class="px-4 py-2 rounded-xl border border-rose-200 text-rose-700 hover:bg-rose-50"
+        >
+          Remover
+        </button>
         <button
           type="submit"
           class="px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
         >
-          Salvar alterações
+          Salvar
         </button>
       </div>
     </form>

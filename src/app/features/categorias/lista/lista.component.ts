@@ -3,11 +3,12 @@ import { Router, RouterModule } from '@angular/router';
 import { CategoriaService } from '../../../shared/services/categoria.service';
 import { CommonModule } from '@angular/common';
 import ICategoria from '../../../shared/interfaces/categoria.interface';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
 
 @Component({
   selector: 'app-lista-categorias',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, HeaderComponent],
   templateUrl: './lista.component.html',
 })
 export class ListaCategoriasComponent implements OnInit {

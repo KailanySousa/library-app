@@ -10,10 +10,11 @@ import {
 import { CategoriaService } from '../../../shared/services/categoria.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
 
 @Component({
   selector: 'app-detalhe-categoria',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
   templateUrl: './detalhe.component.html',
 })
 export class DetalheCategoriaComponent implements OnInit {

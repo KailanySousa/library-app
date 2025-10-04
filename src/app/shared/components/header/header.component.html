@@ -2,105 +2,14 @@
   <nav
     class="container mx-auto px-4 h-14 flex items-center justify-center gap-4"
   >
-    <details class="relative group dropdown">
-      <summary
-        class="cursor-pointer px-3 py-1.5 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white select-none flex items-center gap-1"
-        aria-haspopup="menu"
-      >
-        Já lidos na estante
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4 opacity-80"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </summary>
-      <!-- <div
-        class="absolute left-0 mt-2 w-56 rounded-xl bg-white text-slate-800 shadow-lg ring-1 ring-black/5 p-1 z-50"
-        role="menu"
-      >
-        <button
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
-        >
-          Ator 1
-        </button>
-        <button
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
-        >
-          Ator 2
-        </button>
-      </div> -->
-    </details>
+    <a [routerLink]="['/explorar']">Explorar</a>
 
     <details class="relative group dropdown">
       <summary
         class="cursor-pointer px-3 py-1.5 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white select-none flex items-center gap-1"
         aria-haspopup="menu"
       >
-        Lista de desejos
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4 opacity-80"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </summary>
-    </details>
-
-    <details class="relative group dropdown">
-      <summary
-        class="cursor-pointer px-3 py-1.5 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white select-none flex items-center gap-1"
-        aria-haspopup="menu"
-      >
-        Faltando na estante
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4 opacity-80"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </summary>
-      <!-- <div
-        class="absolute left-0 mt-2 w-56 rounded-xl bg-white text-slate-800 shadow-lg ring-1 ring-black/5 p-1 z-50"
-        role="menu"
-      >
-        <button
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
-        >
-          Desejo 1
-        </button>
-        <button
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
-        >
-          Desejo 2
-        </button>
-      </div> -->
-    </details>
-
-    <details class="relative group dropdown">
-      <summary
-        class="cursor-pointer px-3 py-1.5 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white select-none flex items-center gap-1"
-        aria-haspopup="menu"
-      >
-        Categorias
+        Livros
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-4 w-4 opacity-80"
@@ -120,55 +29,30 @@
       >
         <button
           class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
-          [routerLink]="['/categorias/lista']"
         >
-          Ver todas
+          Já lidos
         </button>
         <button
           class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
-          [routerLink]="['/categorias/nova']"
         >
-          Cadastrar nova
+          Lendo
+        </button>
+        <button
+          class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
+        >
+          Quero ler
         </button>
       </div>
     </details>
+    <a [routerLink]="['/categorias/lista']">Categorias</a>
 
-    <details class="relative group dropdown">
-      <summary
-        class="cursor-pointer px-3 py-1.5 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white select-none flex items-center gap-1"
-        aria-haspopup="menu"
-      >
-        Autores
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4 opacity-80"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </summary>
-      <div
-        class="absolute left-0 mt-2 w-56 rounded-xl bg-white text-slate-800 shadow-lg ring-1 ring-black/5 p-1 z-50"
-        role="menu"
-      >
-        <button
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
-          [routerLink]="['/autores/lista']"
-        >
-          Ver todos
-        </button>
-        <button
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-fuchsia-50"
-          [routerLink]="['/autores/novo']"
-        >
-          Cadastrar novo
-        </button>
-      </div>
-    </details>
+    <a [routerLink]="['/autores/lista']">Autores</a>
+
+    <a
+      [routerLink]="['/configuracoes']"
+      class="inline-block align-middle text-slate-600"
+      aria-label="Configurações"
+      >⚙️</a
+    >
   </nav>
 </header>

@@ -3,11 +3,12 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import IAutor from '../../../shared/interfaces/autor.interface';
 import { AutorService } from '../../../shared/services/autor.service';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
 
 @Component({
   selector: 'app-lista-autores',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, HeaderComponent],
   templateUrl: './lista.component.html',
 })
 export class ListaAutoresComponent implements OnInit {
