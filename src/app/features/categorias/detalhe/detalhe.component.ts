@@ -78,7 +78,10 @@ export class DetalheCategoriaComponent implements OnInit {
       return;
     }
 
-    const body: ICategoria = this.form.getRawValue() as ICategoria;
+    const body: ICategoria = {
+      ...(this.form.getRawValue() as ICategoria),
+      id: this.categoria.id,
+    };
     this.service.put(
       body,
       () => void this.router.navigate(['/categorias/lista']),

@@ -1,5 +1,6 @@
 import { computed, Injectable } from '@angular/core';
 import ICategoria from '../interfaces/categoria.interface';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class CategoriaService {
     return 1;
   });
 
-  constructor() {}
+  constructor(private readonly storage: LocalStorageService) {}
 
   getItem(id: number): ICategoria {
     return this.getAll().filter(
@@ -24,11 +25,8 @@ export class CategoriaService {
   }
 
   getAll(): ICategoria[] {
-    const categorias = localStorage.getItem('categorias');
-
-    if (categorias) {
-      return JSON.parse(categorias) as ICategoria[];
-    }
+    const categorias = this.storage.get<ICategoria[]>('categorias');
+    if (categorias) return categorias;
     return [];
   }
 
@@ -44,9 +42,9 @@ export class CategoriaService {
 
       if (categorias) {
         categorias.push(request);
-        localStorage.setItem('categorias', JSON.stringify(categorias));
+        this.storage.set<ICategoria[]>('categorias', categorias);
       } else {
-        localStorage.setItem('categorias', JSON.stringify([request]));
+        this.storage.set<ICategoria[]>('categorias', [request]);
       }
 
       onSucess();
@@ -61,13 +59,9 @@ export class CategoriaService {
     onError: (e: unknown) => void
   ): void {
     try {
-      const categorias = this.getAll().map((c) => {
-        if (c.id === request.id) {
-          c = request;
-        }
-      });
-
-      localStorage.setItem('categorias', JSON.stringify(categorias));
+      const index = this.getAll().findIndex((c) => c.id === request.id);
+      const categorias = this.getAll().fill(request, index);
+      this.storage.set<ICategoria[]>('categorias', categorias);
       onSucess();
     } catch (error) {
       onError(error);
@@ -81,9 +75,8 @@ export class CategoriaService {
   ): void {
     try {
       const index = this.getAll().findIndex((c) => c.id === id);
-
       const categorias = this.getAll().splice(index, 1);
-      localStorage.setItem('categorias', JSON.stringify(categorias));
+      this.storage.set<ICategoria[]>('categorias', categorias);
 
       onSucess();
     } catch (error) {
