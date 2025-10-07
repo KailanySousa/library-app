@@ -51,7 +51,7 @@
               [queryParams]="{ autor: a.id }"
               class="inline-flex items-center rounded-full border border-fuchsia-200 bg-fuchsia-50 px-2 py-0.5 text-xs text-fuchsia-700"
             >
-              {{ 3 }} livro(s)
+              {{ a.id | livrosPorAutor }} livro(s)
             </a>
           </td>
           <td class="px-4 py-3">

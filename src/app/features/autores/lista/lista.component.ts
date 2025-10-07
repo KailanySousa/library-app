@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import IAutor from '../../../shared/interfaces/autor.interface';
 import { AutorService } from '../../../shared/services/autor.service';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { LivrosPorAutorPipe } from '../../../shared/pipes/livros-por-autor.pipe';
 
 @Component({
   selector: 'app-lista-autores',
   standalone: true,
-  imports: [RouterModule, CommonModule, HeaderComponent],
+  imports: [RouterModule, CommonModule, HeaderComponent, LivrosPorAutorPipe],
   templateUrl: './lista.component.html',
 })
 export class ListaAutoresComponent implements OnInit {
