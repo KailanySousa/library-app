@@ -39,6 +39,7 @@ export class CategoriaService {
       const categorias = this.getAll();
 
       request.id = this.proximoId();
+      request.createdAt = new Date().toString();
 
       if (categorias) {
         categorias.push(request);
@@ -59,6 +60,7 @@ export class CategoriaService {
     onError: (e: unknown) => void
   ): void {
     try {
+      request.updatedAt = new Date().toString();
       const index = this.getAll().findIndex((c) => c.id === request.id);
       const categorias = this.getAll().fill(request, index);
       this.storage.set<ICategoria[]>('categorias', categorias);

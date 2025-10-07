@@ -173,14 +173,21 @@
               >{{ 3 }} livro(s)</a
             >
           </li>
-          <!-- @if (c.createdAt) {
+          @if (c.createdAt) {
           <li class="flex items-center justify-between">
             <span>Criada em</span>
             <time class="text-slate-700">{{
               c.createdAt | date : "shortDate"
             }}</time>
           </li>
-          } -->
+          } @if (c.updatedAt) {
+          <li class="flex items-center justify-between">
+            <span>Atualizada em</span>
+            <time class="text-slate-700">{{
+              c.updatedAt | date : "dd/M/yyyy"
+            }}</time>
+          </li>
+          }
         </ul>
       </div>
 
