@@ -36,12 +36,14 @@
         type="color"
         formControlName="cor"
         class="h-10 w-14 rounded border border-slate-300"
+        [value]="form.get('cor')?.value"
       />
       <input
         type="text"
         formControlName="cor"
         class="flex-1 rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
         placeholder="#F0ABFC"
+        [value]="form.get('cor')?.value"
       />
     </div>
     @if(form.get('cor')?.touched && form.get('cor')?.invalid) {
