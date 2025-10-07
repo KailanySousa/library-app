@@ -1,50 +1,81 @@
 <app-header></app-header>
-<section class="container mx-auto px-6 py-8 space-y-10">
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    @for(a of autores; track $index) {
-    <article
-      class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden flex"
+
+<section class="container mx-auto px-6 py-8 space-y-6">
+  <div
+    class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <div>
+      <h2 class="text-xl font-semibold text-slate-800">Autores</h2>
+      <p class="text-slate-500 text-sm">Gerencie os autores cadastrados.</p>
+    </div>
+    <a
+      [routerLink]="['/autores/novo']"
+      class="inline-flex items-center justify-center rounded-lg bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white hover:bg-fuchsia-700"
     >
-      <div class="w-2" [style.background]="a.cor || '#F0ABFC'"></div>
-      <div class="p-4 flex-1">
-        <h3 class="text-slate-800 font-semibold leading-tight">
-          <a [routerLink]="['/autores', a.id]" class="hover:underline">{{
-            a.nome
-          }}</a>
-        </h3>
-        <p class="text-sm text-slate-500 line-clamp-2" style="min-height: 40px">
-          {{ a.descricao || "—" }}
-        </p>
+      Cadastrar
+    </a>
+  </div>
 
-        <div class="mt-3 flex items-center justify-between">
-          <span
-            class="text-xs px-2 py-1 rounded-full bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-200"
-          >
-            {{ 3 }} livro(s)
-          </span>
+  <div class="rounded-2xl border border-slate-200 bg-white">
+    <table class="w-full text-left text-sm">
+      <thead class="sticky top-0 z-10 bg-slate-50/70 backdrop-blur">
+        <tr class="text-slate-600">
+          <th class="px-4 py-3">Nome</th>
+          <th class="px-4 py-3">Descrição</th>
+          <th class="w-28 px-4 py-3">Livros</th>
+          <th class="w-40 px-4 py-3 text-center">Ações</th>
+        </tr>
+      </thead>
 
-          <div class="flex items-center gap-2">
+      <tbody class="divide-y divide-slate-100">
+        @for (a of autores; track a.id) {
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-3">
+              <span
+                class="inline-block h-3 w-3 rounded-full ring-1 ring-slate-200"
+                [style.background]="a.cor || '#F0ABFC'"
+              >
+              </span>
+              <span class="font-medium text-slate-800">
+                {{ a.nome }}
+              </span>
+            </div>
+          </td>
+          <td class="px-4 py-3 text-slate-600">
+            <span class="line-clamp-2">{{ a.descricao || "—" }}</span>
+          </td>
+          <td class="px-4 py-3">
             <a
               [routerLink]="['/livros']"
-              [queryParams]="{ autor: a.nome }"
-              class="text-magenta-700 hover:text-magenta-800 font-medium text-sm"
+              [queryParams]="{ autor: a.id }"
+              class="inline-flex items-center rounded-full border border-fuchsia-200 bg-fuchsia-50 px-2 py-0.5 text-xs text-fuchsia-700"
             >
-              Ver mais
+              {{ 3 }} livro(s)
             </a>
-            @if (a.id) {
-            <button
-              type="button"
-              class="text-slate-400 hover:text-rose-600 text-sm"
-              title="Remover"
-              (click)="remover(a.id)"
-            >
-              Remover
-            </button>
-            }
-          </div>
-        </div>
-      </div>
-    </article>
-    }
+          </td>
+          <td class="px-4 py-3">
+            <div class="flex justify-center gap-2">
+              <a
+                [routerLink]="['/autores', a.id]"
+                class="rounded-lg border border-slate-300 px-3 py-1.5 hover:bg-slate-100"
+              >
+                Ver
+              </a>
+              @if (a.id) {
+              <button
+                type="button"
+                class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-rose-700 hover:bg-rose-100"
+                (click)="remover(a.id)"
+              >
+                Remover
+              </button>
+              }
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
   </div>
 </section>
