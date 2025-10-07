@@ -1,0 +1,37 @@
+<article
+  class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden p-4 flex gap-4"
+>
+  <div
+    class="w-16 h-20 rounded-xl text-white grid place-items-center font-semibold flex-shrink-0 uppercase select-none ring-1 ring-black/5"
+    [style.backgroundImage]="gradientFor(livro().autorId)"
+    aria-hidden="true"
+    title="Inicial do título"
+  >
+    {{ livro().titulo || "?" | slice : 0 : 1 | uppercase }}
+  </div>
+  <div class="min-w-0 flex-1">
+    <h3 class="text-slate-800 font-semibold leading-tight line-clamp-2">
+      {{ livro().titulo }}
+    </h3>
+    <p class="mt-1 text-slate-500 text-[13px]">
+      {{ livro().autorId | autor }}
+    </p>
+    <div class="mt-1">
+      <p class="text-[12px] text-slate-500">
+        {{ livro().categoriaId | categoria }}
+      </p>
+    </div>
+    <ul class="mt-2 text-[12px] text-slate-500 flex flex-wrap gap-x-4 gap-y-1">
+      @if (livro().paginas) {
+      <li>📄 {{ livro().paginas }} pág.</li>
+      } @if(livro().ano) {
+      <li>🗓 {{ livro().ano }}</li>
+      } @if(livro().anoFim) {
+      <li>✅ {{ livro().anoFim }}</li>
+      }
+    </ul>
+    <p class="mt-2 text-[13px] text-slate-600 line-clamp-3">
+      {{ livro().descricao || "Sem descrição disponível." }}
+    </p>
+  </div>
+</article>
