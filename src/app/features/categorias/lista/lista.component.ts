@@ -4,12 +4,18 @@ import { CategoriaService } from '../../../shared/services/categoria.service';
 import { CommonModule } from '@angular/common';
 import ICategoria from '../../../shared/interfaces/categoria.interface';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { LivrosPorCategoriaPipe } from '../../../shared/pipes/livros-por-categoria.pipe';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-lista-categorias',
   standalone: true,
-  imports: [RouterModule, CommonModule, HeaderComponent],
+  imports: [
+    RouterModule,
+    CommonModule,
+    HeaderComponent,
+    LivrosPorCategoriaPipe,
+  ],
   templateUrl: './lista.component.html',
 })
 export class ListaCategoriasComponent implements OnInit {

@@ -1,5 +1,6 @@
 import { computed, Injectable } from '@angular/core';
 import IAutor from '../interfaces/autor.interface';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,17 +16,17 @@ export class AutorService {
     return 1;
   });
 
-  constructor() {}
+  constructor(private readonly storage: LocalStorageService) {}
 
   getItem(id: number): IAutor {
     return this.getAll().filter((autor: IAutor) => autor.id == id)[0];
   }
 
   getAll(): IAutor[] {
-    const autores = localStorage.getItem('autores');
+    const autores = this.storage.get('autores');
 
     if (autores) {
-      return JSON.parse(autores) as IAutor[];
+      return autores as IAutor[];
     }
     return [];
   }
@@ -42,9 +43,9 @@ export class AutorService {
 
       if (autores) {
         autores.push(request);
-        localStorage.setItem('autores', JSON.stringify(autores));
+        this.storage.set('autores', autores);
       } else {
-        localStorage.setItem('autores', JSON.stringify([request]));
+        this.storage.set('autores', [request]);
       }
 
       onSucess();
@@ -59,13 +60,9 @@ export class AutorService {
     onError: (e: unknown) => void
   ): void {
     try {
-      const autores = this.getAll().map((c) => {
-        if (c.id === request.id) {
-          c = request;
-        }
-      });
-
-      localStorage.setItem('autores', JSON.stringify(autores));
+      const index = this.getAll().findIndex((c) => c.id === request.id);
+      const autores = this.getAll().fill(request, index);
+      this.storage.set('autores', autores);
       onSucess();
     } catch (error) {
       onError(error);
@@ -81,7 +78,7 @@ export class AutorService {
       const index = this.getAll().findIndex((c) => c.id === id);
 
       const autores = this.getAll().splice(index, 1);
-      localStorage.setItem('autores', JSON.stringify(autores));
+      this.storage.set('autores', autores);
 
       onSucess();
     } catch (error) {

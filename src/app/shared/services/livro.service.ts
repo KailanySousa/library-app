@@ -1,5 +1,6 @@
 import { computed, Injectable } from '@angular/core';
 import ILivro from '../interfaces/livro.interface';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,19 +16,37 @@ export class LivroService {
     return 1;
   });
 
-  constructor() {}
+  constructor(private readonly storage: LocalStorageService) {}
 
   getItem(id: number): ILivro {
     return this.getAll().filter((autor: ILivro) => autor.id == id)[0];
   }
 
   getAll(): ILivro[] {
-    const livros = localStorage.getItem('livros');
+    const livros = this.storage.get('livros');
 
     if (livros) {
-      return JSON.parse(livros) as ILivro[];
+      return livros as ILivro[];
     }
     return [];
+  }
+
+  getAllBy<T>(key: string, value: unknown): T[] | [] {
+    const livros = this.getAll();
+
+    if (livros) {
+      return livros.filter((l) => {
+        return (
+          Object.hasOwn(l, key) &&
+          Object.getOwnPropertyDescriptors(l)[key].value === value
+        );
+      }) as T[];
+    }
+    return [];
+  }
+
+  getCountBy(key: string, value: unknown): number {
+    return this.getAllBy(key, value).length;
   }
 
   post(
@@ -40,12 +59,7 @@ export class LivroService {
 
       request.id = this.proximoId();
 
-      if (livros) {
-        livros.push(request);
-        localStorage.setItem('livros', JSON.stringify(livros));
-      } else {
-        localStorage.setItem('livros', JSON.stringify([request]));
-      }
+      this.storage.set('livros', request, livros);
 
       onSucess();
     } catch (error) {
@@ -59,13 +73,7 @@ export class LivroService {
     onError: (e: unknown) => void
   ): void {
     try {
-      const livros = this.getAll().map((c) => {
-        if (c.id === request.id) {
-          c = request;
-        }
-      });
-
-      localStorage.setItem('livros', JSON.stringify(livros));
+      this.storage.update('livros', request, this.getAll());
       onSucess();
     } catch (error) {
       onError(error);
@@ -81,7 +89,7 @@ export class LivroService {
       const index = this.getAll().findIndex((c) => c.id === id);
 
       const livros = this.getAll().splice(index, 1);
-      localStorage.setItem('livros', JSON.stringify(livros));
+      this.storage.set('livros', livros);
 
       onSucess();
     } catch (error) {
