@@ -31,7 +31,7 @@
         </a>
         <button
           type="submit"
-          form="formCategoria"
+          form="formLivro"
           class="inline-flex items-center gap-1 rounded-xl bg-fuchsia-600 px-3 py-2 text-sm font-medium text-white hover:bg-fuchsia-700"
           title="Salvar autor"
         >
@@ -77,6 +77,7 @@
   <div class="grid gap-8 md:grid-cols-3 mt-4">
     <!-- Formulário -->
     <form
+      id="formLivro"
       class="md:col-span-2 rounded-2xl border border-slate-200 bg-white shadow-sm p-5 space-y-4"
       [formGroup]="form"
       (ngSubmit)="salvar()"

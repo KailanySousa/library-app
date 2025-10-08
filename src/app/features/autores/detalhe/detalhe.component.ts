@@ -73,7 +73,7 @@ export class DetalheAutorComponent implements OnInit {
     this.#service.put(
       body,
       () => void this.#router.navigate(['/autores/lista']),
-      (e) => console.log('Erro ao editar a categoria', e)
+      (e) => console.log('Erro ao editar o autor', e)
     );
   }
 
@@ -83,7 +83,7 @@ export class DetalheAutorComponent implements OnInit {
       this.#service.delete(
         this.autor.id,
         () => void this.#router.navigate(['/autores/lista']),
-        (e) => console.log('Erro ao remover a categoria', e)
+        (e) => console.log('Erro ao remover o autor', e)
       );
     }
   }
