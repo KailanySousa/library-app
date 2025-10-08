@@ -13,11 +13,6 @@
       class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
     >
       <div class="flex items-center gap-3">
-        <span
-          class="inline-block h-6 w-6 rounded-full ring-2 ring-white shadow"
-          [style.background]="form.value.cor || '#F0ABFC'"
-          aria-label="Cor para o autor"
-        ></span>
         <h1
           class="text-2xl md:text-3xl font-semibold text-slate-800 leading-tight"
         >
@@ -54,49 +49,20 @@
       (ngSubmit)="salvar()"
       aria-label="Criao autor"
     >
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700">Nome *</label>
-          <input
-            type="text"
-            formControlName="nome"
-            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-            placeholder="Ex.: Machado de Assis"
-            autocomplete="off"
-            (blur)="aplicarCor()"
-          />
-          @if(form.get('nome')?.touched && form.get('nome')?.invalid) {
-          <p class="mt-1 text-sm text-rose-600">
-            Informe um nome (mín. 2 caracteres).
-          </p>
-          }
-        </div>
-        <!-- COR (apenas input color + campo HEX opcional) -->
-        <div>
-          <label class="block text-sm font-medium text-slate-700">Cor</label>
-          <div class="mt-1 flex items-center gap-3">
-            <input
-              type="color"
-              formControlName="cor"
-              class="h-10 w-14 rounded border border-slate-300 cursor-pointer"
-              [value]="form.get('cor')?.value || '#F0ABFC'"
-              aria-label="Selecionar cor"
-            />
-            <input
-              type="text"
-              formControlName="cor"
-              class="flex-1 rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-              placeholder="#F0ABFC"
-              spellcheck="false"
-              inputmode="text"
-            />
-          </div>
-          @if(form.get('cor')?.touched && form.get('cor')?.invalid) {
-          <p class="mt-1 text-sm text-rose-600">
-            Use um HEX válido (ex.: #F0ABFC).
-          </p>
-          }
-        </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Nome *</label>
+        <input
+          type="text"
+          formControlName="nome"
+          class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+          placeholder="Ex.: Machado de Assis"
+          autocomplete="off"
+        />
+        @if(form.get('nome')?.touched && form.get('nome')?.invalid) {
+        <p class="mt-1 text-sm text-rose-600">
+          Informe um nome (mín. 2 caracteres).
+        </p>
+        }
       </div>
 
       <div>
@@ -115,11 +81,7 @@
     <!-- Painel lateral -->
     <aside class="space-y-4">
       <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div
-          class="h-2 rounded-t-2xl"
-          [style.background]="form.value.cor || '#F0ABFC'"
-          aria-hidden="true"
-        ></div>
+        <div class="h-2 rounded-t-2xl bg-fuchsia-400" aria-hidden="true"></div>
         <div class="p-5">
           <h3 class="text-slate-800 font-semibold mb-1">Acesso rápido</h3>
           <p class="text-sm text-slate-600 mb-3">

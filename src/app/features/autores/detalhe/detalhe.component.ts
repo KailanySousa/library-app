@@ -50,10 +50,6 @@ export class DetalheAutorComponent implements OnInit {
     this.form = this.#formBuilder.group({
       nome: ['', [this.requiredHelper, Validators.minLength(2)]],
       descricao: [''],
-      cor: [
-        '#F0ABFC',
-        [Validators.pattern(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/)],
-      ],
     });
   }
 
@@ -61,7 +57,6 @@ export class DetalheAutorComponent implements OnInit {
     this.form.patchValue({
       nome: this.autor.nome,
       descricao: this.autor.descricao ?? '',
-      cor: this.autor.cor ?? '#F0ABFC',
     });
   }
 

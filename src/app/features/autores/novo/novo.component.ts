@@ -16,7 +16,6 @@ import { Router, RouterModule } from '@angular/router';
 import IAutor from '../../../shared/interfaces/autor.interface';
 import { AutorService } from '../../../shared/services/autor.service';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { seedHex } from '../../../shared/utils/color.util';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,21 +42,6 @@ export class NovoAutorComponent implements OnInit {
     this.form = this.#formBuilder.group({
       nome: ['', [this.requiredHelper, Validators.minLength(2)]],
       descricao: [''],
-      cor: [
-        seedHex('', { s: 72, l: 50 }),
-        [
-          this.requiredHelper,
-          Validators.pattern(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/),
-        ],
-      ],
-    });
-  }
-
-  aplicarCor() {
-    const nome = this.form.get('nome')!.value as string;
-    const corCtrl = this.form.get('cor')!;
-    corCtrl.patchValue(seedHex(nome, { s: 72, l: 50 }), {
-      emitEvent: false,
     });
   }
 
