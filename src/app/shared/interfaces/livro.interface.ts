@@ -9,4 +9,6 @@ export default interface ILivro {
   paginas?: number;
   status: string;
   titulo: string;
+  createdAt: string;
+  updatedAt: string;
 }

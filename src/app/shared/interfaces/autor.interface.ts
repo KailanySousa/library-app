@@ -3,4 +3,6 @@ export default interface IAutor {
   nome: string;
   descricao?: string;
   cor?: string;
+  createdAt: string;
+  updatedAt: string;
 }

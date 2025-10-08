@@ -58,6 +58,7 @@ export class LivroService {
       const livros = this.getAll();
 
       request.id = this.proximoId();
+      request.createdAt = new Date().toString();
 
       this.storage.set('livros', request, livros);
 
@@ -73,6 +74,8 @@ export class LivroService {
     onError: (e: unknown) => void
   ): void {
     try {
+      request.createdAt = new Date().toString();
+
       this.storage.update('livros', request, this.getAll());
       onSucess();
     } catch (error) {

@@ -40,6 +40,7 @@ export class AutorService {
       const autores = this.getAll();
 
       request.id = this.proximoId();
+      request.createdAt = new Date().toString();
 
       if (autores) {
         autores.push(request);
@@ -60,6 +61,8 @@ export class AutorService {
     onError: (e: unknown) => void
   ): void {
     try {
+      request.createdAt = new Date().toString();
+
       const index = this.getAll().findIndex((c) => c.id === request.id);
       const autores = this.getAll().fill(request, index);
       this.storage.set('autores', autores);
