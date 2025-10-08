@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -11,6 +16,7 @@ import { Router, RouterModule } from '@angular/router';
 import IAutor from '../../../shared/interfaces/autor.interface';
 import { AutorService } from '../../../shared/services/autor.service';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { seedHex } from '../../../shared/utils/color.util';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,28 +31,37 @@ export class NovoAutorComponent implements OnInit {
 
   form!: FormGroup;
 
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly router: Router,
-    private readonly service: AutorService
-  ) {}
+  #formBuilder = inject(FormBuilder);
+  #service = inject(AutorService);
+  #router = inject(Router);
 
   ngOnInit() {
     this.setupForm();
   }
 
   private setupForm() {
-    this.form = this.fb.group({
+    this.form = this.#formBuilder.group({
       nome: ['', [this.requiredHelper, Validators.minLength(2)]],
       descricao: [''],
       cor: [
-        '#F0ABFC',
-        [Validators.pattern(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/)],
+        seedHex('', { s: 72, l: 50 }),
+        [
+          this.requiredHelper,
+          Validators.pattern(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/),
+        ],
       ],
     });
   }
 
-  salvar() {
+  aplicarCor() {
+    const nome = this.form.get('nome')!.value as string;
+    const corCtrl = this.form.get('cor')!;
+    corCtrl.patchValue(seedHex(nome, { s: 72, l: 50 }), {
+      emitEvent: false,
+    });
+  }
+
+  salvar(irParaNovoLivro?: boolean) {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -54,11 +69,17 @@ export class NovoAutorComponent implements OnInit {
 
     const body: IAutor = this.form.getRawValue() as IAutor;
 
-    this.service.post(
+    this.#service.post(
       body,
-      () => {
+      (id: number) => {
         this.form.reset({ cor: '#F0ABFC' });
-        void this.router.navigate(['/autores/lista']);
+        if (irParaNovoLivro) {
+          void this.#router.navigate(['/livros/novo'], {
+            queryParams: { categoriaId: id },
+          });
+        } else {
+          void this.#router.navigate(['/autores/lista']);
+        }
       },
       (e) => {
         console.log('Erro ao cadastrar o autor', e);

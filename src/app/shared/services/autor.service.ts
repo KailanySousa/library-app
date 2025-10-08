@@ -1,55 +1,59 @@
-import { computed, Injectable } from '@angular/core';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import IAutor from '../interfaces/autor.interface';
 import { LocalStorageService } from './local-storage.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AutorService {
-  private proximoId = computed(() => {
-    const autores = this.getAll();
-    if (autores.length > 0) {
-      const ultimo = autores[autores.length - 1];
+  #storage = inject(LocalStorageService);
+  /** Estado único em memória */
+  private readonly _autores = signal<IAutor[]>(
+    this.#storage.get<IAutor[]>('autores') ?? []
+  );
 
-      return ultimo.id + 1;
-    }
-    return 1;
+  /** Exposição somente leitura para componentes */
+  readonly autores = this._autores.asReadonly();
+
+  /** Próximo id baseado no maior id atual */
+  private readonly proximoId = computed(() => {
+    const arr = this._autores();
+    if (arr.length === 0) return 1;
+    const max = arr.reduce((m, a) => (a.id > m ? a.id : m), 0);
+    return max + 1;
   });
 
-  constructor(private readonly storage: LocalStorageService) {}
+  /** Persiste sempre que a lista mudar */
+  private readonly persistEffect = effect(() => {
+    this.#storage.set<IAutor[]>('autores', this._autores());
+  });
 
-  getItem(id: number): IAutor {
-    return this.getAll().filter((autor: IAutor) => autor.id == id)[0];
+  /** Selector reativo por id (útil para telas de detalhe) */
+  byId(id: number) {
+    return computed(() => this._autores().find((a) => a.id === id));
   }
 
+  /** API “compatível” com a anterior */
   getAll(): IAutor[] {
-    const autores = this.storage.get('autores');
+    return this._autores();
+  }
 
-    if (autores) {
-      return autores as IAutor[];
-    }
-    return [];
+  getItem(id: number): IAutor {
+    return this._autores().find((a) => a.id === id)!;
   }
 
   post(
     request: IAutor,
-    onSucess: () => void,
+    onSucess: (id: number) => void,
     onError: (e: unknown) => void
   ): void {
     try {
-      const autores = this.getAll();
+      const novo: IAutor = {
+        ...request,
+        id: this.proximoId(),
+        createdAt: new Date().toISOString(),
+      };
 
-      request.id = this.proximoId();
-      request.createdAt = new Date().toString();
-
-      if (autores) {
-        autores.push(request);
-        this.storage.set('autores', autores);
-      } else {
-        this.storage.set('autores', [request]);
-      }
-
-      onSucess();
+      this._autores.update((arr) => [...arr, novo]);
+      onSucess(novo.id);
     } catch (error) {
       onError(error);
     }
@@ -61,11 +65,19 @@ export class AutorService {
     onError: (e: unknown) => void
   ): void {
     try {
-      request.createdAt = new Date().toString();
+      const atualizado: IAutor = {
+        ...request,
+        updatedAt: new Date().toISOString(),
+      };
 
-      const index = this.getAll().findIndex((c) => c.id === request.id);
-      const autores = this.getAll().fill(request, index);
-      this.storage.set('autores', autores);
+      this._autores.update((arr) => {
+        const idx = arr.findIndex((a) => a.id === atualizado.id);
+        if (idx === -1) return arr;
+        const copia = arr.slice();
+        copia[idx] = atualizado;
+        return copia;
+      });
+
       onSucess();
     } catch (error) {
       onError(error);
@@ -78,11 +90,7 @@ export class AutorService {
     onError: (e: unknown) => void
   ): void {
     try {
-      const index = this.getAll().findIndex((c) => c.id === id);
-
-      const autores = this.getAll().splice(index, 1);
-      this.storage.set('autores', autores);
-
+      this._autores.update((arr) => arr.filter((a) => a.id !== id));
       onSucess();
     } catch (error) {
       onError(error);

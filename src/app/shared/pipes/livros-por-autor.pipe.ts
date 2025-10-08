@@ -7,7 +7,7 @@ import { LivroService } from '../services/livro.service';
 export class LivrosPorAutorPipe implements PipeTransform {
   #livroService = inject(LivroService);
 
-  transform(id: number): unknown {
+  transform(id: number): number {
     return this.#livroService.getCountBy('autorId', id.toString());
   }
 }

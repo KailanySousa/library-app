@@ -1,68 +1,144 @@
 <app-header></app-header>
-<form
-  [formGroup]="form"
-  (ngSubmit)="salvar()"
-  class="rounded-2xl border border-slate-200 bg-white shadow p-5 grid md:grid-cols-3 gap-4"
->
-  <div>
-    <label class="block text-sm font-medium text-slate-700">Nome *</label>
-    <input
-      type="text"
-      formControlName="nome"
-      class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-      placeholder="Ex.: Machado de Assis"
-    />
-    @if(form.get('nome')?.touched && form.get('nome')?.invalid) {
-    <p class="mt-1 text-sm text-rose-600">
-      Informe um nome com pelo menos 2 caracteres.
-    </p>
-    }
-  </div>
 
-  <div>
-    <label class="block text-sm font-medium text-slate-700">Descrição</label>
-    <input
-      type="text"
-      formControlName="descricao"
-      class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-      placeholder="Opcional"
-    />
-  </div>
+<section class="container mx-auto px-6 py-8">
+  <!-- Breadcrumb + título -->
+  <header class="mb-6">
+    <nav class="text-sm text-slate-500 mb-2">
+      <a [routerLink]="['/autores/lista']" class="hover:underline">Autores</a>
+      <span class="mx-1">/</span>
+      <span class="text-slate-700">Nova</span>
+    </nav>
 
-  <div>
-    <label class="block text-sm font-medium text-slate-700">Cor</label>
-    <div class="mt-1 flex items-center gap-3">
-      <input
-        type="color"
-        formControlName="cor"
-        class="h-10 w-14 rounded border border-slate-300"
-        [value]="form.get('cor')?.value"
-      />
-      <input
-        type="text"
-        formControlName="cor"
-        class="flex-1 rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-        placeholder="#F0ABFC"
-        [value]="form.get('cor')?.value"
-      />
+    <div
+      class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div class="flex items-center gap-3">
+        <span
+          class="inline-block h-6 w-6 rounded-full ring-2 ring-white shadow"
+          [style.background]="form.value.cor || '#F0ABFC'"
+          aria-label="Cor para o autor"
+        ></span>
+        <h1
+          class="text-2xl md:text-3xl font-semibold text-slate-800 leading-tight"
+        >
+          Novo autor
+        </h1>
+      </div>
+
+      <!-- Ações rápidas -->
+      <div class="flex gap-2">
+        <a
+          [routerLink]="['/autores/lista']"
+          class="inline-flex items-center gap-1 rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        >
+          Cancelar
+        </a>
+        <button
+          type="submit"
+          form="formCategoria"
+          class="inline-flex items-center gap-1 rounded-xl bg-fuchsia-600 px-3 py-2 text-sm font-medium text-white hover:bg-fuchsia-700"
+          title="Salvar autor"
+        >
+          Salvar
+        </button>
+      </div>
     </div>
-    @if(form.get('cor')?.touched && form.get('cor')?.invalid) {
-    <p class="mt-1 text-sm text-rose-600">Use um HEX válido (ex.: #F0ABFC).</p>
-    }
-  </div>
+  </header>
 
-  <div class="md:col-span-3 flex gap-3 pt-2">
-    <button
-      type="submit"
-      class="px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
+  <div class="grid gap-8 md:grid-cols-3">
+    <!-- Formulário -->
+    <form
+      id="formCategoria"
+      class="md:col-span-2 rounded-2xl border border-slate-200 bg-white shadow-sm p-5 space-y-4"
+      [formGroup]="form"
+      (ngSubmit)="salvar()"
+      aria-label="Criao autor"
     >
-      Cadastrar
-    </button>
-    <button
-      type="reset"
-      class="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50"
-    >
-      Limpar
-    </button>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Nome *</label>
+          <input
+            type="text"
+            formControlName="nome"
+            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+            placeholder="Ex.: Machado de Assis"
+            autocomplete="off"
+            (blur)="aplicarCor()"
+          />
+          @if(form.get('nome')?.touched && form.get('nome')?.invalid) {
+          <p class="mt-1 text-sm text-rose-600">
+            Informe um nome (mín. 2 caracteres).
+          </p>
+          }
+        </div>
+        <!-- COR (apenas input color + campo HEX opcional) -->
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Cor</label>
+          <div class="mt-1 flex items-center gap-3">
+            <input
+              type="color"
+              formControlName="cor"
+              class="h-10 w-14 rounded border border-slate-300 cursor-pointer"
+              [value]="form.get('cor')?.value || '#F0ABFC'"
+              aria-label="Selecionar cor"
+            />
+            <input
+              type="text"
+              formControlName="cor"
+              class="flex-1 rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+              placeholder="#F0ABFC"
+              spellcheck="false"
+              inputmode="text"
+            />
+          </div>
+          @if(form.get('cor')?.touched && form.get('cor')?.invalid) {
+          <p class="mt-1 text-sm text-rose-600">
+            Use um HEX válido (ex.: #F0ABFC).
+          </p>
+          }
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700"
+          >Descrição</label
+        >
+        <textarea
+          rows="4"
+          formControlName="descricao"
+          class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+          placeholder="Opcional"
+        ></textarea>
+      </div>
+    </form>
+
+    <!-- Painel lateral -->
+    <aside class="space-y-4">
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div
+          class="h-2 rounded-t-2xl"
+          [style.background]="form.value.cor || '#F0ABFC'"
+          aria-hidden="true"
+        ></div>
+        <div class="p-5">
+          <h3 class="text-slate-800 font-semibold mb-1">Acesso rápido</h3>
+          <p class="text-sm text-slate-600 mb-3">
+            Após salvar, você poderá adicionar livros já vinculados a esta o
+            autor.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <button
+              type="button"
+              (click)="salvar(true)"
+              class="rounded-xl border border-fuchsia-200 bg-fuchsia-50 px-3 py-1.5 text-sm text-fuchsia-700 hover:bg-fuchsia-100"
+              title="Salvar e adicionar livro"
+              [disabled]="!this.form.valid"
+            >
+              Salvar e adicionar livro
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
   </div>
-</form>
+</section>

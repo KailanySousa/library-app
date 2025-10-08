@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -8,40 +8,46 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { LivrosPorAutorPipe } from '../../../shared/pipes/livros-por-autor.pipe';
+import { AutorService } from '../../../shared/services/autor.service';
+import IAutor from '../../../shared/interfaces/autor.interface';
 
 @Component({
   selector: 'app-detalhe-autor',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
+  providers: [LivrosPorAutorPipe],
   templateUrl: './detalhe.component.html',
 })
 export class DetalheAutorComponent implements OnInit {
-  autor!: unknown;
-
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
 
   form!: FormGroup;
 
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-  ) {}
+  #livrosPorAutorPipe = inject(LivrosPorAutorPipe);
+  #formBuilder = inject(FormBuilder);
+  #service = inject(AutorService);
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
+
+  autor!: IAutor;
+  qtdLivros: number = 0;
 
   ngOnInit() {
     this.setupForm();
-
-    const autorId = this.route.snapshot.paramMap.get('id') as unknown as number;
-    if (!autorId) {
-      void this.router.navigate(['/autores/lista']);
-      return;
-    }
-
+    this.buscarDetalhes();
     this.updateForm();
   }
 
+  private buscarDetalhes() {
+    const autorId = this.#route.snapshot.paramMap.get('id');
+    this.autor = this.#service.getItem(Number.parseInt(autorId!));
+    this.qtdLivros = this.#livrosPorAutorPipe.transform(this.autor.id);
+  }
+
   private setupForm() {
-    this.form = this.fb.group({
+    this.form = this.#formBuilder.group({
       nome: ['', [this.requiredHelper, Validators.minLength(2)]],
       descricao: [''],
       cor: [
@@ -52,11 +58,11 @@ export class DetalheAutorComponent implements OnInit {
   }
 
   updateForm() {
-    // this.form.patchValue({
-    //   nome: this.categoria.nome,
-    //   descricao: this.categoria.descricao ?? '',
-    //   cor: this.categoria.cor ?? '#F0ABFC',
-    // });
+    this.form.patchValue({
+      nome: this.autor.nome,
+      descricao: this.autor.descricao ?? '',
+      cor: this.autor.cor ?? '#F0ABFC',
+    });
   }
 
   salvar() {
@@ -65,20 +71,25 @@ export class DetalheAutorComponent implements OnInit {
       return;
     }
 
-    // const body: ICategoria = this.form.getRawValue() as ICategoria;
-    // this.service.put(this.categoria.id!, body).subscribe({
-    //   next: () => void this.router.navigate(['/categorias/lista']),
-    //   error: (e) => console.log('Erro ao editar a categoria', e),
-    // });
+    const body: IAutor = {
+      ...(this.form.getRawValue() as IAutor),
+      id: this.autor.id,
+    };
+    this.#service.put(
+      body,
+      () => void this.#router.navigate(['/autores/lista']),
+      (e) => console.log('Erro ao editar a categoria', e)
+    );
   }
 
   remover() {
     if (!this.autor) return;
-    // if (confirm('Remover esta categoria? (não remove livros)')) {
-    //   this.service.delete(this.categoria.id!).subscribe({
-    //     next: () => void this.router.navigate(['/categorias/lista']),
-    //     error: (e) => console.log('Erro ao remover a categoria', e),
-    //   });
-    // }
+    if (confirm('Remover este autor?')) {
+      this.#service.delete(
+        this.autor.id,
+        () => void this.#router.navigate(['/autores/lista']),
+        (e) => console.log('Erro ao remover a categoria', e)
+      );
+    }
   }
 }
