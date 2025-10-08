@@ -5,6 +5,7 @@ import { LivroService } from '../../../shared/services/livro.service';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { AutorPipe } from '../../../shared/pipes/autor.pipe';
 import { CategoriaPipe } from '../../../shared/pipes/categoria.pipe';
+import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/lista-vazia.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,6 +17,7 @@ import { CategoriaPipe } from '../../../shared/pipes/categoria.pipe';
     HeaderComponent,
     AutorPipe,
     CategoriaPipe,
+    ListaVaziaComponent,
   ],
   templateUrl: './lista.component.html',
 })

@@ -10,7 +10,7 @@
           Já lidos, mas ainda não chegaram na prateleira física.
         </p>
       </div>
-
+      @if(lendo.length > 0) {
       <a
         routerLink="/faltando"
         class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
@@ -29,13 +29,18 @@
           />
         </svg>
       </a>
+      }
     </div>
 
+    @if(lendo.length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       @for(livro of lendo; track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>
       }
     </div>
+    } @else {
+    <app-lista-vazia modulo="lendo"></app-lista-vazia>
+    }
   </div>
   <div>
     <div class="flex items-end justify-between gap-4">
@@ -46,6 +51,7 @@
           coração).
         </p>
       </div>
+      @if(jaLidos.length > 0) {
 
       <a
         routerLink="/lidos"
@@ -65,13 +71,17 @@
           />
         </svg>
       </a>
+      }
     </div>
-
+    @if(jaLidos.length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       @for(livro of jaLidos; track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>
       }
     </div>
+    } @else {
+    <app-lista-vazia modulo="lendo"></app-lista-vazia>
+    }
   </div>
 
   <!-- Seção: Lista de desejos -->
@@ -83,6 +93,7 @@
           Títulos que sussurram o meu nome — prontos para a próxima aventura.
         </p>
       </div>
+      @if(desejos.length > 0) {
 
       <a
         routerLink="/desejos"
@@ -102,12 +113,16 @@
           />
         </svg>
       </a>
+      }
     </div>
-
+    @if(desejos.length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       @for(livro of desejos; track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>
       }
     </div>
+    } @else {
+    <app-lista-vazia modulo="desejo"></app-lista-vazia>
+    }
   </div>
 </section>

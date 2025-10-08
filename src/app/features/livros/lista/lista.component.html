@@ -1,5 +1,4 @@
 <app-header></app-header>
-
 <section class="container mx-auto px-6 py-8 space-y-6">
   <div
     class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
@@ -8,14 +7,16 @@
       <h2 class="text-xl font-semibold text-slate-800">Livros</h2>
       <p class="text-slate-500 text-sm">Gerencie os livros já cadastrados.</p>
     </div>
+    @if(livros().length > 0) {
     <a
       [routerLink]="['/livros/novo']"
       class="inline-flex items-center justify-center rounded-lg bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white hover:bg-fuchsia-700"
     >
       Cadastrar
     </a>
+    }
   </div>
-
+  @if(livros().length > 0) {
   <div class="hidden md:block rounded-2xl border border-slate-200 bg-white">
     <table class="w-full text-left text-sm">
       <thead class="sticky top-0 z-10 bg-slate-50/70 backdrop-blur">
@@ -92,4 +93,8 @@
       </tbody>
     </table>
   </div>
+  } @else {
+  <app-lista-vazia modulo="livros"> </app-lista-vazia>
+
+  }
 </section>

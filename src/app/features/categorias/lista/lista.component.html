@@ -8,14 +8,17 @@
       <h2 class="text-xl font-semibold text-slate-800">Categorias</h2>
       <p class="text-slate-500 text-sm">Gerencie as categorias de livros.</p>
     </div>
+    @if(categorias().length > 0) {
     <a
       [routerLink]="['/categorias/nova']"
       class="inline-flex items-center justify-center rounded-lg bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white hover:bg-fuchsia-700"
     >
       Cadastrar
     </a>
+    }
   </div>
 
+  @if(categorias().length > 0) {
   <div class="rounded-2xl border border-slate-200 bg-white">
     <table class="w-full text-left text-sm">
       <thead class="sticky top-0 z-10 bg-slate-50/70 backdrop-blur">
@@ -80,4 +83,7 @@
       </tbody>
     </table>
   </div>
+  } @else {
+  <app-lista-vazia modulo="categorias"></app-lista-vazia>
+  }
 </section>

@@ -4,6 +4,7 @@ import { CategoriaService } from '../../../shared/services/categoria.service';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { LivrosPorCategoriaPipe } from '../../../shared/pipes/livros-por-categoria.pipe';
+import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/lista-vazia.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,6 +15,7 @@ import { LivrosPorCategoriaPipe } from '../../../shared/pipes/livros-por-categor
     CommonModule,
     HeaderComponent,
     LivrosPorCategoriaPipe,
+    ListaVaziaComponent,
   ],
   templateUrl: './lista.component.html',
 })
