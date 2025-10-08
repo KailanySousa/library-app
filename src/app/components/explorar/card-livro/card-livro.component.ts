@@ -37,8 +37,8 @@ export class CardLivroComponent {
     return cor || '#D946EF';
   }
 
-  gradientFor(autorId: number): string {
-    const cor = this.#autorService.getItem(autorId).cor;
+  gradientFor(autorId: string): string {
+    const cor = this.#autorService.getItem(Number.parseInt(autorId)).cor;
     const base = this.pickBaseColor(cor);
     const to = this.darken(base, 28);
     return `linear-gradient(135deg, ${base}, ${to})`;

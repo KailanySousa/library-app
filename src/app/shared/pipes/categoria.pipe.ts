@@ -7,7 +7,7 @@ import { CategoriaService } from '../services/categoria.service';
 export class CategoriaPipe implements PipeTransform {
   #service = inject(CategoriaService);
 
-  transform(id: number): string {
-    return this.#service.getItem(id).nome;
+  transform(id: string): string {
+    return this.#service.getItem(Number.parseInt(id)).nome;
   }
 }

@@ -1,53 +1,67 @@
-import { computed, Injectable } from '@angular/core';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import ILivro from '../interfaces/livro.interface';
 import { LocalStorageService } from './local-storage.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class LivroService {
-  private proximoId = computed(() => {
-    const livros = this.getAll();
-    if (livros.length > 0) {
-      const ultimo = livros[livros.length - 1];
+  #storage = inject(LocalStorageService);
+  /** Estado único em memória */
+  private readonly _livros = signal<ILivro[]>(
+    this.#storage.get<ILivro[]>('livros') ?? []
+  );
 
-      return ultimo.id + 1;
-    }
-    return 1;
+  /** Exposição somente leitura para componentes */
+  readonly livros = this._livros.asReadonly();
+
+  /** Próximo id baseado no maior id atual (independe de ordenação) */
+  private readonly proximoId = computed(() => {
+    const arr = this._livros();
+    if (arr.length === 0) return 1;
+    const max = arr.reduce((m, l) => (l.id > m ? l.id : m), 0);
+    return max + 1;
   });
 
-  constructor(private readonly storage: LocalStorageService) {}
+  /** Persiste no LocalStorage sempre que a lista mudar */
+  private readonly persistEffect = effect(() => {
+    this.#storage.set<ILivro[]>('livros', this._livros());
+  });
 
-  getItem(id: number): ILivro {
-    return this.getAll().filter((autor: ILivro) => autor.id == id)[0];
+  /** Um livro por id (reativo) */
+  byId(id: number) {
+    return computed(() => this._livros().find((l) => l.id === id));
   }
+
+  /** Coleção por chave/valor (reativo) */
+  by<K extends keyof ILivro>(key: K, value: ILivro[K]) {
+    return computed(() => this._livros().filter((l) => l[key] === value));
+  }
+
+  /** Contagem por chave/valor (reativo) */
+  countBySignal<K extends keyof ILivro>(key: K, value: ILivro[K]) {
+    return computed(
+      () => this._livros().filter((l) => l[key] === value).length
+    );
+  }
+
+  /** ---------- API compatível (snapshot) ---------- */
 
   getAll(): ILivro[] {
-    const livros = this.storage.get('livros');
-
-    if (livros) {
-      return livros as ILivro[];
-    }
-    return [];
+    return this._livros();
   }
 
-  getAllBy<T>(key: string, value: unknown): T[] | [] {
-    const livros = this.getAll();
-
-    if (livros) {
-      return livros.filter((l) => {
-        return (
-          Object.hasOwn(l, key) &&
-          Object.getOwnPropertyDescriptors(l)[key].value === value
-        );
-      }) as T[];
-    }
-    return [];
+  getItem(id: number): ILivro | undefined {
+    return this._livros().find((l) => l.id === id);
   }
 
-  getCountBy(key: string, value: unknown): number {
+  getAllBy<T, K extends keyof ILivro>(key: K, value: ILivro[K]): T[] {
+    return this._livros().filter((l) => l[key] === value) as T[];
+  }
+
+  getCountBy<K extends keyof ILivro>(key: K, value: ILivro[K]): number {
     return this.getAllBy(key, value).length;
   }
+
+  /** ---------- Mutations ---------- */
 
   post(
     request: ILivro,
@@ -55,13 +69,13 @@ export class LivroService {
     onError: (e: unknown) => void
   ): void {
     try {
-      const livros = this.getAll();
+      const novo: ILivro = {
+        ...request,
+        id: this.proximoId(),
+        createdAt: new Date().toISOString(),
+      };
 
-      request.id = this.proximoId();
-      request.createdAt = new Date().toString();
-
-      this.storage.set('livros', request, livros);
-
+      this._livros.update((arr) => [...arr, novo]);
       onSucess();
     } catch (error) {
       onError(error);
@@ -74,9 +88,19 @@ export class LivroService {
     onError: (e: unknown) => void
   ): void {
     try {
-      request.createdAt = new Date().toString();
+      const atualizado: ILivro = {
+        ...request,
+        updatedAt: new Date().toISOString(),
+      };
 
-      this.storage.update('livros', request, this.getAll());
+      this._livros.update((arr) => {
+        const idx = arr.findIndex((l) => l.id === atualizado.id);
+        if (idx === -1) return arr;
+        const copia = arr.slice();
+        copia[idx] = atualizado;
+        return copia;
+      });
+
       onSucess();
     } catch (error) {
       onError(error);
@@ -89,11 +113,7 @@ export class LivroService {
     onError: (e: unknown) => void
   ): void {
     try {
-      const index = this.getAll().findIndex((c) => c.id === id);
-
-      const livros = this.getAll().splice(index, 1);
-      this.storage.set('livros', livros);
-
+      this._livros.update((arr) => arr.filter((l) => l.id !== id));
       onSucess();
     } catch (error) {
       onError(error);

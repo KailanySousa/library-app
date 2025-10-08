@@ -166,6 +166,13 @@
               c.createdAt | date : "shortDate"
             }}</time>
           </li>
+          } @if (c.updatedAt) {
+          <li class="flex items-center justify-between">
+            <span>Atualizada em</span>
+            <time class="text-slate-700">{{
+              c.updatedAt | date : "shortDate"
+            }}</time>
+          </li>
           }
         </ul>
       </div>
@@ -184,7 +191,6 @@
               type="button"
               (click)="remover()"
               class="rounded-xl border border-rose-200 bg-rose-50 px-3 py-1.5 text-sm text-rose-700 hover:bg-rose-100"
-              [disabled]=""
             >
               Remover
             </button>

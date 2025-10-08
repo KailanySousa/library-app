@@ -42,24 +42,14 @@ export class DetalheCategoriaComponent implements OnInit {
 
   ngOnInit() {
     this.setupForm();
-
-    const categoriaId = this.#route.snapshot.paramMap.get(
-      'id'
-    ) as unknown as number;
-    if (!categoriaId) {
-      void this.#router.navigate(['/categorias/lista']);
-      return;
-    }
-
-    this.categoria = this.#service.getItem(categoriaId);
-
-    if (!this.categoria) {
-      void this.#router.navigate(['/categorias/lista']);
-      return;
-    }
-
-    this.qtdLivros = this.#livrosPorCategoriaPipe.transform(categoriaId);
+    this.buscarDetalhes();
     this.updateForm();
+  }
+
+  private buscarDetalhes() {
+    const categoriaId = this.#route.snapshot.paramMap.get('id');
+    this.categoria = this.#service.getItem(Number.parseInt(categoriaId!));
+    this.qtdLivros = this.#livrosPorCategoriaPipe.transform(this.categoria.id);
   }
 
   private setupForm() {
