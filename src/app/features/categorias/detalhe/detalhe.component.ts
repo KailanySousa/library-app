@@ -35,29 +35,26 @@ export class DetalheCategoriaComponent implements OnInit {
   qtdLivros: number = 0;
 
   #livrosPorCategoriaPipe = inject(LivrosPorCategoriaPipe);
-
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly service: CategoriaService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-  ) {}
+  #formBuilder = inject(FormBuilder);
+  #service = inject(CategoriaService);
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
 
   ngOnInit() {
     this.setupForm();
 
-    const categoriaId = this.route.snapshot.paramMap.get(
+    const categoriaId = this.#route.snapshot.paramMap.get(
       'id'
     ) as unknown as number;
     if (!categoriaId) {
-      void this.router.navigate(['/categorias/lista']);
+      void this.#router.navigate(['/categorias/lista']);
       return;
     }
 
-    this.categoria = this.service.getItem(categoriaId);
+    this.categoria = this.#service.getItem(categoriaId);
 
     if (!this.categoria) {
-      void this.router.navigate(['/categorias/lista']);
+      void this.#router.navigate(['/categorias/lista']);
       return;
     }
 
@@ -66,7 +63,7 @@ export class DetalheCategoriaComponent implements OnInit {
   }
 
   private setupForm() {
-    this.form = this.fb.group({
+    this.form = this.#formBuilder.group({
       nome: ['', [this.requiredHelper, Validators.minLength(2)]],
       descricao: [''],
       cor: [
@@ -94,9 +91,9 @@ export class DetalheCategoriaComponent implements OnInit {
       ...(this.form.getRawValue() as ICategoria),
       id: this.categoria.id,
     };
-    this.service.put(
+    this.#service.put(
       body,
-      () => void this.router.navigate(['/categorias/lista']),
+      () => void this.#router.navigate(['/categorias/lista']),
       (e) => console.log('Erro ao editar a categoria', e)
     );
   }
@@ -104,9 +101,9 @@ export class DetalheCategoriaComponent implements OnInit {
   remover() {
     if (!this.categoria) return;
     if (confirm('Remover esta categoria?')) {
-      this.service.delete(
+      this.#service.delete(
         this.categoria.id,
-        () => void this.router.navigate(['/categorias/lista']),
+        () => void this.#router.navigate(['/categorias/lista']),
         (e) => console.log('Erro ao remover a categoria', e)
       );
     }

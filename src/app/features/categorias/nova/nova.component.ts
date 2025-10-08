@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -26,18 +31,16 @@ export class NovaCategoriaComponent implements OnInit {
 
   form!: FormGroup;
 
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly service: CategoriaService,
-    private readonly router: Router
-  ) {}
+  #formBuilder = inject(FormBuilder);
+  #service = inject(CategoriaService);
+  #router = inject(Router);
 
   ngOnInit() {
     this.setupForm();
   }
 
   private setupForm() {
-    this.form = this.fb.group({
+    this.form = this.#formBuilder.group({
       nome: ['', [this.requiredHelper, Validators.minLength(2)]],
       descricao: [''],
       cor: [
@@ -66,16 +69,16 @@ export class NovaCategoriaComponent implements OnInit {
 
     const body: ICategoria = this.form.getRawValue() as ICategoria;
 
-    this.service.post(
+    this.#service.post(
       body,
       (id: number) => {
         this.form.reset({ cor: '#F0ABFC' });
         if (irParaNovoLivro) {
-          void this.router.navigate(['/livros/novo'], {
+          void this.#router.navigate(['/livros/novo'], {
             queryParams: { categoriaId: id },
           });
         } else {
-          void this.router.navigate(['/categorias/lista']);
+          void this.#router.navigate(['/categorias/lista']);
         }
       },
       (e) => {
