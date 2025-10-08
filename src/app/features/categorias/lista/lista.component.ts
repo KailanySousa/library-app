@@ -30,7 +30,7 @@ export class ListaCategoriasComponent implements OnInit {
   }
 
   remover(id: number) {
-    if (confirm('Remover esta categoria? (não remove livros)')) {
+    if (confirm('Remover esta categoria?')) {
       this.service.delete(
         id,
         () => void this.router.navigate(['/categorias/lista']),

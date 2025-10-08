@@ -11,6 +11,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CategoriaService } from '../../../shared/services/categoria.service';
 import ICategoria from '../../../shared/interfaces/categoria.interface';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { seedHex } from '../../../shared/utils/color.util';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,13 +41,24 @@ export class NovaCategoriaComponent implements OnInit {
       nome: ['', [this.requiredHelper, Validators.minLength(2)]],
       descricao: [''],
       cor: [
-        '#F0ABFC',
-        [Validators.pattern(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/)],
+        seedHex('', { s: 72, l: 50 }),
+        [
+          this.requiredHelper,
+          Validators.pattern(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/),
+        ],
       ],
     });
   }
 
-  salvar() {
+  aplicarCor() {
+    const nome = this.form.get('nome')!.value as string;
+    const corCtrl = this.form.get('cor')!;
+    corCtrl.patchValue(seedHex(nome, { s: 72, l: 50 }), {
+      emitEvent: false,
+    });
+  }
+
+  salvar(irParaNovoLivro?: boolean) {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -56,9 +68,15 @@ export class NovaCategoriaComponent implements OnInit {
 
     this.service.post(
       body,
-      () => {
+      (id: number) => {
         this.form.reset({ cor: '#F0ABFC' });
-        void this.router.navigate(['/categorias/lista']);
+        if (irParaNovoLivro) {
+          void this.router.navigate(['/livros/novo'], {
+            queryParams: { categoriaId: id },
+          });
+        } else {
+          void this.router.navigate(['/categorias/lista']);
+        }
       },
       (e) => {
         console.log('Erro ao cadastrar a categoria', e);

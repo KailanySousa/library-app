@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import ICategoria from '../../../shared/interfaces/categoria.interface';
 import {
   AbstractControl,
@@ -11,11 +16,13 @@ import { CategoriaService } from '../../../shared/services/categoria.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { LivrosPorCategoriaPipe } from '../../../shared/pipes/livros-por-categoria.pipe';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-detalhe-categoria',
   imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
+  providers: [LivrosPorCategoriaPipe],
   templateUrl: './detalhe.component.html',
 })
 export class DetalheCategoriaComponent implements OnInit {
@@ -25,6 +32,9 @@ export class DetalheCategoriaComponent implements OnInit {
     Validators.required(c);
 
   form!: FormGroup;
+  qtdLivros: number = 0;
+
+  #livrosPorCategoriaPipe = inject(LivrosPorCategoriaPipe);
 
   constructor(
     private readonly fb: FormBuilder,
@@ -50,6 +60,8 @@ export class DetalheCategoriaComponent implements OnInit {
       void this.router.navigate(['/categorias/lista']);
       return;
     }
+
+    this.qtdLivros = this.#livrosPorCategoriaPipe.transform(categoriaId);
     this.updateForm();
   }
 
@@ -91,7 +103,7 @@ export class DetalheCategoriaComponent implements OnInit {
 
   remover() {
     if (!this.categoria) return;
-    if (confirm('Remover esta categoria? (não remove livros)')) {
+    if (confirm('Remover esta categoria?')) {
       this.service.delete(
         this.categoria.id,
         () => void this.router.navigate(['/categorias/lista']),

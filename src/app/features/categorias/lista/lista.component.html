@@ -9,7 +9,7 @@
       <p class="text-slate-500 text-sm">Gerencie as categorias de livros.</p>
     </div>
     <a
-      [routerLink]="['/categorias/novo']"
+      [routerLink]="['/categorias/nova']"
       class="inline-flex items-center justify-center rounded-lg bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white hover:bg-fuchsia-700"
     >
       Cadastrar
@@ -64,6 +64,7 @@
                 [routerLink]="['/categorias', c.id]"
                 >Ver</a
               >
+              @if((c.id | livrosPorCategoria) === 0) {
               <button
                 type="button"
                 class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-rose-700 hover:bg-rose-100"
@@ -71,6 +72,7 @@
               >
                 Remover
               </button>
+              }
             </div>
           </td>
         </tr>

@@ -30,25 +30,20 @@
       <!-- Ações rápidas -->
       <div class="flex gap-2">
         <a
-          [routerLink]="['/livros']"
-          [queryParams]="{ categoria: c.id }"
-          class="inline-flex items-center gap-1 rounded-xl border border-fuchsia-200 bg-fuchsia-50 px-3 py-2 text-sm font-medium text-fuchsia-700 hover:bg-fuchsia-100"
+          [routerLink]="['/categorias/lista']"
+          class="inline-flex items-center gap-1 rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
         >
-          Ver livros
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707A1 1 0 118.707 5.293l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clip-rule="evenodd"
-            />
-          </svg>
+          Voltar
         </a>
-
+        <button
+          type="submit"
+          form="formCategoria"
+          class="inline-flex items-center gap-1 rounded-xl bg-fuchsia-600 px-3 py-2 text-sm font-medium text-white hover:bg-fuchsia-700"
+          title="Salvar categoria"
+        >
+          Salvar
+        </button>
+        @if(qtdLivros === 0){
         <button
           type="button"
           (click)="remover()"
@@ -57,11 +52,35 @@
         >
           Remover
         </button>
+        }
       </div>
     </div>
   </header>
-
-  <div class="grid gap-8 md:grid-cols-3">
+  @if (qtdLivros > 0) {
+  <div
+    class="rounded-2xl border border-amber-200 bg-amber-50 text-amber-900 px-4 py-3 flex items-start gap-3"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5 mt-0.5 shrink-0"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8.257 3.099c.765-1.36 2.721-1.36 3.486 0l6.516 11.591c.75 1.336-.213 3.01-1.743 3.01H3.484c-1.53 0-2.493-1.674-1.743-3.01L8.257 3.1zM11 14a1 1 0 10-2 0 1 1 0 002 0zm-1-2a1 1 0 01-1-1V8a1 1 0 112 0v3a1 1 0 01-1 1z"
+        clip-rule="evenodd"
+      />
+    </svg>
+    <div>
+      <p class="font-medium">
+        Esta categoria está sendo usada em {{ qtdLivros }} livro(s).
+      </p>
+    </div>
+  </div>
+  }
+  <div class="grid gap-8 md:grid-cols-3 mt-4">
     <!-- Formulário -->
     <form
       class="md:col-span-2 rounded-2xl border border-slate-200 bg-white shadow-sm p-5 space-y-4"
@@ -69,20 +88,48 @@
       (ngSubmit)="salvar()"
       aria-label="Editar categoria"
     >
-      <div>
-        <label class="block text-sm font-medium text-slate-700">Nome *</label>
-        <input
-          type="text"
-          formControlName="nome"
-          class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-          placeholder="Ex.: Romance"
-          autocomplete="off"
-        />
-        @if(form.get('nome')?.touched && form.get('nome')?.invalid) {
-        <p class="mt-1 text-sm text-rose-600">
-          Informe um nome (mín. 2 caracteres).
-        </p>
-        }
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Nome *</label>
+          <input
+            type="text"
+            formControlName="nome"
+            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+            placeholder="Ex.: Romance"
+            autocomplete="off"
+          />
+          @if(form.get('nome')?.touched && form.get('nome')?.invalid) {
+          <p class="mt-1 text-sm text-rose-600">
+            Informe um nome (mín. 2 caracteres).
+          </p>
+          }
+        </div>
+        <!-- COR (apenas input color + campo HEX opcional) -->
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Cor</label>
+          <div class="mt-1 flex items-center gap-3">
+            <input
+              type="color"
+              formControlName="cor"
+              class="h-10 w-14 rounded border border-slate-300 cursor-pointer"
+              [value]="form.get('cor')?.value || c.cor || '#F0ABFC'"
+              aria-label="Selecionar cor"
+            />
+            <input
+              type="text"
+              formControlName="cor"
+              class="flex-1 rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+              placeholder="#F0ABFC"
+              spellcheck="false"
+              inputmode="text"
+            />
+          </div>
+          @if(form.get('cor')?.touched && form.get('cor')?.invalid) {
+          <p class="mt-1 text-sm text-rose-600">
+            Use um HEX válido (ex.: #F0ABFC).
+          </p>
+          }
+        </div>
       </div>
 
       <div>
@@ -95,67 +142,6 @@
           class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
           placeholder="Opcional"
         ></textarea>
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-slate-700">Cor</label>
-        <div class="mt-1 flex items-center gap-3">
-          <input
-            type="color"
-            formControlName="cor"
-            class="h-10 w-14 rounded border border-slate-300"
-            [value]="form.get('cor')?.value"
-            aria-label="Selecionar cor"
-          />
-          <input
-            type="text"
-            formControlName="cor"
-            class="flex-1 rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-            placeholder="#F0ABFC"
-            [value]="form.get('cor')?.value"
-            spellcheck="false"
-            inputmode="text"
-          />
-          <!-- Pré-visualização expandida -->
-          <div class="hidden sm:flex items-center gap-2">
-            <span class="text-xs text-slate-500">Prévia</span>
-            <span
-              class="inline-block h-8 w-16 rounded-xl ring-1 ring-slate-200"
-              [style.background]="form.value.cor || c.cor || '#F0ABFC'"
-              aria-hidden="true"
-            ></span>
-          </div>
-        </div>
-        @if(form.get('cor')?.touched && form.get('cor')?.invalid) {
-        <p class="mt-1 text-sm text-rose-600">
-          Use um HEX válido (ex.: #F0ABFC).
-        </p>
-        }
-      </div>
-
-      <!-- Barra de ações sticky (desktop) -->
-      <div
-        class="pt-2 flex gap-2 border-t border-slate-100 sticky bottom-0 bg-white/80 backdrop-blur rounded-b-2xl py-4 -mx-5 px-5"
-      >
-        <a
-          [routerLink]="['/categorias/lista']"
-          class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50"
-        >
-          Voltar
-        </a>
-        <button
-          type="button"
-          (click)="remover()"
-          class="px-4 py-2 rounded-xl border border-rose-200 text-rose-700 hover:bg-rose-50"
-        >
-          Remover
-        </button>
-        <button
-          type="submit"
-          class="ml-auto px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
-        >
-          Salvar
-        </button>
       </div>
     </form>
 
@@ -170,7 +156,7 @@
               [routerLink]="['/livros']"
               [queryParams]="{ categoria: c.id }"
               class="inline-flex items-center rounded-full border border-fuchsia-200 bg-fuchsia-50 px-2 py-0.5 text-xs text-fuchsia-700"
-              >{{ 3 }} livro(s)</a
+              >{{ qtdLivros }} livro(s)</a
             >
           </li>
           @if (c.createdAt) {
@@ -178,13 +164,6 @@
             <span>Criada em</span>
             <time class="text-slate-700">{{
               c.createdAt | date : "shortDate"
-            }}</time>
-          </li>
-          } @if (c.updatedAt) {
-          <li class="flex items-center justify-between">
-            <span>Atualizada em</span>
-            <time class="text-slate-700">{{
-              c.updatedAt | date : "dd/M/yyyy"
             }}</time>
           </li>
           }
@@ -200,19 +179,43 @@
         <div class="p-5">
           <h3 class="text-slate-800 font-semibold mb-1">Ações</h3>
           <div class="flex flex-wrap gap-2">
+            @if(qtdLivros === 0) {
+            <button
+              type="button"
+              (click)="remover()"
+              class="rounded-xl border border-rose-200 bg-rose-50 px-3 py-1.5 text-sm text-rose-700 hover:bg-rose-100"
+              [disabled]=""
+            >
+              Remover
+            </button>
+            } @else {
+            <a
+              [routerLink]="['/livros']"
+              [queryParams]="{ categoria: c.id }"
+              class="inline-flex items-center gap-1 px-3 py-2 rounded-xl border border-fuchsia-200 bg-fuchsia-50 text-sm font-medium text-fuchsia-700 hover:bg-fuchsia-100"
+            >
+              Ver livros
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707A1 1 0 118.707 5.293l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </a>
+            }
+
             <a
               [routerLink]="['/livros/novo']"
               [queryParams]="{ categoriaId: c.id }"
               class="rounded-xl border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
               >Adicionar livro</a
             >
-            <button
-              type="button"
-              (click)="remover()"
-              class="rounded-xl border border-rose-200 bg-rose-50 px-3 py-1.5 text-sm text-rose-700 hover:bg-rose-100"
-            >
-              Remover categoria
-            </button>
           </div>
         </div>
       </div>

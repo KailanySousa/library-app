@@ -32,7 +32,7 @@ export class CategoriaService {
 
   post(
     request: ICategoria,
-    onSucess: () => void,
+    onSucess: (id: number) => void,
     onError: (e: unknown) => void
   ): void {
     try {
@@ -48,7 +48,7 @@ export class CategoriaService {
         this.storage.set<ICategoria[]>('categorias', [request]);
       }
 
-      onSucess();
+      onSucess(request.id);
     } catch (error) {
       onError(error);
     }
@@ -77,7 +77,8 @@ export class CategoriaService {
   ): void {
     try {
       const index = this.getAll().findIndex((c) => c.id === id);
-      const categorias = this.getAll().splice(index, 1);
+      const categorias = this.getAll();
+      categorias.splice(index, 1);
       this.storage.set<ICategoria[]>('categorias', categorias);
 
       onSucess();
