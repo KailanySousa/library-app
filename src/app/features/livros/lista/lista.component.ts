@@ -25,11 +25,11 @@ export class ListaLivrosComponent {
   readonly livros = this.#service.livros;
 
   remover(id: number) {
-    if (confirm('Remover esta categoria? (não remove livros)')) {
+    if (confirm('Remover este livro?')) {
       this.#service.delete(
         id,
         () => void this.#router.navigate(['/livros/lista']),
-        (e) => console.log('Erro ao remover a categoria', e)
+        (e) => console.log('Erro ao remover o livro', e)
       );
     }
   }

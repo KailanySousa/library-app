@@ -11,5 +11,12 @@ export const livrosRoutes: Routes = [
     loadComponent: () =>
       import('./lista/lista.component').then((m) => m.ListaLivrosComponent),
   },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('./detalhe/detalhe.component').then(
+        (m) => m.DetalheLivroComponent
+      ),
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];

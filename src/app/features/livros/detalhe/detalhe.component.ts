@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -7,52 +6,57 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { EStatus } from '../../../shared/enums/status.enum';
-import { STATUS_OPTIONS } from '../../../shared/consts/status.const';
-import { CategoriaService } from '../../../shared/services/categoria.service';
-import ICategoria from '../../../shared/interfaces/categoria.interface';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { AutorService } from '../../../shared/services/autor.service';
-import IAutor from '../../../shared/interfaces/autor.interface';
-import ILivro from '../../../shared/interfaces/livro.interface';
+import { EStatus } from '../../../shared/enums/status.enum';
 import { LivroService } from '../../../shared/services/livro.service';
+import ILivro from '../../../shared/interfaces/livro.interface';
+import { STATUS_OPTIONS } from '../../../shared/consts/status.const';
+import ICategoria from '../../../shared/interfaces/categoria.interface';
+import IAutor from '../../../shared/interfaces/autor.interface';
+import { CategoriaService } from '../../../shared/services/categoria.service';
+import { AutorService } from '../../../shared/services/autor.service';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'app-novo-livro',
-  standalone: true,
+  selector: 'app-detalhe-livro',
   imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
-  templateUrl: './novo.component.html',
+  templateUrl: './detalhe.component.html',
 })
-export class NovoLivroComponent implements OnInit {
+export class DetalheLivroComponent implements OnInit {
   readonly currentYear = new Date().getFullYear();
 
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
-
   readonly statusOptions = STATUS_OPTIONS;
   categorias!: ICategoria[];
   autores!: IAutor[];
   form!: FormGroup;
 
-  constructor(
-    private readonly router: Router,
-    private readonly fb: FormBuilder,
-    private readonly categoriaService: CategoriaService,
-    private readonly autorService: AutorService,
-    private readonly service: LivroService
-  ) {}
+  #formBuilder = inject(FormBuilder);
+  #service = inject(LivroService);
+  #categoriaService = inject(CategoriaService);
+  #autorService = inject(AutorService);
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
+
+  livro!: ILivro;
 
   ngOnInit() {
+    this.categorias = this.#categoriaService.getAll();
+    this.autores = this.#autorService.getAll();
     this.setupForm();
+    this.buscarDetalhes();
+    this.updateForm();
+  }
 
-    this.categorias = this.categoriaService.getAll();
-    this.autores = this.autorService.getAll();
+  private buscarDetalhes() {
+    const livroId = this.#route.snapshot.paramMap.get('id');
+    this.livro = this.#service.getItem(Number.parseInt(livroId!));
   }
 
   setupForm() {
-    this.form = this.fb.group({
+    this.form = this.#formBuilder.group({
       titulo: ['', [this.requiredHelper, Validators.minLength(2)]],
       autorId: ['', [this.requiredHelper]],
       ano: [
@@ -72,6 +76,20 @@ export class NovoLivroComponent implements OnInit {
       ],
       anoFim: [null as string | null],
       descricao: [''],
+    });
+  }
+
+  updateForm() {
+    this.form.patchValue({
+      titulo: this.livro.titulo,
+      autorId: this.livro.autorId,
+      ano: this.livro.ano,
+      categoriaId: this.livro.categoriaId,
+      status: this.livro.status,
+      paginas: this.livro.paginas,
+      anoInicio: this.livro.anoInicio,
+      anoFim: this.livro.anoFim,
+      descricao: this.livro.descricao,
     });
   }
 
@@ -117,16 +135,25 @@ export class NovoLivroComponent implements OnInit {
       return;
     }
 
-    const body: ILivro = this.form.getRawValue() as ILivro;
-    this.service.post(
+    const body: ILivro = {
+      ...(this.form.getRawValue() as ILivro),
+      id: this.livro.id,
+    };
+    this.#service.put(
       body,
-      () => {
-        this.form.reset({ cor: '#F0ABFC' });
-        void this.router.navigate(['/livros/lista']);
-      },
-      (e) => {
-        console.log('Erro ao cadastrar o livro', e);
-      }
+      () => void this.#router.navigate(['/livros/lista']),
+      (e) => console.log('Erro ao editar o livro', e)
     );
+  }
+
+  remover() {
+    if (!this.livro) return;
+    if (confirm('Remover este livro?')) {
+      this.#service.delete(
+        this.livro.id,
+        () => void this.#router.navigate(['/livros/lista']),
+        (e) => console.log('Erro ao remover o livro', e)
+      );
+    }
   }
 }

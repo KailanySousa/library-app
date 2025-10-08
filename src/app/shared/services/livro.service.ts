@@ -49,8 +49,8 @@ export class LivroService {
     return this._livros();
   }
 
-  getItem(id: number): ILivro | undefined {
-    return this._livros().find((l) => l.id === id);
+  getItem(id: number): ILivro {
+    return this._livros().find((l) => l.id === id)!;
   }
 
   getAllBy<T, K extends keyof ILivro>(key: K, value: ILivro[K]): T[] {
