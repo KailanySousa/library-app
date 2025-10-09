@@ -12,7 +12,8 @@
       </div>
       @if(lendo.length > 0) {
       <a
-        routerLink="/faltando"
+        routerLink="/explorar/ver-mais"
+        [queryParams]="{ status: EStatus.LENDO }"
         class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
       >
         Ver mais
@@ -39,7 +40,7 @@
       }
     </div>
     } @else {
-    <app-lista-vazia modulo="lendo"></app-lista-vazia>
+    <app-lista-vazia [modulo]="EStatus.LENDO"></app-lista-vazia>
     }
   </div>
   <div>
@@ -54,7 +55,8 @@
       @if(jaLidos.length > 0) {
 
       <a
-        routerLink="/lidos"
+        routerLink="/explorar/ver-mais"
+        [queryParams]="{ status: EStatus.LIDO }"
         class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
       >
         Ver mais
@@ -80,11 +82,10 @@
       }
     </div>
     } @else {
-    <app-lista-vazia modulo="lendo"></app-lista-vazia>
+    <app-lista-vazia [modulo]="EStatus.LIDO"></app-lista-vazia>
     }
   </div>
 
-  <!-- Seção: Lista de desejos -->
   <div>
     <div class="flex items-end justify-between gap-4">
       <div>
@@ -96,7 +97,8 @@
       @if(desejos.length > 0) {
 
       <a
-        routerLink="/desejos"
+        routerLink="/explorar/ver-mais"
+        [queryParams]="{ status: EStatus.DESEJO }"
         class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
       >
         Ver mais
@@ -122,7 +124,7 @@
       }
     </div>
     } @else {
-    <app-lista-vazia modulo="desejo"></app-lista-vazia>
+    <app-lista-vazia [modulo]="EStatus.DESEJO"></app-lista-vazia>
     }
   </div>
 </section>

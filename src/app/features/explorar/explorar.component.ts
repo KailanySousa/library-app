@@ -27,6 +27,7 @@ import { ListaVaziaComponent } from '../../shared/components/lista-vazia/lista-v
   templateUrl: './explorar.component.html',
 })
 export class ExplorarComponent implements OnInit {
+  readonly EStatus = EStatus;
   jaLidos: ILivro[] = [];
   desejos: ILivro[] = [];
   lendo: ILivro[] = [];

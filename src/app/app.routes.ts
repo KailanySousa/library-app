@@ -8,9 +8,9 @@ export const routes: Routes = [
   },
   {
     path: 'explorar',
-    loadComponent: () =>
-      import('./features/explorar/explorar.component').then(
-        (m) => m.ExplorarComponent
+    loadChildren: () =>
+      import('./features/explorar/explorar.routes').then(
+        (m) => m.explorarRoutes
       ),
   },
   {
