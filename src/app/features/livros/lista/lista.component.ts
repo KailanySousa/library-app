@@ -6,6 +6,7 @@ import { HeaderComponent } from '../../../shared/components/header/header.compon
 import { AutorPipe } from '../../../shared/pipes/autor.pipe';
 import { CategoriaPipe } from '../../../shared/pipes/categoria.pipe';
 import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/lista-vazia.component';
+import { StatusPipe } from '../../../shared/pipes/status.pipe';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,6 +19,7 @@ import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/list
     AutorPipe,
     CategoriaPipe,
     ListaVaziaComponent,
+    StatusPipe,
   ],
   templateUrl: './lista.component.html',
 })

@@ -1,0 +1,166 @@
+<app-header></app-header>
+
+<section class="container mx-auto px-6 py-10 space-y-10" *ngIf="livro() as l">
+  <!-- Cabeçalho -->
+  <header class="mb-6">
+    <nav class="text-sm text-slate-500 mb-2">
+      <a
+        [routerLink]="['/explorar']"
+        [queryParams]="{ status: l.status }"
+        class="hover:underline"
+        >Explorar</a
+      >
+      <span class="mx-1">/</span>
+      <a
+        [routerLink]="['/explorar/ver-mais']"
+        [queryParams]="{ status: l.status }"
+        class="hover:underline"
+        >{{ l.status | statusHeader }}</a
+      >
+    </nav>
+  </header>
+
+  <!-- Conteúdo -->
+  <div class="grid md:grid-cols-3 gap-8">
+    <!-- Coluna principal -->
+    <div class="md:col-span-2 space-y-8">
+      <!-- Descrição -->
+      <section>
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+        >
+          <div class="flex items-center gap-4">
+            <div
+              class="w-20 h-24 rounded-xl text-white text-2xl font-bold grid place-items-center select-none ring-1 ring-black/5"
+              [style.backgroundImage]="l.categoriaId | gradientePorCategoria"
+              aria-hidden="true"
+            >
+              {{ l.titulo | slice : 0 : 1 }}
+            </div>
+            <div>
+              <h1 class="text-3xl font-semibold text-slate-800 leading-tight">
+                {{ l.titulo }}
+              </h1>
+              <p
+                class="text-slate-500 text-sm mt-1 flex flex-wrap gap-x-3 gap-y-1"
+              >
+                <span class="text-sm text-slate-500">{{
+                  l.categoriaId | categoria
+                }}</span>
+                <span
+                  class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs"
+                  [ngClass]="badgeClasses(l.status)"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full"
+                    [ngClass]="dotClasses(l.status)"
+                  ></span>
+                  {{ l.status | status }}
+                </span>
+              </p>
+              <p
+                class="text-slate-500 text-sm mt-1 flex flex-wrap gap-x-3 gap-y-1"
+              >
+                <span *ngIf="l.ano">🗓 {{ l.ano }}</span>
+                <span *ngIf="l.paginas">📄 {{ l.paginas }} pág.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">Descrição</h2>
+        <p class="text-slate-600 leading-relaxed whitespace-pre-line">
+          {{ l.descricao || "Sem descrição registrada." }}
+        </p>
+      </section>
+      <!-- Notas e citações -->
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">
+          Notas e citações
+        </h2>
+
+        @if(citacoes().length) {
+        <ul class="space-y-3">
+          @for(c of citacoes(); track $index) {
+          <li
+            class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 italic"
+          >
+            “{{ c }}”
+          </li>
+          }
+        </ul>
+        } @else {
+        <p class="text-slate-500 text-sm">Nenhuma citação registrada.</p>
+
+        }
+      </section>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="space-y-6">
+      <!-- Autor -->
+      @let a = autor(); @if(a) {
+
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+        <h3 class="text-slate-800 font-semibold mb-2">Sobre o autor</h3>
+        <div class="flex items-start gap-3">
+          <div>
+            <h4 class="text-slate-700 font-medium">{{ a.nome }}</h4>
+            <p class="text-slate-500 text-sm line-clamp-3">
+              {{ a.descricao || "Sem descrição disponível." }}
+            </p>
+          </div>
+        </div>
+      </div>
+      }
+
+      <!-- Outros livros do autor -->
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+        <h3 class="text-slate-800 font-semibold mb-3">
+          Outros livros desse autor
+        </h3>
+        @if(outrosDoAutor().length) {
+        <ul class="space-y-2">
+          @for(lv of outrosDoAutor(); track $index) {
+          <li>
+            <a
+              [routerLink]="['/livros', lv.id]"
+              class="text-fuchsia-700 hover:underline text-sm"
+            >
+              {{ lv.titulo }}
+            </a>
+          </li>
+          }
+        </ul>
+        }@else {
+        <p class="text-slate-500 text-sm">Nenhum outro livro listado.</p>
+        }
+      </div>
+
+      <!-- Outros livros da categoria -->
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+        <h3 class="text-slate-800 font-semibold mb-3">
+          Outros livros dessa categoria
+        </h3>
+
+        @if (outrosDaCategoria().length) {
+        <ul class="space-y-2">
+          @for(lv of outrosDaCategoria(); track $index) {
+          <li>
+            <a
+              [routerLink]="['/livros', lv.id]"
+              class="text-fuchsia-700 hover:underline text-sm"
+            >
+              {{ lv.titulo }}
+            </a>
+          </li>
+          }
+        </ul>
+        } @else {
+        <p class="text-slate-500 text-sm">Nenhum outro livro listado.</p>
+        }
+      </div>
+    </aside>
+  </div>
+</section>

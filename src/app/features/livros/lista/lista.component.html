@@ -62,15 +62,7 @@
                   'bg-sky-600': l.status === 'faltando'
                 }"
               ></span>
-              {{
-                l.status === "lido"
-                  ? "Lido"
-                  : l.status === "lendo"
-                  ? "Lendo"
-                  : l.status === "desejo"
-                  ? "Desejo"
-                  : "Faltando"
-              }}
+              {{ l.status | status }}
             </span>
           </td>
           <td class="px-4 py-3">

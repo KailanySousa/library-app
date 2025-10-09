@@ -17,6 +17,11 @@ export const explorarRoutes: Routes = [
             (m) => m.VerMaisComponent
           ),
       },
+      {
+        path: 'livro/:id',
+        loadComponent: () =>
+          import('./livro/livro.component').then((m) => m.LivroComponent),
+      },
     ],
   },
 ];
