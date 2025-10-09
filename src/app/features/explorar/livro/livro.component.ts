@@ -14,6 +14,9 @@ import {
 } from '../../../shared/pipes/status.pipe';
 import { EStatus } from '../../../shared/enums/status.enum';
 import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
+import { FormsModule } from '@angular/forms';
+import { ICitacao } from '../../../shared/interfaces/citacao.interface';
+import { CitacoesPorLivroService } from '../../../shared/services/citacoes-por-livro.service';
 
 @Component({
   selector: 'app-livro',
@@ -26,6 +29,7 @@ import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
     StatusHeaderPipe,
     StatusPipe,
     OutrosLivrosComponent,
+    FormsModule,
   ],
   templateUrl: './livro.component.html',
 })
@@ -34,12 +38,16 @@ export class LivroComponent {
   autor = signal<IAutor | null>(null);
   outrosDoAutor = signal<ILivro[]>([]);
   outrosDaCategoria = signal<ILivro[]>([]);
-  citacoes = signal<string[]>([]);
+  citacoes = signal<ICitacao[]>([]);
+
+  formCitacaoAberto = signal(false as boolean);
+  citacaoTexto = '';
 
   constructor(
     private route: ActivatedRoute,
     private livroService: LivroService,
-    private autorService: AutorService
+    private autorService: AutorService,
+    private readonly citacoesPorLivroService: CitacoesPorLivroService
   ) {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     const l = this.livroService.getItem(id);
@@ -64,10 +72,7 @@ export class LivroComponent {
         ).filter((x) => x.id !== l.id)
       );
 
-      // Se seu modelo já possuir "citacoes" como string[]; se não, remova/ajuste.
-      // this.citacoes.set(
-      //   Array.isArray((l as any).citacoes) ? (l as any).citacoes : []
-      // );
+      this.citacoes.set(this.citacoesPorLivroService.getCitacoesPorLivro(l.id));
     }
   }
 
@@ -86,5 +91,33 @@ export class LivroComponent {
       'bg-amber-600': status === EStatus.LENDO,
       'bg-fuchsia-600': status === EStatus.DESEJO,
     };
+  }
+
+  abrirFormCitacao() {
+    this.citacaoTexto = '';
+    this.formCitacaoAberto.set(true);
+  }
+
+  cancelarCitacao() {
+    this.citacaoTexto = '';
+    this.formCitacaoAberto.set(false);
+  }
+
+  salvarCitacao() {
+    const texto = (this.citacaoTexto || '').trim();
+    if (!texto) return;
+
+    const l = this.livro();
+    if (!l) return;
+
+    this.citacoesPorLivroService.setItem(
+      l.id,
+      texto,
+      (citacoes) => {
+        this.citacoes.set(citacoes);
+        this.cancelarCitacao();
+      },
+      (e) => console.log('Erro ao adicionar a citação', e)
+    );
   }
 }

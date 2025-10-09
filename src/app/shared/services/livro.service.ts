@@ -95,6 +95,7 @@ export class LivroService {
 
       this._livros.update((arr) => {
         const idx = arr.findIndex((l) => l.id === atualizado.id);
+        console.log('🚀 ~ LivroService ~ put ~ idx:', idx);
         if (idx === -1) return arr;
         const copia = arr.slice();
         copia[idx] = atualizado;
