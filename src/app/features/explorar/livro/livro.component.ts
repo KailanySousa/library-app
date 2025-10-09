@@ -1,10 +1,14 @@
-import { Component, signal } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  numberAttribute,
+  signal,
+} from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { LivroService } from '../../../shared/services/livro.service';
 import { AutorService } from '../../../shared/services/autor.service';
-import IAutor from '../../../shared/interfaces/autor.interface';
-import ILivro from '../../../shared/interfaces/livro.interface';
 import { CommonModule } from '@angular/common';
 import { CategoriaPipe } from '../../../shared/pipes/categoria.pipe';
 import { GradientePorCategoriaPipe } from '../../../shared/pipes/gradiente-por-categoria.pipe';
@@ -15,8 +19,8 @@ import {
 import { EStatus } from '../../../shared/enums/status.enum';
 import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
 import { FormsModule } from '@angular/forms';
-import { ICitacao } from '../../../shared/interfaces/citacao.interface';
 import { CitacoesPorLivroService } from '../../../shared/services/citacoes-por-livro.service';
+import { LivroStore } from '../../../shared/stores/livro.store';
 
 @Component({
   selector: 'app-livro',
@@ -34,47 +38,34 @@ import { CitacoesPorLivroService } from '../../../shared/services/citacoes-por-l
   templateUrl: './livro.component.html',
 })
 export class LivroComponent {
-  livro = signal<ILivro | null>(null);
-  autor = signal<IAutor | null>(null);
-  outrosDoAutor = signal<ILivro[]>([]);
-  outrosDaCategoria = signal<ILivro[]>([]);
-  citacoes = signal<ICitacao[]>([]);
+  #livroStore = inject(LivroStore);
+  #citacoesPorLivroService = inject(CitacoesPorLivroService);
+
+  id = input(0, { transform: numberAttribute });
+
+  livro = computed(() => this.#livroStore.getItem(this.id()));
+
+  autor = computed(() =>
+    this.autorService.getItem(Number(this.livro().autorId))
+  );
+  outrosDoAutor = computed(() =>
+    this.#livroStore
+      .by('autorId', this.livro().autorId)
+      .filter((l) => l.id !== this.livro().id)
+  );
+  outrosDaCategoria = computed(() =>
+    this.#livroStore
+      .by('categoriaId', this.livro().autorId)
+      .filter((l) => l.id !== this.livro().id)
+  );
+  citacoes = computed(() =>
+    this.#citacoesPorLivroService.getCitacoesPorLivro(this.livro().id)
+  );
 
   formCitacaoAberto = signal(false as boolean);
   citacaoTexto = '';
 
-  constructor(
-    private route: ActivatedRoute,
-    private livroService: LivroService,
-    private autorService: AutorService,
-    private readonly citacoesPorLivroService: CitacoesPorLivroService
-  ) {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    const l = this.livroService.getItem(id);
-    this.livro.set(l);
-
-    if (l) {
-      const a = this.autorService.getItem(Number.parseInt(l.autorId));
-      this.autor.set(a || null);
-
-      this.outrosDoAutor.set(
-        (
-          this.livroService.getAllBy<ILivro, 'autorId'>('autorId', l.autorId) ||
-          []
-        ).filter((x) => x.id !== l.id)
-      );
-      this.outrosDaCategoria.set(
-        (
-          this.livroService.getAllBy<ILivro, 'categoriaId'>(
-            'categoriaId',
-            l.categoriaId
-          ) || []
-        ).filter((x) => x.id !== l.id)
-      );
-
-      this.citacoes.set(this.citacoesPorLivroService.getCitacoesPorLivro(l.id));
-    }
-  }
+  constructor(private autorService: AutorService) {}
 
   badgeClasses(status?: string) {
     return {
@@ -110,11 +101,11 @@ export class LivroComponent {
     const l = this.livro();
     if (!l) return;
 
-    this.citacoesPorLivroService.setItem(
+    this.#citacoesPorLivroService.setItem(
       l.id,
       texto,
-      (citacoes) => {
-        this.citacoes.set(citacoes);
+      () => {
+        // this.citacoes.set(citacoes);
         this.cancelarCitacao();
       },
       (e) => console.log('Erro ao adicionar a citação', e)

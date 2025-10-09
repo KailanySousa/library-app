@@ -52,7 +52,7 @@
           coração).
         </p>
       </div>
-      @if(jaLidos.length > 0) {
+      @if(lidos.length > 0) {
 
       <a
         routerLink="/explorar/ver-mais"
@@ -75,9 +75,9 @@
       </a>
       }
     </div>
-    @if(jaLidos.length > 0) {
+    @if(lidos.length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for(livro of jaLidos; track $index) {
+      @for(livro of lidos; track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>
       }
     </div>

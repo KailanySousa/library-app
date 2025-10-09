@@ -1,11 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { CardLivroComponent } from '../card-livro/card-livro.component';
 import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/lista-vazia.component';
 import { EStatus } from '../../../shared/enums/status.enum';
-import { LivroService } from '../../../shared/services/livro.service';
 import ILivro from '../../../shared/interfaces/livro.interface';
-import { ActivatedRoute } from '@angular/router';
+import { LivroStore } from '../../../shared/stores/livro.store';
 
 interface ITextos {
   titulo: string;
@@ -40,16 +39,16 @@ const textos: IConteudo = {
   imports: [HeaderComponent, CardLivroComponent, ListaVaziaComponent],
   templateUrl: './ver-mais.component.html',
 })
-export class VerMaisComponent implements OnInit {
+export class VerMaisComponent {
   readonly EStatus = EStatus;
-  textos!: ITextos;
-  #service = inject(LivroService);
-  #route = inject(ActivatedRoute);
+  #livroStore = inject(LivroStore);
 
+  status = input('');
   livros!: ILivro[];
-  ngOnInit() {
-    const q = this.#route.snapshot.queryParams['status'] as string;
-    this.livros = this.#service.by('status', q)();
-    this.textos = textos[q as keyof IConteudo];
-  }
+  textos!: ITextos;
+
+  setData = effect(() => {
+    this.livros = this.#livroStore.by('status', this.status());
+    this.textos = textos[this.status() as keyof IConteudo];
+  });
 }

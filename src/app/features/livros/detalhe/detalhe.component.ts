@@ -1,4 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  numberAttribute,
+  OnInit,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -10,13 +17,13 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { EStatus } from '../../../shared/enums/status.enum';
-import { LivroService } from '../../../shared/services/livro.service';
 import ILivro from '../../../shared/interfaces/livro.interface';
 import { STATUS_OPTIONS } from '../../../shared/consts/status.const';
 import ICategoria from '../../../shared/interfaces/categoria.interface';
 import IAutor from '../../../shared/interfaces/autor.interface';
 import { CategoriaService } from '../../../shared/services/categoria.service';
 import { AutorService } from '../../../shared/services/autor.service';
+import { LivroStore } from '../../../shared/stores/livro.store';
 
 @Component({
   selector: 'app-detalhe-livro',
@@ -34,25 +41,21 @@ export class DetalheLivroComponent implements OnInit {
   form!: FormGroup;
 
   #formBuilder = inject(FormBuilder);
-  #service = inject(LivroService);
+  #livroStore = inject(LivroStore);
+
   #categoriaService = inject(CategoriaService);
   #autorService = inject(AutorService);
   #router = inject(Router);
   #route = inject(ActivatedRoute);
 
-  livro!: ILivro;
+  livroId = input(0, { transform: numberAttribute });
+  livro = computed(() => this.#livroStore.getItem(this.livroId()));
 
   ngOnInit() {
     this.categorias = this.#categoriaService.getAll();
     this.autores = this.#autorService.getAll();
     this.setupForm();
-    this.buscarDetalhes();
     this.updateForm();
-  }
-
-  private buscarDetalhes() {
-    const livroId = this.#route.snapshot.paramMap.get('id');
-    this.livro = this.#service.getItem(Number.parseInt(livroId!));
   }
 
   setupForm() {
@@ -81,15 +84,15 @@ export class DetalheLivroComponent implements OnInit {
 
   updateForm() {
     this.form.patchValue({
-      titulo: this.livro.titulo,
-      autorId: this.livro.autorId,
-      ano: this.livro.ano,
-      categoriaId: this.livro.categoriaId,
-      status: this.livro.status,
-      paginas: this.livro.paginas,
-      anoInicio: this.livro.anoInicio,
-      anoFim: this.livro.anoFim,
-      descricao: this.livro.descricao,
+      titulo: this.livro().titulo,
+      autorId: this.livro().autorId,
+      ano: this.livro().ano,
+      categoriaId: this.livro().categoriaId,
+      status: this.livro().status,
+      paginas: this.livro().paginas,
+      anoInicio: this.livro().anoInicio,
+      anoFim: this.livro().anoFim,
+      descricao: this.livro().descricao,
     });
   }
 
@@ -135,25 +138,14 @@ export class DetalheLivroComponent implements OnInit {
       return;
     }
 
-    const body: ILivro = {
-      ...(this.form.getRawValue() as ILivro),
-      id: this.livro.id,
-    };
-    this.#service.put(
-      body,
-      () => void this.#router.navigate(['/livros/lista']),
-      (e) => console.log('Erro ao editar o livro', e)
-    );
+    const body: ILivro = this.form.getRawValue() as ILivro;
+    this.#livroStore.update(this.livro().id, body);
   }
 
   remover() {
     if (!this.livro) return;
     if (confirm('Remover este livro?')) {
-      this.#service.delete(
-        this.livro.id,
-        () => void this.#router.navigate(['/livros/lista']),
-        (e) => console.log('Erro ao remover o livro', e)
-      );
+      this.#livroStore.remove(this.livro().id);
     }
   }
 }

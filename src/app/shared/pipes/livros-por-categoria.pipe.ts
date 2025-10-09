@@ -1,13 +1,13 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
-import { LivroService } from '../services/livro.service';
+import { LivroStore } from '../stores/livro.store';
 
 @Pipe({
   name: 'livrosPorCategoria',
 })
 export class LivrosPorCategoriaPipe implements PipeTransform {
-  #livroService = inject(LivroService);
+  #livroStore = inject(LivroStore);
 
   transform(id: number): number {
-    return this.#livroService.getCountBy('categoriaId', id.toString());
+    return this.#livroStore.countBy('categoriaId', id.toString());
   }
 }

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -16,7 +21,7 @@ import { HeaderComponent } from '../../../shared/components/header/header.compon
 import { AutorService } from '../../../shared/services/autor.service';
 import IAutor from '../../../shared/interfaces/autor.interface';
 import ILivro from '../../../shared/interfaces/livro.interface';
-import { LivroService } from '../../../shared/services/livro.service';
+import { LivroStore } from '../../../shared/stores/livro.store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,6 +31,7 @@ import { LivroService } from '../../../shared/services/livro.service';
   templateUrl: './novo.component.html',
 })
 export class NovoLivroComponent implements OnInit {
+  #livroStore = inject(LivroStore);
   readonly currentYear = new Date().getFullYear();
 
   private readonly requiredHelper = (c: AbstractControl) =>
@@ -40,8 +46,7 @@ export class NovoLivroComponent implements OnInit {
     private readonly router: Router,
     private readonly fb: FormBuilder,
     private readonly categoriaService: CategoriaService,
-    private readonly autorService: AutorService,
-    private readonly service: LivroService
+    private readonly autorService: AutorService
   ) {}
 
   ngOnInit() {
@@ -118,15 +123,6 @@ export class NovoLivroComponent implements OnInit {
     }
 
     const body: ILivro = this.form.getRawValue() as ILivro;
-    this.service.post(
-      body,
-      () => {
-        this.form.reset({ cor: '#F0ABFC' });
-        void this.router.navigate(['/livros/lista']);
-      },
-      (e) => {
-        console.log('Erro ao cadastrar o livro', e);
-      }
-    );
+    this.#livroStore.add(body);
   }
 }
