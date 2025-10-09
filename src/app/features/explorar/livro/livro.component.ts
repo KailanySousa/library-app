@@ -13,6 +13,7 @@ import {
   StatusHeaderPipe,
 } from '../../../shared/pipes/status.pipe';
 import { EStatus } from '../../../shared/enums/status.enum';
+import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
 
 @Component({
   selector: 'app-livro',
@@ -24,6 +25,7 @@ import { EStatus } from '../../../shared/enums/status.enum';
     GradientePorCategoriaPipe,
     StatusHeaderPipe,
     StatusPipe,
+    OutrosLivrosComponent,
   ],
   templateUrl: './livro.component.html',
 })

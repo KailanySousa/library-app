@@ -1,0 +1,19 @@
+<div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+  <ng-content />
+  @if(outros().length) {
+  <ul class="space-y-2">
+    @for(livro of outros(); track $index) {
+    <li>
+      <a
+        [routerLink]="['/livros', livro.id]"
+        class="text-fuchsia-700 hover:underline text-sm"
+      >
+        {{ livro.titulo }}
+      </a>
+    </li>
+    }
+  </ul>
+  }@else {
+  <p class="text-slate-500 text-sm">Nenhum outro livro listado.</p>
+  }
+</div>

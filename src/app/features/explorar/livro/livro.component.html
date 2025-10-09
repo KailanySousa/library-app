@@ -1,7 +1,6 @@
 <app-header></app-header>
 
 <section class="container mx-auto px-6 py-10 space-y-10" *ngIf="livro() as l">
-  <!-- Cabeçalho -->
   <header class="mb-6">
     <nav class="text-sm text-slate-500 mb-2">
       <a
@@ -20,11 +19,8 @@
     </nav>
   </header>
 
-  <!-- Conteúdo -->
   <div class="grid md:grid-cols-3 gap-8">
-    <!-- Coluna principal -->
     <div class="md:col-span-2 space-y-8">
-      <!-- Descrição -->
       <section>
         <div
           class="flex flex-col md:flex-row md:items-center md:justify-between gap-6"
@@ -74,7 +70,6 @@
           {{ l.descricao || "Sem descrição registrada." }}
         </p>
       </section>
-      <!-- Notas e citações -->
       <section>
         <h2 class="text-lg font-semibold text-slate-800 mb-2">
           Notas e citações
@@ -97,9 +92,7 @@
       </section>
     </div>
 
-    <!-- Sidebar -->
     <aside class="space-y-6">
-      <!-- Autor -->
       @let a = autor(); @if(a) {
 
       <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
@@ -115,51 +108,20 @@
       </div>
       }
 
-      <!-- Outros livros do autor -->
-      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
-        <h3 class="text-slate-800 font-semibold mb-3">
-          Outros livros desse autor
-        </h3>
-        @if(outrosDoAutor().length) {
-        <ul class="space-y-2">
-          @for(lv of outrosDoAutor(); track $index) {
-          <li>
-            <a
-              [routerLink]="['/livros', lv.id]"
-              class="text-fuchsia-700 hover:underline text-sm"
-            >
-              {{ lv.titulo }}
-            </a>
-          </li>
-          }
-        </ul>
-        }@else {
-        <p class="text-slate-500 text-sm">Nenhum outro livro listado.</p>
-        }
+      <div>
+        <app-outros-livros [outros]="outrosDoAutor()">
+          <h3 class="text-slate-800 font-semibold mb-3">
+            Outros livros desse autor
+          </h3>
+        </app-outros-livros>
       </div>
 
-      <!-- Outros livros da categoria -->
-      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
-        <h3 class="text-slate-800 font-semibold mb-3">
-          Outros livros dessa categoria
-        </h3>
-
-        @if (outrosDaCategoria().length) {
-        <ul class="space-y-2">
-          @for(lv of outrosDaCategoria(); track $index) {
-          <li>
-            <a
-              [routerLink]="['/livros', lv.id]"
-              class="text-fuchsia-700 hover:underline text-sm"
-            >
-              {{ lv.titulo }}
-            </a>
-          </li>
-          }
-        </ul>
-        } @else {
-        <p class="text-slate-500 text-sm">Nenhum outro livro listado.</p>
-        }
+      <div>
+        <app-outros-livros [outros]="outrosDaCategoria()">
+          <h3 class="text-slate-800 font-semibold mb-3">
+            Outros livros dessa categoria
+          </h3>
+        </app-outros-livros>
       </div>
     </aside>
   </div>
