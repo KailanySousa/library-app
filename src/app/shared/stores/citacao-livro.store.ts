@@ -83,6 +83,20 @@ export class CitacaoLivroStore extends BaseStore {
     this._citacaoLivro.update((arr) => arr.filter((l) => l.id !== id));
   }
 
+  removeAllBy<K extends keyof ICitacaoLivro>(key: K, id: number) {
+    const citacoesLivro = this.by(key, id);
+    if (citacoesLivro) {
+      const citacoes = this._citacaoLivro()
+        .flatMap((l) => (l[key] === id ? l.citacaoId : null), key)
+        .filter((l) => l !== null);
+
+      if (citacoes.length > 0) {
+        this.#citacaoStore.removeWithIds(citacoes);
+      }
+      this._citacaoLivro.update((arr) => arr.filter((l) => l[key] !== id));
+    }
+  }
+
   clearAll() {
     this._citacaoLivro.set([]);
   }

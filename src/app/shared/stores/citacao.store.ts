@@ -72,6 +72,10 @@ export class CitacoesStore extends BaseStore {
     this._citacoes.update((arr) => arr.filter((l) => l.id !== id));
   }
 
+  removeWithIds(ids: number[]) {
+    this._citacoes.update((arr) => arr.filter((l) => !ids.includes(l.id)));
+  }
+
   clearAll() {
     this._citacoes.set([]);
   }
