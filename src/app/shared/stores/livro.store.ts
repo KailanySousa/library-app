@@ -6,19 +6,11 @@ const STORAGE_KEY = 'livros';
 
 @Injectable({ providedIn: 'root' })
 export class LivroStore extends BaseStore {
-  // estado base
   private readonly _livros = signal<ILivro[]>(this.restore(STORAGE_KEY));
-
-  // somente-leitura para o mundo externo
   readonly livros = this._livros.asReadonly();
-
-  // derivados
   readonly total = computed(() => this._livros().length);
-
-  // Persistência automática no localStorage sempre que _livros mudar
   private readonly persistEffect = effect(() => {
     const snapshot = this._livros();
-    // use untracked para evitar loops acidentais
     untracked(() => this.persist(STORAGE_KEY, snapshot));
   });
 
@@ -34,7 +26,7 @@ export class LivroStore extends BaseStore {
     });
   }
 
-  getItem(livroId: number): ILivro {
+  item(livroId: number): ILivro {
     return this._livros().find((l) => l.id === livroId)!;
   }
 
@@ -75,7 +67,6 @@ export class LivroStore extends BaseStore {
     this._livros.set([]);
   }
 
-  // utilitários
   private nextId(): number {
     const arr = this._livros();
     return arr.length ? Math.max(...arr.map((a) => a.id)) + 1 : 1;
