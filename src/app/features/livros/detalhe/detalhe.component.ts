@@ -5,7 +5,6 @@ import {
   inject,
   input,
   numberAttribute,
-  Signal,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -23,7 +22,6 @@ import { STATUS_OPTIONS } from '../../../shared/consts/status.const';
 import { CategoriaStore } from '../../../shared/stores/categoria.store';
 import { AutorStore } from '../../../shared/stores/autor.store';
 import { LivroStore } from '../../../shared/stores/livro.store';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { EditoraStore } from '../../../shared/stores/editora.store';
 
 @Component({
@@ -61,18 +59,11 @@ export class DetalheLivroComponent {
     categoriaId: ['', [this.requiredHelper]],
     editoraId: ['', [this.requiredHelper]],
     status: [EStatus.DESEJO, this.requiredHelper],
-    capitulos: [null as number | null, [Validators.min(1)]],
-    anoInicio: [
-      null as number | null,
-      [Validators.min(2019), Validators.max(this.currentYear)],
-    ],
-    anoFim: [null as number | null],
     descricao: [''],
   });
 
   id = input(0, { transform: numberAttribute });
   livro = computed(() => {
-    console.log(this.id());
     return this.#livroStore.item(this.id());
   });
   autores = this.#autorStore.autores;
@@ -81,7 +72,6 @@ export class DetalheLivroComponent {
 
   private readonly syncForm = effect(() => {
     const l = this.livro();
-    console.log('🚀 ~ DetalheLivroComponent ~ l:', l);
     if (!l) return;
     this.form.patchValue(
       {
@@ -91,54 +81,11 @@ export class DetalheLivroComponent {
         categoriaId: l.categoriaId,
         editoraId: l.editoraId,
         status: l.status,
-        capitulos: l.capitulos,
-        anoInicio: l.anoInicio,
-        anoFim: l.anoFim,
         descricao: l.descricao,
       },
       { emitEvent: false }
     );
   });
-
-  private readonly statusValue: Signal<EStatus> = toSignal(
-    this.form.get('status')!.valueChanges,
-    { initialValue: this.form.get('status')!.value as EStatus }
-  );
-
-  private readonly syncStatusValidators = effect(() => {
-    const st = this.statusValue();
-    this.verifyAnoInicioRequired(st);
-    this.verifyAnoFimRequired(st);
-  });
-
-  verifyAnoInicioRequired(status: EStatus) {
-    const anoInicioControl = this.form.get('anoInicio');
-    if (status !== EStatus.DESEJO) {
-      anoInicioControl?.setValidators([
-        this.requiredHelper,
-        Validators.min(2019),
-      ]);
-    } else {
-      anoInicioControl?.removeValidators(this.requiredHelper);
-      anoInicioControl?.markAsTouched();
-    }
-    anoInicioControl?.setValue(null);
-  }
-
-  verifyAnoFimRequired(status: EStatus) {
-    const anoFimControl = this.form.get('anoFim');
-    if (status !== EStatus.DESEJO && status !== EStatus.LENDO) {
-      const anoInicioValue = this.form.get('anoInicio')?.value as number;
-      anoFimControl?.setValidators([
-        this.requiredHelper,
-        Validators.min(anoInicioValue),
-      ]);
-    } else {
-      anoFimControl?.removeValidators(this.requiredHelper);
-      anoFimControl?.markAsTouched();
-    }
-    anoFimControl?.setValue(null);
-  }
 
   salvar() {
     if (this.form.invalid) {

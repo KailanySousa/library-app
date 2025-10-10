@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
   Signal,
 } from '@angular/core';
@@ -62,12 +61,6 @@ export class NovoLivroComponent {
     categoriaId: ['', [this.requiredHelper]],
     editoraId: ['', [this.requiredHelper]],
     status: [EStatus.DESEJO, this.requiredHelper],
-    capitulos: [null as number | null, [Validators.min(1)]],
-    anoInicio: [
-      null as string | null,
-      [Validators.min(2019), Validators.max(this.currentYear)],
-    ],
-    anoFim: [null as string | null],
     descricao: [''],
   });
 
@@ -75,41 +68,6 @@ export class NovoLivroComponent {
     this.form.get('status')!.valueChanges,
     { initialValue: this.form.get('status')!.value as EStatus }
   );
-
-  private readonly syncStatusValidators = effect(() => {
-    const st = this.statusValue();
-    this.verifyAnoInicioRequired(st);
-    this.verifyAnoFimRequired(st);
-  });
-
-  verifyAnoInicioRequired(status: EStatus) {
-    const anoInicioControl = this.form.get('anoInicio');
-    if (status !== EStatus.DESEJO) {
-      anoInicioControl?.setValidators([
-        this.requiredHelper,
-        Validators.min(2019),
-      ]);
-    } else {
-      anoInicioControl?.removeValidators(this.requiredHelper);
-      anoInicioControl?.markAsTouched();
-    }
-    anoInicioControl?.setValue(null);
-  }
-
-  verifyAnoFimRequired(status: EStatus) {
-    const anoFimControl = this.form.get('anoFim');
-    if (status !== EStatus.DESEJO && status !== EStatus.LENDO) {
-      const anoInicioValue = this.form.get('anoInicio')?.value as number;
-      anoFimControl?.setValidators([
-        this.requiredHelper,
-        Validators.min(anoInicioValue),
-      ]);
-    } else {
-      anoFimControl?.removeValidators(this.requiredHelper);
-      anoFimControl?.markAsTouched();
-    }
-    anoFimControl?.setValue(null);
-  }
 
   salvar() {
     if (this.form.invalid) {

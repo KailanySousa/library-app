@@ -9,12 +9,14 @@ import {
 import ILivro from '../interfaces/livro.interface';
 import { BaseStore } from './base.store';
 import { CitacaoLivroStore } from './citacao-livro.store';
+import { CapituloStore } from './capitulo.store';
 
 const STORAGE_KEY = 'livros';
 
 @Injectable({ providedIn: 'root' })
 export class LivroStore extends BaseStore {
-  #citacaoLivro = inject(CitacaoLivroStore);
+  #citacaoLivroStore = inject(CitacaoLivroStore);
+  #capituloStore = inject(CapituloStore);
 
   private readonly _livros = signal<ILivro[]>(this.restore(STORAGE_KEY));
   readonly livros = this._livros.asReadonly();
@@ -37,7 +39,6 @@ export class LivroStore extends BaseStore {
   }
 
   item(livroId: number): ILivro {
-    console.log('🚀 ~ LivroStore ~ item ~ livroId:', livroId);
     return this._livros().find((l) => l.id === livroId)!;
   }
 
@@ -72,7 +73,8 @@ export class LivroStore extends BaseStore {
 
   remove(id: number) {
     this._livros.update((arr) => arr.filter((l) => l.id !== id));
-    this.#citacaoLivro.removeAllBy('livroId', id);
+    this.#citacaoLivroStore.removeAllBy('livroId', id);
+    this.#capituloStore.removeAllBy(id);
   }
 
   clearAll() {
