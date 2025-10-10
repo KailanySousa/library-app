@@ -80,73 +80,9 @@
           {{ l.descricao || "Sem descrição registrada." }}
         </p>
       </section>
-      <section>
-        <h2 class="text-lg font-semibold text-slate-800 mb-2">Citações</h2>
-        @if(citacoes().length) {
-        <ul class="space-y-3 mb-4">
-          @for(c of citacoes(); track $index) {
-          <li
-            class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 italic"
-          >
-            “{{ c.texto }}”
-          </li>
-          }
-        </ul>
-        } @else {
-        <p class="text-slate-500 text-sm mb-4">Nenhuma citação registrada.</p>
-
-        }
-        <button
-          (click)="abrirFormCitacao()"
-          class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-fuchsia-600 to-violet-600 text-white px-5 py-2 font-medium shadow-sm hover:shadow-md transition"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="w-4 h-4"
-          >
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-          Nova
-        </button>
-        @if(formCitacaoAberto()) {
-        <div
-          class="mb-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm mt-4"
-        >
-          <label class="block text-sm font-medium text-slate-700 mb-2"
-            >Nova citação</label
-          >
-          <textarea
-            rows="3"
-            class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-            placeholder="Cole aqui a frase que você quer guardar…"
-            name="citacaoTexto"
-            [(ngModel)]="citacaoTexto"
-          ></textarea>
-
-          <div class="mt-3 flex gap-2">
-            <button
-              (click)="salvarCitacao()"
-              type="button"
-              class="px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700 disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              Salvar
-            </button>
-            <button
-              (click)="cancelarCitacao()"
-              type="button"
-              class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-        }
-      </section>
+      <app-citacoes [livroId]="l.id">
+        <app-add-citacao [livroId]="l.id"></app-add-citacao>
+      </app-citacoes>
     </div>
 
     <aside class="space-y-6">

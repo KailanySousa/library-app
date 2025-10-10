@@ -4,7 +4,6 @@ import {
   inject,
   input,
   numberAttribute,
-  signal,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
@@ -19,9 +18,10 @@ import {
 import { EStatus } from '../../../shared/enums/status.enum';
 import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
 import { FormsModule } from '@angular/forms';
-import { CitacaoLivroStore } from '../../../shared/stores/citacao-livro.store';
 import { LivroStore } from '../../../shared/stores/livro.store';
 import { EditoraPipe } from '../../../shared/pipes/editora.pipe';
+import { AddCitacaoComponent } from './add-citacao/add-citacao.component';
+import { CitacoesComponent } from './citacoes/citacoes.component';
 
 @Component({
   selector: 'app-livro',
@@ -35,6 +35,8 @@ import { EditoraPipe } from '../../../shared/pipes/editora.pipe';
     EditoraPipe,
     StatusPipe,
     OutrosLivrosComponent,
+    AddCitacaoComponent,
+    CitacoesComponent,
     FormsModule,
   ],
   templateUrl: './livro.component.html',
@@ -42,7 +44,6 @@ import { EditoraPipe } from '../../../shared/pipes/editora.pipe';
 export class LivroComponent {
   #livroStore = inject(LivroStore);
   #autorStore = inject(AutorStore);
-  #citacaoLivroStore = inject(CitacaoLivroStore);
 
   id = input(0, { transform: numberAttribute });
 
@@ -59,13 +60,6 @@ export class LivroComponent {
       .filter((l) => l.id !== this.id())
   );
 
-  citacoes = computed(() =>
-    this.#citacaoLivroStore.citacoesPorLivro(this.livro().id)
-  );
-
-  formCitacaoAberto = signal(false as boolean);
-  citacaoTexto = '';
-
   badgeClasses(status?: string) {
     return {
       'bg-emerald-50 text-emerald-700 border-emerald-200':
@@ -81,26 +75,5 @@ export class LivroComponent {
       'bg-amber-600': status === EStatus.LENDO,
       'bg-fuchsia-600': status === EStatus.DESEJO,
     };
-  }
-
-  abrirFormCitacao() {
-    this.citacaoTexto = '';
-    this.formCitacaoAberto.set(true);
-  }
-
-  cancelarCitacao() {
-    this.citacaoTexto = '';
-    this.formCitacaoAberto.set(false);
-  }
-
-  salvarCitacao() {
-    const texto = (this.citacaoTexto || '').trim();
-    if (!texto) return;
-
-    const l = this.livro();
-    if (!l) return;
-
-    this.#citacaoLivroStore.add(l.id, texto);
-    this.cancelarCitacao();
   }
 }
