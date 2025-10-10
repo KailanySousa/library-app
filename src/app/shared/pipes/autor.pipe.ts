@@ -1,12 +1,12 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
-import { AutorService } from '../services/autor.service';
+import { AutorStore } from '../stores/autor.store';
 
 @Pipe({
   name: 'autor',
 })
 export class AutorPipe implements PipeTransform {
-  #service = inject(AutorService);
+  #store = inject(AutorStore);
   transform(id: string): string {
-    return this.#service.getItem(Number.parseInt(id)).nome;
+    return this.#store.item(Number(id)).nome;
   }
 }

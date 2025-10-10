@@ -1,16 +1,14 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
-import { CategoriaService } from '../services/categoria.service';
+import { CategoriaStore } from '../stores/categoria.store';
 
 @Pipe({
   name: 'gradientePorCategoria',
 })
 export class GradientePorCategoriaPipe implements PipeTransform {
-  #categoriaService = inject(CategoriaService);
+  #categoriaStore = inject(CategoriaStore);
 
   transform(categoriaId: string): string {
-    const cor = this.#categoriaService.getItem(
-      Number.parseInt(categoriaId)
-    ).cor;
+    const cor = this.#categoriaStore.item(Number(categoriaId)).cor;
     const base = this.pickBaseColor(cor);
     const to = this.darken(base, 28);
     return `linear-gradient(135deg, ${base}, ${to})`;
