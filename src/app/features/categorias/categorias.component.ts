@@ -5,11 +5,11 @@ import {
   inject,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { CategoriaStore } from '../../../shared/stores/categoria.store';
+import { CategoriaStore } from '../../shared/stores/categoria.store';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { LivrosPorCategoriaPipe } from '../../../shared/pipes/livros-por-categoria.pipe';
-import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/lista-vazia.component';
+import { HeaderComponent } from '../../shared/components/header/header.component';
+import { LivrosPorCategoriaPipe } from '../../shared/pipes/livros-por-categoria.pipe';
+import { ListaVaziaComponent } from '../../shared/components/lista-vazia/lista-vazia.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,9 +22,9 @@ import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/list
     LivrosPorCategoriaPipe,
     ListaVaziaComponent,
   ],
-  templateUrl: './lista.component.html',
+  templateUrl: './categorias.component.html',
 })
-export class ListaCategoriasComponent {
+export class CategoriasComponent {
   #categoriaStore = inject(CategoriaStore);
   #router = inject(Router);
 

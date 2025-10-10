@@ -12,9 +12,7 @@ export const categoriasRoutes: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./lista/lista.component').then(
-            (m) => m.ListaCategoriasComponent
-          ),
+          import('./categorias.component').then((m) => m.CategoriasComponent),
       },
       {
         path: ':id',
