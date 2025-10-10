@@ -41,7 +41,7 @@ export class NovoAutorComponent {
     const body: IAutor = this.form.getRawValue() as IAutor;
     if (irParaNovoLivro) {
       const id = this.#autorStore.addWithReturnId(body);
-      void this.#router.navigate(['/livros/lista'], {
+      void this.#router.navigate(['/livros'], {
         queryParams: { autorId: id },
       });
     } else {

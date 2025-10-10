@@ -119,6 +119,6 @@ export class NovoLivroComponent {
 
     const body: ILivro = this.form.getRawValue() as ILivro;
     this.#livroStore.add(body);
-    void this.#router.navigate(['/livros/lista']);
+    void this.#router.navigate(['/livros']);
   }
 }

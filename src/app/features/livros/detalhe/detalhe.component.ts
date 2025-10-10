@@ -148,14 +148,14 @@ export class DetalheLivroComponent {
 
     const body: ILivro = this.form.getRawValue() as ILivro;
     this.#livroStore.update(this.livro().id, body);
-    void this.#router.navigate(['/livros/lista']);
+    void this.#router.navigate(['/livros']);
   }
 
   remover() {
     if (!this.livro) return;
     if (confirm('Remover este livro?')) {
       this.#livroStore.remove(this.livro().id);
-      void this.#router.navigate(['/livros/lista']);
+      void this.#router.navigate(['/livros']);
     }
   }
 }
