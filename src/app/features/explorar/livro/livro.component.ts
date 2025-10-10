@@ -49,10 +49,12 @@ export class LivroComponent {
   outrosDoAutor = computed(() =>
     this.#livroStore
       .by('autorId', this.livro().autorId)
-      .filter((l) => l.id !== this.livro().id)
+      .filter((l) => l.id !== this.id())
   );
   outrosDaCategoria = computed(() =>
-    this.#livroStore.by('categoriaId', this.livro().autorId)
+    this.#livroStore
+      .by('categoriaId', this.livro().autorId)
+      .filter((l) => l.id !== this.id())
   );
 
   citacoes = computed(() =>
