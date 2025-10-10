@@ -1,5 +1,5 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { CitacaoLivroStore } from '../../../../shared/stores/citacao-livro.store';
+import { CitacaoLivroStore } from '../../../shared/stores/citacao-livro.store';
 import { FormsModule } from '@angular/forms';
 
 @Component({

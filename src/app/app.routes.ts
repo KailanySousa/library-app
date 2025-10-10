@@ -14,6 +14,11 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'livro/:id',
+    loadComponent: () =>
+      import('./features/livro/livro.component').then((m) => m.LivroComponent),
+  },
+  {
     path: 'livros',
     loadChildren: () =>
       import('./features/livros/livros.routes').then((m) => m.livrosRoutes),

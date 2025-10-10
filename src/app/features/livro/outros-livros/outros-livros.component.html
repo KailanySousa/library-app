@@ -5,7 +5,7 @@
     @for(livro of outros(); track $index) {
     <li>
       <a
-        [routerLink]="['/explorar/livro', livro.id]"
+        [routerLink]="['/livro', livro.id]"
         class="text-fuchsia-700 hover:underline text-sm"
       >
         {{ livro.titulo }}

@@ -1,5 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { CitacaoLivroStore } from '../../../../shared/stores/citacao-livro.store';
+import { CitacaoLivroStore } from '../../../shared/stores/citacao-livro.store';
 
 @Component({
   selector: 'app-citacoes',

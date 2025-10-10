@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import ILivro from '../../../../shared/interfaces/livro.interface';
+import ILivro from '../../../shared/interfaces/livro.interface';
 
 @Component({
   selector: 'app-outros-livros',

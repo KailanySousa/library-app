@@ -6,20 +6,17 @@ import {
   numberAttribute,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { AutorStore } from '../../../shared/stores/autor.store';
+import { HeaderComponent } from '../../shared/components/header/header.component';
+import { AutorStore } from '../../shared/stores/autor.store';
 import { CommonModule } from '@angular/common';
-import { CategoriaPipe } from '../../../shared/pipes/categoria.pipe';
-import { GradientePorCategoriaPipe } from '../../../shared/pipes/gradiente-por-categoria.pipe';
-import {
-  StatusPipe,
-  StatusHeaderPipe,
-} from '../../../shared/pipes/status.pipe';
-import { EStatus } from '../../../shared/enums/status.enum';
+import { CategoriaPipe } from '../../shared/pipes/categoria.pipe';
+import { GradientePorCategoriaPipe } from '../../shared/pipes/gradiente-por-categoria.pipe';
+import { StatusPipe, StatusHeaderPipe } from '../../shared/pipes/status.pipe';
+import { EStatus } from '../../shared/enums/status.enum';
 import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
 import { FormsModule } from '@angular/forms';
-import { LivroStore } from '../../../shared/stores/livro.store';
-import { EditoraPipe } from '../../../shared/pipes/editora.pipe';
+import { LivroStore } from '../../shared/stores/livro.store';
+import { EditoraPipe } from '../../shared/pipes/editora.pipe';
 import { AddCitacaoComponent } from './add-citacao/add-citacao.component';
 import { CitacoesComponent } from './citacoes/citacoes.component';
 
