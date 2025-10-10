@@ -46,7 +46,7 @@ export class NovoAutorComponent {
       });
     } else {
       this.#autorStore.add(body);
-      void this.#router.navigate(['/autores/lista']);
+      void this.#router.navigate(['/autores']);
     }
   }
 }

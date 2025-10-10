@@ -27,7 +27,7 @@ export class ListaAutoresComponent {
   remover(id: number) {
     if (confirm('Remover esta autor? (não remove livros)')) {
       this.#autorStore.remove(id);
-      void this.#router.navigate(['/autores/lista']);
+      void this.#router.navigate(['/autores']);
     }
   }
 }

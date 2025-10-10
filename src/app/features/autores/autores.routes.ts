@@ -10,7 +10,7 @@ export const autoresRoutes: Routes = [
           import('./novo/novo.component').then((m) => m.NovoAutorComponent),
       },
       {
-        path: 'lista',
+        path: '',
         loadComponent: () =>
           import('./lista/lista.component').then(
             (m) => m.ListaAutoresComponent

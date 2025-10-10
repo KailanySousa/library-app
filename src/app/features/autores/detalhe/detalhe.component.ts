@@ -64,14 +64,14 @@ export class DetalheAutorComponent {
       ...(this.form.getRawValue() as IAutor),
     };
     this.#autorStore.update(this.autor().id, body);
-    void this.#router.navigate(['/autores/lista']);
+    void this.#router.navigate(['/autores']);
   }
 
   remover() {
     if (!this.autor) return;
     if (confirm('Remover este autor?')) {
       this.#autorStore.remove(this.autor().id);
-      void this.#router.navigate(['/autores/lista']);
+      void this.#router.navigate(['/autores']);
     }
   }
 }
