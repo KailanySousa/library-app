@@ -158,7 +158,7 @@
               [routerLink]="['/livros']"
               [queryParams]="{ categoria: c.id }"
               class="inline-flex items-center rounded-full border border-fuchsia-200 bg-fuchsia-50 px-2 py-0.5 text-xs text-fuchsia-700"
-              >{{ qtdLivros }} livro(s)</a
+              >{{ qtdLivros() }} livro(s)</a
             >
           </li>
           @if (c.createdAt) {

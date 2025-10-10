@@ -114,16 +114,17 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-slate-700"
-            >Páginas</label
+            >Capítulos</label
           >
           <input
             type="number"
             min="1"
-            formControlName="paginas"
+            formControlName="capitulos"
             class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
             placeholder="Ex.: 320"
           />
-          @if (form.get('paginas')?.touched && form.get('paginas')?.invalid) {
+          @if (form.get('capitulos')?.touched && form.get('capitulos')?.invalid)
+          {
           <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
           }
         </div>

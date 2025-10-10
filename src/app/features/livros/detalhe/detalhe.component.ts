@@ -62,7 +62,7 @@ export class DetalheLivroComponent {
     ],
     categoriaId: ['', [this.requiredHelper]],
     status: [EStatus.DESEJO, this.requiredHelper],
-    paginas: [null as number | null, [Validators.min(1)]],
+    capitulos: [null as number | null, [Validators.min(1)]],
     anoInicio: [
       null as number | null,
       [Validators.min(2019), Validators.max(this.currentYear)],
@@ -81,7 +81,7 @@ export class DetalheLivroComponent {
         ano: l.ano,
         categoriaId: l.categoriaId,
         status: l.status,
-        paginas: l.paginas,
+        capitulos: l.capitulos,
         anoInicio: l.anoInicio,
         anoFim: l.anoFim,
         descricao: l.descricao,

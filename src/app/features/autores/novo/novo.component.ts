@@ -45,6 +45,7 @@ export class NovoAutorComponent {
         queryParams: { autorId: id },
       });
     } else {
+      this.#autorStore.add(body);
       void this.#router.navigate(['/autores/lista']);
     }
   }

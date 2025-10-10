@@ -58,7 +58,7 @@ export class NovoLivroComponent {
     ],
     categoriaId: ['', [this.requiredHelper]],
     status: [EStatus.DESEJO, this.requiredHelper],
-    paginas: [null as number | null, [Validators.min(1)]],
+    capitulos: [null as number | null, [Validators.min(1)]],
     anoInicio: [
       null as string | null,
       [Validators.min(2019), Validators.max(this.currentYear)],

@@ -6,7 +6,8 @@ export default interface ILivro {
   autorId: string;
   categoriaId: string;
   descricao?: string;
-  paginas?: number;
+  capitulos?: number;
+  editora?: string;
   status: string;
   titulo: string;
   createdAt: string;
