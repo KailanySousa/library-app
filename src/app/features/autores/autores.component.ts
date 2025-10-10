@@ -1,10 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AutorStore } from '../../../shared/stores/autor.store';
-import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { LivrosPorAutorPipe } from '../../../shared/pipes/livros-por-autor.pipe';
-import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/lista-vazia.component';
+import { AutorStore } from '../../shared/stores/autor.store';
+import { HeaderComponent } from '../../shared/components/header/header.component';
+import { LivrosPorAutorPipe } from '../../shared/pipes/livros-por-autor.pipe';
+import { ListaVaziaComponent } from '../../shared/components/lista-vazia/lista-vazia.component';
 
 @Component({
   selector: 'app-lista-autores',
@@ -16,9 +16,9 @@ import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/list
     LivrosPorAutorPipe,
     ListaVaziaComponent,
   ],
-  templateUrl: './lista.component.html',
+  templateUrl: './autores.component.html',
 })
-export class ListaAutoresComponent {
+export class AutoresComponent {
   #autorStore = inject(AutorStore);
   #router = inject(Router);
 

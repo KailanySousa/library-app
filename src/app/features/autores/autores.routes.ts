@@ -12,9 +12,7 @@ export const autoresRoutes: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./lista/lista.component').then(
-            (m) => m.ListaAutoresComponent
-          ),
+          import('./autores.component').then((m) => m.AutoresComponent),
       },
       {
         path: ':id',
