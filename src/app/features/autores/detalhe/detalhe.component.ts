@@ -1,16 +1,22 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  numberAttribute,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
-  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { LivrosPorAutorPipe } from '../../../shared/pipes/livros-por-autor.pipe';
-import { AutorService } from '../../../shared/services/autor.service';
+import { AutorStore } from '../../../shared/stores/autor.store';
 import IAutor from '../../../shared/interfaces/autor.interface';
 
 @Component({
@@ -19,46 +25,34 @@ import IAutor from '../../../shared/interfaces/autor.interface';
   providers: [LivrosPorAutorPipe],
   templateUrl: './detalhe.component.html',
 })
-export class DetalheAutorComponent implements OnInit {
+export class DetalheAutorComponent {
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
 
-  form!: FormGroup;
-
   #livrosPorAutorPipe = inject(LivrosPorAutorPipe);
   #formBuilder = inject(FormBuilder);
-  #service = inject(AutorService);
+  #autorStore = inject(AutorStore);
   #router = inject(Router);
-  #route = inject(ActivatedRoute);
 
-  autor!: IAutor;
-  qtdLivros: number = 0;
+  form = this.#formBuilder.group({
+    nome: ['', [this.requiredHelper, Validators.minLength(2)]],
+    descricao: [''],
+  });
 
-  ngOnInit() {
-    this.setupForm();
-    this.buscarDetalhes();
-    this.updateForm();
-  }
+  id = input(0, { transform: numberAttribute });
+  autor = computed(() => this.#autorStore.item(this.id()));
+  qtdLivros = computed(() =>
+    this.#livrosPorAutorPipe.transform(this.autor().id)
+  );
 
-  private buscarDetalhes() {
-    const autorId = this.#route.snapshot.paramMap.get('id');
-    this.autor = this.#service.getItem(Number.parseInt(autorId!));
-    this.qtdLivros = this.#livrosPorAutorPipe.transform(this.autor.id);
-  }
-
-  private setupForm() {
-    this.form = this.#formBuilder.group({
-      nome: ['', [this.requiredHelper, Validators.minLength(2)]],
-      descricao: [''],
-    });
-  }
-
-  updateForm() {
+  private readonly syncForm = effect(() => {
+    const a = this.autor();
+    if (!a) return;
     this.form.patchValue({
-      nome: this.autor.nome,
-      descricao: this.autor.descricao ?? '',
+      nome: a.nome,
+      descricao: a.descricao ?? '',
     });
-  }
+  });
 
   salvar() {
     if (this.form.invalid) {
@@ -68,23 +62,16 @@ export class DetalheAutorComponent implements OnInit {
 
     const body: IAutor = {
       ...(this.form.getRawValue() as IAutor),
-      id: this.autor.id,
     };
-    this.#service.put(
-      body,
-      () => void this.#router.navigate(['/autores/lista']),
-      (e) => console.log('Erro ao editar o autor', e)
-    );
+    this.#autorStore.update(this.autor().id, body);
+    void this.#router.navigate(['/autores/lista']);
   }
 
   remover() {
     if (!this.autor) return;
     if (confirm('Remover este autor?')) {
-      this.#service.delete(
-        this.autor.id,
-        () => void this.#router.navigate(['/autores/lista']),
-        (e) => console.log('Erro ao remover o autor', e)
-      );
+      this.#autorStore.remove(this.autor().id);
+      void this.#router.navigate(['/autores/lista']);
     }
   }
 }

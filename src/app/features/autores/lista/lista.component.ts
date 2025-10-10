@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AutorService } from '../../../shared/services/autor.service';
+import { AutorStore } from '../../../shared/stores/autor.store';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { LivrosPorAutorPipe } from '../../../shared/pipes/livros-por-autor.pipe';
 import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/lista-vazia.component';
@@ -19,18 +19,15 @@ import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/list
   templateUrl: './lista.component.html',
 })
 export class ListaAutoresComponent {
-  #service = inject(AutorService);
+  #autorStore = inject(AutorStore);
   #router = inject(Router);
 
-  readonly autores = this.#service.autores;
+  autores = computed(() => this.#autorStore.autores());
 
   remover(id: number) {
     if (confirm('Remover esta autor? (não remove livros)')) {
-      this.#service.delete(
-        id,
-        () => void this.#router.navigate(['/autores/lista']),
-        (e) => console.log('Erro ao remover a autor', e)
-      );
+      this.#autorStore.remove(id);
+      void this.#router.navigate(['/autores/lista']);
     }
   }
 }
