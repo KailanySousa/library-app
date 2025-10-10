@@ -9,7 +9,7 @@ export const livrosRoutes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./lista/lista.component').then((m) => m.ListaLivrosComponent),
+      import('./livros.component').then((m) => m.LivrosComponent),
   },
   {
     path: ':id',

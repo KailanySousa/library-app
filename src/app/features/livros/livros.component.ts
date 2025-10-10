@@ -6,13 +6,13 @@ import {
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { AutorPipe } from '../../../shared/pipes/autor.pipe';
-import { CategoriaPipe } from '../../../shared/pipes/categoria.pipe';
-import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/lista-vazia.component';
-import { StatusPipe } from '../../../shared/pipes/status.pipe';
-import { LivroStore } from '../../../shared/stores/livro.store';
-import { EditoraPipe } from '../../../shared/pipes/editora.pipe';
+import { HeaderComponent } from '../../shared/components/header/header.component';
+import { ListaVaziaComponent } from '../../shared/components/lista-vazia/lista-vazia.component';
+import { AutorPipe } from '../../shared/pipes/autor.pipe';
+import { CategoriaPipe } from '../../shared/pipes/categoria.pipe';
+import { EditoraPipe } from '../../shared/pipes/editora.pipe';
+import { StatusPipe } from '../../shared/pipes/status.pipe';
+import { LivroStore } from '../../shared/stores/livro.store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,9 +28,9 @@ import { EditoraPipe } from '../../../shared/pipes/editora.pipe';
     ListaVaziaComponent,
     StatusPipe,
   ],
-  templateUrl: './lista.component.html',
+  templateUrl: './livros.component.html',
 })
-export class ListaLivrosComponent {
+export class LivrosComponent {
   #livroStore = inject(LivroStore);
   readonly livros = computed(() => this.#livroStore.livros());
 
