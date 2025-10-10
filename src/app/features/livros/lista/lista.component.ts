@@ -12,6 +12,7 @@ import { CategoriaPipe } from '../../../shared/pipes/categoria.pipe';
 import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/lista-vazia.component';
 import { StatusPipe } from '../../../shared/pipes/status.pipe';
 import { LivroStore } from '../../../shared/stores/livro.store';
+import { EditoraPipe } from '../../../shared/pipes/editora.pipe';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,6 +24,7 @@ import { LivroStore } from '../../../shared/stores/livro.store';
     HeaderComponent,
     AutorPipe,
     CategoriaPipe,
+    EditoraPipe,
     ListaVaziaComponent,
     StatusPipe,
   ],

@@ -15,6 +15,7 @@ interface IOpcoes {
   livros: IItemOpcoes;
   categorias: IItemOpcoes;
   autores: IItemOpcoes;
+  editoras: IItemOpcoes;
   lido: IItemOpcoes;
   lendo: IItemOpcoes;
   desejo: IItemOpcoes;
@@ -47,6 +48,15 @@ const opcoes: IOpcoes = {
       router: '/autores/novo',
     },
   },
+  editoras: {
+    titulo: 'Nenhuma editora adicionado ainda',
+    descricao:
+      'Cadastre editoras para acompanhar suas obras e descobrir quantos livros você já leu de cada um.',
+    action: {
+      label: 'Adicionar primeira editora',
+      router: '/editoras/nova',
+    },
+  },
   lido: {
     titulo: 'Ainda nenhum livro lido',
     descricao: 'Conclua sua primeira leitura e veja sua estante ganhar vida!',
@@ -73,7 +83,8 @@ export class ListaVaziaComponent implements OnInit {
     | 'livros'
     | 'lendo'
     | 'lido'
-    | 'desejo';
+    | 'desejo'
+    | 'editoras';
   @Input() public titulo!: string;
   @Input() public descricao!: string;
   @Input() public action: IAction | undefined;

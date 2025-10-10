@@ -38,6 +38,11 @@
               <h1 class="text-3xl font-semibold text-slate-800 leading-tight">
                 {{ l.titulo }}
               </h1>
+              @if(l.editoraId) {
+              <p class="text-slate-500 text-sm mt-1">
+                Editora {{ l.editoraId | editora }}
+              </p>
+              }
               <p
                 class="text-slate-500 text-sm mt-1 flex flex-wrap gap-x-3 gap-y-1"
               >
@@ -55,13 +60,14 @@
                   {{ l.status | status }}
                 </span>
               </p>
+
               <p
                 class="text-slate-500 text-sm mt-1 flex flex-wrap gap-x-3 gap-y-1"
               >
                 @if (l.ano) {
                 <span>🗓 {{ l.ano }}</span>
                 } @if(l.capitulos) {
-                <span>📄 {{ l.capitulos }} pág.</span>
+                <span>📄 {{ l.capitulos }} capítulos</span>
                 }
               </p>
             </div>

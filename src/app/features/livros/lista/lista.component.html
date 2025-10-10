@@ -24,6 +24,7 @@
           <th class="px-4 py-3">Título</th>
           <th class="px-4 py-3">Autor</th>
           <th class="px-4 py-3">Categoria</th>
+          <th class="px-4 py-3">Editora</th>
           <th class="px-4 py-3">Status</th>
           <th class="w-40 px-4 py-3 text-center">Ações</th>
         </tr>
@@ -39,6 +40,9 @@
           <td class="px-4 py-3 text-slate-600">{{ l.autorId | autor }}</td>
           <td class="px-4 py-3 text-slate-600">
             {{ l.categoriaId | categoria }}
+          </td>
+          <td class="px-4 py-3 text-slate-600">
+            {{ l.editoraId | editora }}
           </td>
           <td class="px-4 py-3">
             <span

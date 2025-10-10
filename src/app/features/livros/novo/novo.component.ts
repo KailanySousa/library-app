@@ -22,6 +22,7 @@ import { AutorStore } from '../../../shared/stores/autor.store';
 import ILivro from '../../../shared/interfaces/livro.interface';
 import { LivroStore } from '../../../shared/stores/livro.store';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { EditoraStore } from '../../../shared/stores/editora.store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,6 +35,7 @@ export class NovoLivroComponent {
   #livroStore = inject(LivroStore);
   #autorStore = inject(AutorStore);
   #categoriaStore = inject(CategoriaStore);
+  #editoraStore = inject(EditoraStore);
 
   #formBuilder = inject(FormBuilder);
   #router = inject(Router);
@@ -45,6 +47,7 @@ export class NovoLivroComponent {
   readonly statusOptions = STATUS_OPTIONS;
   categorias = this.#categoriaStore.categorias;
   autores = this.#autorStore.autores;
+  editoras = this.#editoraStore.editoras;
   readonly form: FormGroup = this.#formBuilder.group({
     titulo: ['', [this.requiredHelper, Validators.minLength(2)]],
     autorId: ['', [this.requiredHelper]],
@@ -57,6 +60,7 @@ export class NovoLivroComponent {
       ],
     ],
     categoriaId: ['', [this.requiredHelper]],
+    editoraId: ['', [this.requiredHelper]],
     status: [EStatus.DESEJO, this.requiredHelper],
     capitulos: [null as number | null, [Validators.min(1)]],
     anoInicio: [

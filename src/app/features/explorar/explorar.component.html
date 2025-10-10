@@ -33,7 +33,7 @@
       }
     </div>
 
-    @if(lendo.length > 0) {
+    @if(lendo().length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       @for(livro of lendo(); track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>
@@ -75,7 +75,7 @@
       </a>
       }
     </div>
-    @if(lidos.length > 0) {
+    @if(lidos().length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       @for(livro of lidos(); track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>
@@ -117,7 +117,7 @@
       </a>
       }
     </div>
-    @if(desejos.length > 0) {
+    @if(desejos().length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       @for(livro of desejos(); track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>

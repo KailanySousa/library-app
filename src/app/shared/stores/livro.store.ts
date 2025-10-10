@@ -37,6 +37,7 @@ export class LivroStore extends BaseStore {
   }
 
   item(livroId: number): ILivro {
+    console.log('🚀 ~ LivroStore ~ item ~ livroId:', livroId);
     return this._livros().find((l) => l.id === livroId)!;
   }
 

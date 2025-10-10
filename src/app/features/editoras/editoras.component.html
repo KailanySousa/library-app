@@ -1,0 +1,62 @@
+<app-header></app-header>
+
+<section class="container mx-auto px-6 py-8 space-y-6">
+  <div
+    class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <div>
+      <h2 class="text-xl font-semibold text-slate-800">Editoras</h2>
+      <p class="text-slate-500 text-sm">Gerencie as editoras cadastradas.</p>
+    </div>
+    @if(editoras().length > 0) {
+    <a
+      [routerLink]="['/editoras/nova']"
+      class="inline-flex items-center justify-center rounded-lg bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white hover:bg-fuchsia-700"
+    >
+      Cadastrar
+    </a>
+    }
+  </div>
+
+  @if(editoras().length > 0) {
+  <div class="rounded-2xl border border-slate-200 bg-white">
+    <table class="w-full text-left text-sm">
+      <thead class="sticky top-0 z-10 bg-slate-50/70 backdrop-blur">
+        <tr class="text-slate-600">
+          <th class="px-4 py-3">Nome</th>
+          <th class="w-40 px-4 py-3 text-center">Ações</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-slate-100">
+        @for (e of editoras(); track e.id) {
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-3">
+            <span class="font-medium text-slate-800">{{ e.nome }}</span>
+          </td>
+          <td class="px-4 py-3">
+            <div class="flex justify-center gap-2">
+              <a
+                [routerLink]="['/editoras', e.id]"
+                class="rounded-lg border border-slate-300 px-3 py-1.5 hover:bg-slate-100"
+              >
+                Ver
+              </a>
+              <button
+                type="button"
+                class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-rose-700 hover:bg-rose-100"
+                (click)="remover(e.id)"
+              >
+                Remover
+              </button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } @else {
+  <app-lista-vazia modulo="editoras"></app-lista-vazia>
+  }
+</section>

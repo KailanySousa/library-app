@@ -21,6 +21,7 @@ import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
 import { FormsModule } from '@angular/forms';
 import { CitacaoLivroStore } from '../../../shared/stores/citacao-livro.store';
 import { LivroStore } from '../../../shared/stores/livro.store';
+import { EditoraPipe } from '../../../shared/pipes/editora.pipe';
 
 @Component({
   selector: 'app-livro',
@@ -31,6 +32,7 @@ import { LivroStore } from '../../../shared/stores/livro.store';
     CategoriaPipe,
     GradientePorCategoriaPipe,
     StatusHeaderPipe,
+    EditoraPipe,
     StatusPipe,
     OutrosLivrosComponent,
     FormsModule,
@@ -45,7 +47,7 @@ export class LivroComponent {
   id = input(0, { transform: numberAttribute });
 
   livro = computed(() => this.#livroStore.item(this.id()));
-  autor = computed(() => this.#autorStore.item(Number(this.id())));
+  autor = computed(() => this.#autorStore.item(Number(this.livro().autorId)));
   outrosDoAutor = computed(() =>
     this.#livroStore
       .by('autorId', this.livro().autorId)

@@ -105,5 +105,37 @@
         </a>
       </nav>
     </li>
+
+    <hr
+      class="h-px border-0 bg-gradient-to-r from-fuchsia-200 via-slate-200 to-violet-200"
+    />
+
+    <li class="flex items-center justify-between">
+      <div class="flex items-center gap-3 min-w-0">
+        <span
+          class="h-6 w-1 rounded-full bg-gradient-to-b from-fuchsia-600 to-violet-600"
+        ></span>
+        <div class="min-w-0">
+          <h2 class="text-slate-800 font-medium">Editoras</h2>
+          <p class="text-slate-500 text-sm truncate">
+            Gerencie sua base de editoras.
+          </p>
+        </div>
+      </div>
+      <nav class="flex gap-4 shrink-0">
+        <a
+          [routerLink]="['/editoras']"
+          class="font-medium bg-gradient-to-r from-fuchsia-600 to-violet-600 bg-clip-text text-transparent hover:underline"
+        >
+          Ver todas
+        </a>
+        <a
+          [routerLink]="['/editoras/nova']"
+          class="font-medium bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent hover:underline"
+        >
+          Cadastrar
+        </a>
+      </nav>
+    </li>
   </ul>
 </section>

@@ -24,6 +24,7 @@ import { CategoriaStore } from '../../../shared/stores/categoria.store';
 import { AutorStore } from '../../../shared/stores/autor.store';
 import { LivroStore } from '../../../shared/stores/livro.store';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { EditoraStore } from '../../../shared/stores/editora.store';
 
 @Component({
   selector: 'app-detalhe-livro',
@@ -42,12 +43,9 @@ export class DetalheLivroComponent {
 
   #categoriaStore = inject(CategoriaStore);
   #autorStore = inject(AutorStore);
-  #router = inject(Router);
+  #editoraStore = inject(EditoraStore);
 
-  livroId = input(0, { transform: numberAttribute });
-  livro = computed(() => this.#livroStore.item(this.livroId()));
-  autores = this.#autorStore.autores;
-  categorias = this.#categoriaStore.categorias;
+  #router = inject(Router);
 
   readonly form: FormGroup = this.#formBuilder.group({
     titulo: ['', [this.requiredHelper, Validators.minLength(2)]],
@@ -61,6 +59,7 @@ export class DetalheLivroComponent {
       ],
     ],
     categoriaId: ['', [this.requiredHelper]],
+    editoraId: ['', [this.requiredHelper]],
     status: [EStatus.DESEJO, this.requiredHelper],
     capitulos: [null as number | null, [Validators.min(1)]],
     anoInicio: [
@@ -71,8 +70,18 @@ export class DetalheLivroComponent {
     descricao: [''],
   });
 
+  id = input(0, { transform: numberAttribute });
+  livro = computed(() => {
+    console.log(this.id());
+    return this.#livroStore.item(this.id());
+  });
+  autores = this.#autorStore.autores;
+  categorias = this.#categoriaStore.categorias;
+  editoras = this.#editoraStore.editoras;
+
   private readonly syncForm = effect(() => {
     const l = this.livro();
+    console.log('🚀 ~ DetalheLivroComponent ~ l:', l);
     if (!l) return;
     this.form.patchValue(
       {
@@ -80,6 +89,7 @@ export class DetalheLivroComponent {
         autorId: l.autorId,
         ano: l.ano,
         categoriaId: l.categoriaId,
+        editoraId: l.editoraId,
         status: l.status,
         capitulos: l.capitulos,
         anoInicio: l.anoInicio,

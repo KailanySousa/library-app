@@ -3,9 +3,9 @@
   <!-- Breadcrumb + título -->
   <header class="mb-6">
     <nav class="text-sm text-slate-500 mb-2">
-      <a [routerLink]="['/livros/lista']" class="hover:underline">Autores</a>
+      <a [routerLink]="['/livros/lista']" class="hover:underline">Livros</a>
       <span class="mx-1">/</span>
-      <span class="text-slate-700">Novo</span>
+      <span class="text-slate-700">{{ livro().titulo }}</span>
     </nav>
 
     <div
@@ -15,7 +15,7 @@
         <h1
           class="text-2xl md:text-3xl font-semibold text-slate-800 leading-tight"
         >
-          Novo livro
+          {{ livro().titulo }}
         </h1>
       </div>
 
@@ -104,51 +104,70 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700">Ano *</label>
-          <input
-            type="number"
-            formControlName="ano"
-            min="1800"
-            step="1"
-            inputmode="numeric"
-            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-            placeholder="AAAA"
-          />
-          @if (form.get('ano')?.touched && form.get('ano')?.invalid) {
-          <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
-          }
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700"
-            >Capítulos</label
-          >
-          <input
-            type="number"
-            min="1"
-            formControlName="capitulos"
-            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-            placeholder="Ex.: 320"
-          />
-          @if (form.get('capitulos')?.touched && form.get('capitulos')?.invalid)
-          {
-          <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
-          }
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-slate-700"
-            >Status *</label
-          >
-          <select
-            formControlName="status"
-            class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
-          >
-            @for(status of statusOptions; track $index) {
-            <option [value]="status.option">{{ status.label }}</option>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700"
+              >Ano *</label
+            >
+            <input
+              type="number"
+              formControlName="ano"
+              min="1800"
+              step="1"
+              inputmode="numeric"
+              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+              placeholder="AAAA"
+            />
+            @if (form.get('ano')?.touched && form.get('ano')?.invalid) {
+            <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
             }
-          </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700"
+              >Capítulos</label
+            >
+            <input
+              type="number"
+              min="1"
+              formControlName="capitulos"
+              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+              placeholder="Ex.: 320"
+            />
+            @if (form.get('capitulos')?.touched &&
+            form.get('capitulos')?.invalid) {
+            <p class="mt-1 text-sm text-rose-600">Campo obrigatório</p>
+            }
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700"
+              >Editora *</label
+            >
+            <select
+              formControlName="editoraId"
+              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+            >
+              <option value="">Selecione...</option>
+              @for(editora of editoras(); track $index) {
+              <option [value]="editora.id">{{ editora.nome }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700"
+              >Status *</label
+            >
+            <select
+              formControlName="status"
+              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+            >
+              @for(status of statusOptions; track $index) {
+              <option [value]="status.option">{{ status.label }}</option>
+              }
+            </select>
+          </div>
         </div>
       </div>
 

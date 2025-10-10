@@ -31,6 +31,13 @@ export const routes: Routes = [
       import('./features/autores/autores.routes').then((m) => m.autoresRoutes),
   },
   {
+    path: 'editoras',
+    loadChildren: () =>
+      import('./features/editoras/editoras.routes').then(
+        (m) => m.editorasRoutes
+      ),
+  },
+  {
     path: 'configuracoes',
     loadComponent: () =>
       import('./features/configuracoes/configuracoes.component').then(
