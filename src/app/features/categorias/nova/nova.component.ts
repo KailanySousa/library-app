@@ -62,7 +62,7 @@ export class NovaCategoriaComponent {
         queryParams: { categoriaId },
       });
     } else {
-      void this.#router.navigate(['/categorias/lista']);
+      void this.#router.navigate(['/categorias']);
     }
   }
 }

@@ -66,14 +66,14 @@ export class DetalheCategoriaComponent {
 
     const body: ICategoria = this.form.getRawValue() as ICategoria;
     this.#categoriaStore.update(this.categoria().id, body);
-    void this.#router.navigate(['/categorias/lista']);
+    void this.#router.navigate(['/categorias']);
   }
 
   remover() {
     if (!this.categoria) return;
     if (confirm('Remover esta categoria?')) {
       this.#categoriaStore.remove(this.categoria().id);
-      void this.#router.navigate(['/categorias/lista']);
+      void this.#router.navigate(['/categorias']);
     }
   }
 }

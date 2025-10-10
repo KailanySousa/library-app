@@ -10,7 +10,7 @@ export const categoriasRoutes: Routes = [
           import('./nova/nova.component').then((m) => m.NovaCategoriaComponent),
       },
       {
-        path: 'lista',
+        path: '',
         loadComponent: () =>
           import('./lista/lista.component').then(
             (m) => m.ListaCategoriasComponent

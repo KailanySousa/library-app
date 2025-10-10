@@ -33,7 +33,7 @@ export class ListaCategoriasComponent {
   remover(id: number) {
     if (confirm('Remover esta categoria?')) {
       this.#categoriaStore.remove(id);
-      void this.#router.navigate(['/categorias/lista']);
+      void this.#router.navigate(['/categorias']);
     }
   }
 }
