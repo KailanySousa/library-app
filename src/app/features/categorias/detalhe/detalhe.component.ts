@@ -1,8 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  effect,
   inject,
-  OnInit,
+  input,
+  numberAttribute,
 } from '@angular/core';
 import ICategoria from '../../../shared/interfaces/categoria.interface';
 import {
@@ -12,8 +15,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CategoriaService } from '../../../shared/services/categoria.service';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CategoriaStore } from '../../../shared/stores/categoria.store';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { LivrosPorCategoriaPipe } from '../../../shared/pipes/livros-por-categoria.pipe';
@@ -25,51 +28,35 @@ import { LivrosPorCategoriaPipe } from '../../../shared/pipes/livros-por-categor
   providers: [LivrosPorCategoriaPipe],
   templateUrl: './detalhe.component.html',
 })
-export class DetalheCategoriaComponent implements OnInit {
-  categoria!: ICategoria;
-
+export class DetalheCategoriaComponent {
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
 
-  form!: FormGroup;
-  qtdLivros: number = 0;
-
   #livrosPorCategoriaPipe = inject(LivrosPorCategoriaPipe);
   #formBuilder = inject(FormBuilder);
-  #service = inject(CategoriaService);
+  #categoriaStore = inject(CategoriaStore);
   #router = inject(Router);
-  #route = inject(ActivatedRoute);
 
-  ngOnInit() {
-    this.setupForm();
-    this.buscarDetalhes();
-    this.updateForm();
-  }
+  form: FormGroup = this.#formBuilder.group({
+    nome: ['', [this.requiredHelper, Validators.minLength(2)]],
+    descricao: [''],
+    cor: [
+      '#F0ABFC',
+      [Validators.pattern(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/)],
+    ],
+  });
 
-  private buscarDetalhes() {
-    const categoriaId = this.#route.snapshot.paramMap.get('id');
-    this.categoria = this.#service.getItem(Number.parseInt(categoriaId!));
-    this.qtdLivros = this.#livrosPorCategoriaPipe.transform(this.categoria.id);
-  }
+  id = input(0, { transform: numberAttribute });
+  categoria = computed(() => this.#categoriaStore.item(this.id()));
+  qtdLivros = computed(() => this.#livrosPorCategoriaPipe.transform(this.id()));
 
-  private setupForm() {
-    this.form = this.#formBuilder.group({
-      nome: ['', [this.requiredHelper, Validators.minLength(2)]],
-      descricao: [''],
-      cor: [
-        '#F0ABFC',
-        [Validators.pattern(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/)],
-      ],
-    });
-  }
-
-  updateForm() {
+  readonly syncForm = effect(() => {
     this.form.patchValue({
-      nome: this.categoria.nome,
-      descricao: this.categoria.descricao ?? '',
-      cor: this.categoria.cor ?? '#F0ABFC',
+      nome: this.categoria().nome,
+      descricao: this.categoria().descricao ?? '',
+      cor: this.categoria().cor ?? '#F0ABFC',
     });
-  }
+  });
 
   salvar() {
     if (this.form.invalid) {
@@ -77,25 +64,16 @@ export class DetalheCategoriaComponent implements OnInit {
       return;
     }
 
-    const body: ICategoria = {
-      ...(this.form.getRawValue() as ICategoria),
-      id: this.categoria.id,
-    };
-    this.#service.put(
-      body,
-      () => void this.#router.navigate(['/categorias/lista']),
-      (e) => console.log('Erro ao editar a categoria', e)
-    );
+    const body: ICategoria = this.form.getRawValue() as ICategoria;
+    this.#categoriaStore.update(this.categoria().id, body);
+    void this.#router.navigate(['/categorias/lista']);
   }
 
   remover() {
     if (!this.categoria) return;
     if (confirm('Remover esta categoria?')) {
-      this.#service.delete(
-        this.categoria.id,
-        () => void this.#router.navigate(['/categorias/lista']),
-        (e) => console.log('Erro ao remover a categoria', e)
-      );
+      this.#categoriaStore.remove(this.categoria().id);
+      void this.#router.navigate(['/categorias/lista']);
     }
   }
 }

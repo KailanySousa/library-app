@@ -1,6 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { CategoriaService } from '../../../shared/services/categoria.service';
+import { CategoriaStore } from '../../../shared/stores/categoria.store';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { LivrosPorCategoriaPipe } from '../../../shared/pipes/livros-por-categoria.pipe';
@@ -20,18 +25,15 @@ import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/list
   templateUrl: './lista.component.html',
 })
 export class ListaCategoriasComponent {
-  #service = inject(CategoriaService);
+  #categoriaStore = inject(CategoriaStore);
   #router = inject(Router);
 
-  readonly categorias = this.#service.categorias;
+  categorias = computed(() => this.#categoriaStore.categorias());
 
   remover(id: number) {
     if (confirm('Remover esta categoria?')) {
-      this.#service.delete(
-        id,
-        () => void this.#router.navigate(['/categorias/lista']),
-        (e) => console.log('Erro ao remover a categoria', e)
-      );
+      this.#categoriaStore.remove(id);
+      void this.#router.navigate(['/categorias/lista']);
     }
   }
 }
