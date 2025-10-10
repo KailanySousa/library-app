@@ -1,13 +1,13 @@
 <app-header></app-header>
 
-@if(autor) {
+@if(autor()) {
 <section class="container mx-auto px-6 py-8">
   <!-- Breadcrumb + título -->
   <header class="mb-6">
     <nav class="text-sm text-slate-500 mb-2">
       <a [routerLink]="['/autores/lista']" class="hover:underline">Autores</a>
       <span class="mx-1">/</span>
-      <span class="text-slate-700">{{ autor.nome }}</span>
+      <span class="text-slate-700">{{ autor().nome }}</span>
     </nav>
 
     <div
@@ -17,7 +17,7 @@
         <h1
           class="text-2xl md:text-3xl font-semibold text-slate-800 leading-tight"
         >
-          {{ autor.nome }}
+          {{ autor().nome }}
         </h1>
       </div>
 
@@ -37,7 +37,7 @@
         >
           Salvar
         </button>
-        @if(qtdLivros === 0){
+        @if(!qtdLivros()){
         <button
           type="button"
           (click)="remover()"
@@ -50,7 +50,7 @@
       </div>
     </div>
   </header>
-  @if (qtdLivros > 0) {
+  @if (!qtdLivros()) {
   <div
     class="rounded-2xl border border-amber-200 bg-amber-50 text-amber-900 px-4 py-3 flex items-start gap-3"
   >
@@ -63,7 +63,7 @@
     >
       <path
         fill-rule="evenodd"
-        d="M8.257 3.099autor.765-1.36 2.721-1.36 3.486 0l6.516 11.591autor.75 1.336-.213 3.01-1.743 3.01H3.484c-1.53 0-2.493-1.674-1.743-3.01L8.257 3.1zM11 14a1 1 0 10-2 0 1 1 0 002 0zm-1-2a1 1 0 01-1-1V8a1 1 0 112 0v3a1 1 0 01-1 1z"
+        d="M8.257 3.099autor().765-1.36 2.721-1.36 3.486 0l6.516 11.591autor().75 1.336-.213 3.01-1.743 3.01H3.484c-1.53 0-2.493-1.674-1.743-3.01L8.257 3.1zM11 14a1 1 0 10-2 0 1 1 0 002 0zm-1-2a1 1 0 01-1-1V8a1 1 0 112 0v3a1 1 0 01-1 1z"
         clip-rule="evenodd"
       />
     </svg>
@@ -121,23 +121,23 @@
             <span>Livros do autor</span>
             <a
               [routerLink]="['/livros']"
-              [queryParams]="{ autor: autor.id }"
+              [queryParams]="{ autor: autor().id }"
               class="inline-flex items-center rounded-full border border-fuchsia-200 bg-fuchsia-50 px-2 py-0.5 text-xs text-fuchsia-700"
               >{{ qtdLivros }} livro(s)</a
             >
           </li>
-          @if (autor.createdAt) {
+          @if (autor().createdAt) {
           <li class="flex items-center justify-between">
             <span>Criado em</span>
             <time class="text-slate-700">{{
-              autor.createdAt | date : "shortDate"
+              autor().createdAt | date : "shortDate"
             }}</time>
           </li>
-          } @if (autor.updatedAt) {
+          } @if (autor().updatedAt) {
           <li class="flex items-center justify-between">
             <span>Atualizado em</span>
             <time class="text-slate-700">{{
-              autor.updatedAt | date : "shortDate"
+              autor().updatedAt | date : "shortDate"
             }}</time>
           </li>
           }
@@ -149,7 +149,7 @@
         <div class="p-5">
           <h3 class="text-slate-800 font-semibold mb-1">Ações</h3>
           <div class="flex flex-wrap gap-2">
-            @if(qtdLivros === 0) {
+            @if(!qtdLivros()) {
             <button
               type="button"
               (click)="remover()"
@@ -160,7 +160,7 @@
             } @else {
             <a
               [routerLink]="['/livros']"
-              [queryParams]="{ autor: autor.id }"
+              [queryParams]="{ autor: autor().id }"
               class="inline-flex items-center gap-1 px-3 py-2 rounded-xl border border-fuchsia-200 bg-fuchsia-50 text-sm font-medium text-fuchsia-700 hover:bg-fuchsia-100"
             >
               Ver livros
@@ -181,7 +181,7 @@
 
             <a
               [routerLink]="['/livros/novo']"
-              [queryParams]="{ autorId: autor.id }"
+              [queryParams]="{ autorId: autor().id }"
               class="rounded-xl border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
               >Adicionar livro</a
             >

@@ -1,7 +1,6 @@
 import {
   Component,
   computed,
-  effect,
   inject,
   input,
   numberAttribute,
@@ -22,8 +21,6 @@ import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
 import { FormsModule } from '@angular/forms';
 import { CitacaoLivroStore } from '../../../shared/stores/citacao-livro.store';
 import { LivroStore } from '../../../shared/stores/livro.store';
-import ILivro from '../../../shared/interfaces/livro.interface';
-import IAutor from '../../../shared/interfaces/autor.interface';
 
 @Component({
   selector: 'app-livro',
@@ -47,24 +44,19 @@ export class LivroComponent {
 
   id = input(0, { transform: numberAttribute });
 
-  livro!: ILivro;
-  autor!: IAutor;
-  outrosDoAutor!: ILivro[];
-  outrosDaCategoria!: ILivro[];
-  readonly setUp = effect(() => {
-    this.livro = this.#livroStore.item(this.id());
-    this.autor = this.#autorStore.item(Number(this.livro.autorId));
-    this.outrosDoAutor = this.#livroStore
-      .by('autorId', this.livro.autorId)
-      .filter((l) => l.id !== this.livro.id);
-    this.outrosDaCategoria = this.#livroStore.by(
-      'categoriaId',
-      this.livro.autorId
-    );
-  });
+  livro = computed(() => this.#livroStore.item(this.id()));
+  autor = computed(() => this.#autorStore.item(Number(this.id())));
+  outrosDoAutor = computed(() =>
+    this.#livroStore
+      .by('autorId', this.livro().autorId)
+      .filter((l) => l.id !== this.livro().id)
+  );
+  outrosDaCategoria = computed(() =>
+    this.#livroStore.by('categoriaId', this.livro().autorId)
+  );
 
   citacoes = computed(() =>
-    this.#citacaoLivroStore.citacoesPorLivro(this.livro.id)
+    this.#citacaoLivroStore.citacoesPorLivro(this.livro().id)
   );
 
   formCitacaoAberto = signal(false as boolean);
@@ -101,7 +93,7 @@ export class LivroComponent {
     const texto = (this.citacaoTexto || '').trim();
     if (!texto) return;
 
-    const l = this.livro;
+    const l = this.livro();
     if (!l) return;
 
     this.#citacaoLivroStore.add(l.id, texto);
