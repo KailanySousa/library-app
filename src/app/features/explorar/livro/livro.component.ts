@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  effect,
   inject,
   input,
   numberAttribute,
@@ -8,7 +9,7 @@ import {
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { AutorService } from '../../../shared/services/autor.service';
+import { AutorStore } from '../../../shared/stores/autor.store';
 import { CommonModule } from '@angular/common';
 import { CategoriaPipe } from '../../../shared/pipes/categoria.pipe';
 import { GradientePorCategoriaPipe } from '../../../shared/pipes/gradiente-por-categoria.pipe';
@@ -21,6 +22,8 @@ import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
 import { FormsModule } from '@angular/forms';
 import { CitacoesPorLivroService } from '../../../shared/services/citacoes-por-livro.service';
 import { LivroStore } from '../../../shared/stores/livro.store';
+import ILivro from '../../../shared/interfaces/livro.interface';
+import IAutor from '../../../shared/interfaces/autor.interface';
 
 @Component({
   selector: 'app-livro',
@@ -39,33 +42,33 @@ import { LivroStore } from '../../../shared/stores/livro.store';
 })
 export class LivroComponent {
   #livroStore = inject(LivroStore);
+  #autorStore = inject(AutorStore);
   #citacoesPorLivroService = inject(CitacoesPorLivroService);
 
   id = input(0, { transform: numberAttribute });
 
-  livro = computed(() => this.#livroStore.getItem(this.id()));
+  livro!: ILivro;
+  autor!: IAutor;
+  outrosDoAutor!: ILivro[];
+  outrosDaCategoria!: ILivro[];
+  readonly setUp = effect(() => {
+    this.livro = this.#livroStore.item(this.id());
+    this.autor = this.#autorStore.item(Number(this.livro.autorId));
+    this.outrosDoAutor = this.#livroStore
+      .by('autorId', this.livro.autorId)
+      .filter((l) => l.id !== this.livro.id);
+    this.outrosDaCategoria = this.#livroStore.by(
+      'categoriaId',
+      this.livro.autorId
+    );
+  });
 
-  autor = computed(() =>
-    this.autorService.getItem(Number(this.livro().autorId))
-  );
-  outrosDoAutor = computed(() =>
-    this.#livroStore
-      .by('autorId', this.livro().autorId)
-      .filter((l) => l.id !== this.livro().id)
-  );
-  outrosDaCategoria = computed(() =>
-    this.#livroStore
-      .by('categoriaId', this.livro().autorId)
-      .filter((l) => l.id !== this.livro().id)
-  );
   citacoes = computed(() =>
-    this.#citacoesPorLivroService.getCitacoesPorLivro(this.livro().id)
+    this.#citacoesPorLivroService.getCitacoesPorLivro(this.livro.id)
   );
 
   formCitacaoAberto = signal(false as boolean);
   citacaoTexto = '';
-
-  constructor(private autorService: AutorService) {}
 
   badgeClasses(status?: string) {
     return {
@@ -98,7 +101,7 @@ export class LivroComponent {
     const texto = (this.citacaoTexto || '').trim();
     if (!texto) return;
 
-    const l = this.livro();
+    const l = this.livro;
     if (!l) return;
 
     this.#citacoesPorLivroService.setItem(

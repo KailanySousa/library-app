@@ -1,8 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
-  OnInit,
+  Signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -15,13 +16,12 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { EStatus } from '../../../shared/enums/status.enum';
 import { STATUS_OPTIONS } from '../../../shared/consts/status.const';
-import { CategoriaService } from '../../../shared/services/categoria.service';
-import ICategoria from '../../../shared/interfaces/categoria.interface';
+import { CategoriaStore } from '../../../shared/stores/categoria.store';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { AutorService } from '../../../shared/services/autor.service';
-import IAutor from '../../../shared/interfaces/autor.interface';
+import { AutorStore } from '../../../shared/stores/autor.store';
 import ILivro from '../../../shared/interfaces/livro.interface';
 import { LivroStore } from '../../../shared/stores/livro.store';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,62 +30,53 @@ import { LivroStore } from '../../../shared/stores/livro.store';
   imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
   templateUrl: './novo.component.html',
 })
-export class NovoLivroComponent implements OnInit {
+export class NovoLivroComponent {
   #livroStore = inject(LivroStore);
+  #autorStore = inject(AutorStore);
+  #categoriaStore = inject(CategoriaStore);
+
+  #formBuilder = inject(FormBuilder);
+  #router = inject(Router);
   readonly currentYear = new Date().getFullYear();
 
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
 
   readonly statusOptions = STATUS_OPTIONS;
-  categorias!: ICategoria[];
-  autores!: IAutor[];
-  form!: FormGroup;
-
-  constructor(
-    private readonly router: Router,
-    private readonly fb: FormBuilder,
-    private readonly categoriaService: CategoriaService,
-    private readonly autorService: AutorService
-  ) {}
-
-  ngOnInit() {
-    this.setupForm();
-
-    this.categorias = this.categoriaService.getAll();
-    this.autores = this.autorService.getAll();
-  }
-
-  setupForm() {
-    this.form = this.fb.group({
-      titulo: ['', [this.requiredHelper, Validators.minLength(2)]],
-      autorId: ['', [this.requiredHelper]],
-      ano: [
-        '',
-        [
-          this.requiredHelper,
-          Validators.min(1800),
-          Validators.max(this.currentYear),
-        ],
+  categorias = this.#categoriaStore.categorias;
+  autores = this.#autorStore.autores;
+  readonly form: FormGroup = this.#formBuilder.group({
+    titulo: ['', [this.requiredHelper, Validators.minLength(2)]],
+    autorId: ['', [this.requiredHelper]],
+    ano: [
+      '',
+      [
+        this.requiredHelper,
+        Validators.min(1800),
+        Validators.max(this.currentYear),
       ],
-      categoriaId: ['', [this.requiredHelper]],
-      status: [EStatus.DESEJO, this.requiredHelper],
-      paginas: [null as number | null, [Validators.min(1)]],
-      anoInicio: [
-        null as string | null,
-        [Validators.min(2019), Validators.max(this.currentYear)],
-      ],
-      anoFim: [null as string | null],
-      descricao: [''],
-    });
-  }
+    ],
+    categoriaId: ['', [this.requiredHelper]],
+    status: [EStatus.DESEJO, this.requiredHelper],
+    paginas: [null as number | null, [Validators.min(1)]],
+    anoInicio: [
+      null as string | null,
+      [Validators.min(2019), Validators.max(this.currentYear)],
+    ],
+    anoFim: [null as string | null],
+    descricao: [''],
+  });
 
-  onChangeStatus() {
-    const status: EStatus = this.form.get('status')?.value as EStatus;
+  private readonly statusValue: Signal<EStatus> = toSignal(
+    this.form.get('status')!.valueChanges,
+    { initialValue: this.form.get('status')!.value as EStatus }
+  );
 
-    this.verifyAnoInicioRequired(status);
-    this.verifyAnoFimRequired(status);
-  }
+  private readonly syncStatusValidators = effect(() => {
+    const st = this.statusValue();
+    this.verifyAnoInicioRequired(st);
+    this.verifyAnoFimRequired(st);
+  });
 
   verifyAnoInicioRequired(status: EStatus) {
     const anoInicioControl = this.form.get('anoInicio');
@@ -124,5 +115,6 @@ export class NovoLivroComponent implements OnInit {
 
     const body: ILivro = this.form.getRawValue() as ILivro;
     this.#livroStore.add(body);
+    void this.#router.navigate(['/livros/lista']);
   }
 }
