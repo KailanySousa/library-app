@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
+  computed,
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,6 @@ import { EStatus } from '../../shared/enums/status.enum';
 import { CardLivroComponent } from './card-livro/card-livro.component';
 import { ListaVaziaComponent } from '../../shared/components/lista-vazia/lista-vazia.component';
 import { LivroStore } from '../../shared/stores/livro.store';
-import ILivro from '../../shared/interfaces/livro.interface';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,12 +29,7 @@ export class ExplorarComponent {
   readonly EStatus = EStatus;
   #livroStore = inject(LivroStore);
 
-  lidos!: ILivro[];
-  desejos!: ILivro[];
-  lendo!: ILivro[];
-  setData = effect(() => {
-    this.lidos = this.#livroStore.by('status', EStatus.LIDO);
-    this.desejos = this.#livroStore.by('status', EStatus.DESEJO);
-    this.lendo = this.#livroStore.by('status', EStatus.LENDO);
-  });
+  lidos = computed(() => this.#livroStore.by('status', EStatus.LIDO));
+  desejos = computed(() => this.#livroStore.by('status', EStatus.DESEJO));
+  lendo = computed(() => this.#livroStore.by('status', EStatus.LENDO));
 }

@@ -1,9 +1,8 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { CardLivroComponent } from '../card-livro/card-livro.component';
 import { ListaVaziaComponent } from '../../../shared/components/lista-vazia/lista-vazia.component';
 import { EStatus } from '../../../shared/enums/status.enum';
-import ILivro from '../../../shared/interfaces/livro.interface';
 import { LivroStore } from '../../../shared/stores/livro.store';
 
 interface ITextos {
@@ -42,13 +41,11 @@ const textos: IConteudo = {
 export class VerMaisComponent {
   readonly EStatus = EStatus;
   #livroStore = inject(LivroStore);
-
-  status = input('');
-  livros!: ILivro[];
   textos!: ITextos;
 
-  setData = effect(() => {
-    this.livros = this.#livroStore.by('status', this.status());
+  status = input('');
+  livros = computed(() => {
     this.textos = textos[this.status() as keyof IConteudo];
+    return this.#livroStore.by('status', this.status());
   });
 }

@@ -20,7 +20,7 @@ import {
 import { EStatus } from '../../../shared/enums/status.enum';
 import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
 import { FormsModule } from '@angular/forms';
-import { CitacoesPorLivroService } from '../../../shared/services/citacoes-por-livro.service';
+import { CitacaoLivroStore } from '../../../shared/stores/citacao-livro.store';
 import { LivroStore } from '../../../shared/stores/livro.store';
 import ILivro from '../../../shared/interfaces/livro.interface';
 import IAutor from '../../../shared/interfaces/autor.interface';
@@ -43,7 +43,7 @@ import IAutor from '../../../shared/interfaces/autor.interface';
 export class LivroComponent {
   #livroStore = inject(LivroStore);
   #autorStore = inject(AutorStore);
-  #citacoesPorLivroService = inject(CitacoesPorLivroService);
+  #citacaoLivroStore = inject(CitacaoLivroStore);
 
   id = input(0, { transform: numberAttribute });
 
@@ -64,7 +64,7 @@ export class LivroComponent {
   });
 
   citacoes = computed(() =>
-    this.#citacoesPorLivroService.getCitacoesPorLivro(this.livro.id)
+    this.#citacaoLivroStore.citacoesPorLivro(this.livro.id)
   );
 
   formCitacaoAberto = signal(false as boolean);
@@ -104,14 +104,7 @@ export class LivroComponent {
     const l = this.livro;
     if (!l) return;
 
-    this.#citacoesPorLivroService.setItem(
-      l.id,
-      texto,
-      () => {
-        // this.citacoes.set(citacoes);
-        this.cancelarCitacao();
-      },
-      (e) => console.log('Erro ao adicionar a citação', e)
-    );
+    this.#citacaoLivroStore.add(l.id, texto);
+    this.cancelarCitacao();
   }
 }
