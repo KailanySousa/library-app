@@ -37,10 +37,12 @@ export class EditCapituloComponent {
       this.capitulo().id,
       this.formRenomear.getRawValue() as ICapitulo
     );
+    this.formRenomear.reset();
     this.fecharForm.emit();
   }
 
   cancelar() {
+    this.formRenomear.reset();
     this.fecharForm.emit();
   }
 }

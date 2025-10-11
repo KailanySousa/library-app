@@ -36,4 +36,8 @@ export class AddCapituloComponent {
     this.#store.add(body);
     this.formAdicionar.reset();
   }
+
+  resetForm() {
+    this.formAdicionar.reset();
+  }
 }

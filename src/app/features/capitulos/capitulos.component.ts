@@ -14,6 +14,7 @@ import { ListaVaziaComponent } from '../../shared/components/lista-vazia/lista-v
 import { AddCapituloComponent } from './add-capitulo/add-capitulo.component';
 import { EditCapituloComponent } from './edit-capitulo/edit-capitulo.component';
 import { ICapitulo } from '../../shared/interfaces/capitulo.interface';
+import { ListaComponent } from './lista/lista.component';
 
 @Component({
   selector: 'app-capitulos',
@@ -24,6 +25,7 @@ import { ICapitulo } from '../../shared/interfaces/capitulo.interface';
     ListaVaziaComponent,
     AddCapituloComponent,
     EditCapituloComponent,
+    ListaComponent,
   ],
   templateUrl: './capitulos.component.html',
 })
@@ -36,8 +38,7 @@ export class CapitulosComponent {
   formEditarCapituloAberto = signal(false as boolean);
   capituloSelecionado = signal(null as unknown as ICapitulo);
 
-  renomearCapitulo(c: ICapitulo) {
-    console.log('🚀 ~ CapitulosComponent ~ renomearCapitulo ~ c:', c);
+  editar(c: ICapitulo) {
     this.capituloSelecionado.set(c);
     this.formEditarCapituloAberto.set(true);
   }
