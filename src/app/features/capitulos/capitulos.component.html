@@ -11,11 +11,15 @@
     </div>
   </header>
 
-  <app-add-capitulo [livroId]="this.livroId()"></app-add-capitulo>
+  <app-add-capitulo [livroId]="livroId()"></app-add-capitulo>
   <!-- Lista de capítulos -->
   @if(capitulos().length) {
   <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
-    <div class="md:col-span-8">
+    <div
+      [ngClass]="
+        !formEditarCapituloAberto() ? 'md:col-span-12' : 'md:col-span-8'
+      "
+    >
       <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
         <!-- Cabeçalho da lista -->
         <div
@@ -65,6 +69,7 @@
 
                 <!-- Ações -->
                 <div class="flex items-center justify-end gap-2">
+                  <a (click)="renomearCapitulo(c)">Editar</a>
                   <!-- Excluir -->
                   <button
                     type="button"
@@ -109,72 +114,14 @@
         </ul>
       </div>
     </div>
+    @if(formEditarCapituloAberto()) {
     <div class="md:col-span-4">
-      <!-- Área expandida: edição inline -->
-      <div class="px-4 pb-4 border rounded-xl">
-        <form class="grid grid-cols-1 md:grid-cols-12 gap-3">
-          <!-- Número -->
-          <span class="md:col-span-12 text-slate-700 font-medium mt-4"
-            >Renomear capítulo</span
-          >
-
-          <!-- Título -->
-          <div class="md:col-span-9">
-            <input
-              type="text"
-              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-fuchsia-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-200"
-              placeholder="Ex.: Introdução"
-            />
-          </div>
-
-          <!-- Ações (Cancelar / Salvar) -->
-          <div class="md:col-span-3 flex items-center justify-end gap-2">
-            <button
-              type="button"
-              class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50"
-              aria-label="Cancelar edição"
-              title="Cancelar edição"
-            >
-              <svg
-                class="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M6 6l12 12M18 6L6 18"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </button>
-
-            <button
-              type="submit"
-              class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-fuchsia-600 text-white shadow hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-200"
-              aria-label="Salvar alterações"
-              title="Salvar alterações"
-            >
-              <svg
-                class="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M5 12.5l5 5 9-11"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-        </form>
-      </div>
+      <app-edit-capitulo
+        [capitulo]="capituloSelecionado()"
+        (fecharForm)="fecharForm()"
+      ></app-edit-capitulo>
     </div>
+    }
   </div>
 
   } @else {

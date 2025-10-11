@@ -4,25 +4,26 @@ import {
   inject,
   input,
   numberAttribute,
+  signal,
 } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CapituloStore } from '../../shared/stores/capitulo.store';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { RouterModule } from '@angular/router';
 import { ListaVaziaComponent } from '../../shared/components/lista-vazia/lista-vazia.component';
 import { AddCapituloComponent } from './add-capitulo/add-capitulo.component';
+import { EditCapituloComponent } from './edit-capitulo/edit-capitulo.component';
+import { ICapitulo } from '../../shared/interfaces/capitulo.interface';
 
 @Component({
   selector: 'app-capitulos',
   imports: [
-    FormsModule,
     CommonModule,
     HeaderComponent,
     RouterModule,
     ListaVaziaComponent,
     AddCapituloComponent,
-    ReactiveFormsModule,
+    EditCapituloComponent,
   ],
   templateUrl: './capitulos.component.html',
 })
@@ -31,4 +32,18 @@ export class CapitulosComponent {
 
   livroId = input(0, { transform: numberAttribute });
   capitulos = computed(() => this.#store.by('livroId', this.livroId()));
+
+  formEditarCapituloAberto = signal(false as boolean);
+  capituloSelecionado = signal(null as unknown as ICapitulo);
+
+  renomearCapitulo(c: ICapitulo) {
+    console.log('🚀 ~ CapitulosComponent ~ renomearCapitulo ~ c:', c);
+    this.capituloSelecionado.set(c);
+    this.formEditarCapituloAberto.set(true);
+  }
+
+  fecharForm() {
+    this.capituloSelecionado.set(null as unknown as ICapitulo);
+    this.formEditarCapituloAberto.set(false);
+  }
 }
