@@ -1,0 +1,183 @@
+<app-header></app-header>
+<!-- Tela: Capítulos do Livro (com opção de adicionar novo capítulo) -->
+<section class="container mx-auto px-6 py-8 space-y-6">
+  <!-- Cabeçalho -->
+  <header class="flex items-center justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-slate-800">Capítulos</h1>
+      <p class="text-sm text-slate-500">
+        Visualize, expanda para editar, remova ou adicione novos capítulos.
+      </p>
+    </div>
+  </header>
+
+  <app-add-capitulo [livroId]="this.livroId()"></app-add-capitulo>
+  <!-- Lista de capítulos -->
+  @if(capitulos().length) {
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+    <div class="md:col-span-8">
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <!-- Cabeçalho da lista -->
+        <div
+          class="hidden md:grid grid-cols-[1fr_auto_auto] items-center gap-4 px-4 py-3 text-xs font-medium text-slate-500 border-b border-slate-100"
+        >
+          <span>Título</span>
+          <span class="justify-self-end">Status</span>
+          <span class="justify-self-end pr-1">Ações</span>
+        </div>
+
+        <ul role="list" class="divide-y divide-slate-100">
+          @for (c of capitulos(); track c.id) {
+          <li>
+            <div class="group open:bg-slate-50 transition-colors">
+              <!-- Linha resumida -->
+              <div
+                class="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] items-center gap-3 px-4 py-3 cursor-pointer list-none"
+              >
+                <!-- Título -->
+                <div class="min-w-0">
+                  <p class="text-sm font-medium text-slate-800 truncate">
+                    {{ c.nome || "Sem título" }}
+                  </p>
+                  <p class="md:hidden text-xs text-slate-500">
+                    Toque para editar
+                  </p>
+                </div>
+
+                <!-- Status -->
+                <span
+                  class="justify-self-start md:justify-self-end inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px]"
+                  [ngClass]="{
+                    'bg-emerald-50 text-emerald-700 border-emerald-200':
+                      c.concluido,
+                    'bg-slate-50 text-slate-600 border-slate-200': !c.concluido
+                  }"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full"
+                    [ngClass]="{
+                      'bg-emerald-600': c.concluido,
+                      'bg-slate-400': !c.concluido
+                    }"
+                  ></span>
+                  {{ c.concluido ? "Concluído" : "Pendente" }}
+                </span>
+
+                <!-- Ações -->
+                <div class="flex items-center justify-end gap-2">
+                  <!-- Excluir -->
+                  <button
+                    type="button"
+                    class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50"
+                    aria-label="Excluir capítulo"
+                    title="Excluir capítulo"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M9 11v6M15 11v6M4 7h16M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+
+                  <!-- Caret -->
+                  <svg
+                    class="h-4 w-4 text-slate-400 transition-transform group-open:rotate-180"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.24 4.5a.75.75 0 01-1.08 0l-4.24-4.5a.75.75 0 01.02-1.06z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </li>
+          }
+        </ul>
+      </div>
+    </div>
+    <div class="md:col-span-4">
+      <!-- Área expandida: edição inline -->
+      <div class="px-4 pb-4 border rounded-xl">
+        <form class="grid grid-cols-1 md:grid-cols-12 gap-3">
+          <!-- Número -->
+          <span class="md:col-span-12 text-slate-700 font-medium mt-4"
+            >Renomear capítulo</span
+          >
+
+          <!-- Título -->
+          <div class="md:col-span-9">
+            <input
+              type="text"
+              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-fuchsia-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-200"
+              placeholder="Ex.: Introdução"
+            />
+          </div>
+
+          <!-- Ações (Cancelar / Salvar) -->
+          <div class="md:col-span-3 flex items-center justify-end gap-2">
+            <button
+              type="button"
+              class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50"
+              aria-label="Cancelar edição"
+              title="Cancelar edição"
+            >
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+
+            <button
+              type="submit"
+              class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-fuchsia-600 text-white shadow hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-200"
+              aria-label="Salvar alterações"
+              title="Salvar alterações"
+            >
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12.5l5 5 9-11"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  } @else {
+  <app-lista-vazia modulo="capitulos"></app-lista-vazia>
+  }
+</section>

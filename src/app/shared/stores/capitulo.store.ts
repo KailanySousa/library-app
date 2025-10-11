@@ -43,16 +43,13 @@ export class CapituloStore extends BaseStore {
     return this._capitulos().filter((l) => l[key] === value).length;
   }
 
-  add(livroId: number, capitulos: number) {
-    for (let i = 1; i <= capitulos; i++) {
-      const novo: ICapitulo = {
-        id: this.nextId(),
-        livroId,
-        nome: 'Capítulo ' + i,
-      };
+  add(partial: Omit<ICapitulo, 'id'>) {
+    const novo: ICapitulo = {
+      ...partial,
+      id: this.nextId(),
+    };
 
-      this._capitulos.update((arr) => [...arr, novo]);
-    }
+    this._capitulos.update((arr) => [...arr, novo]);
   }
 
   update(id: number, patch: Partial<ICapitulo>) {

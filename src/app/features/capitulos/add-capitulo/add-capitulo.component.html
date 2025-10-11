@@ -1,0 +1,91 @@
+<!-- Bloco colapsável: adicionar novo capítulo -->
+<details
+  id="novo-capitulo-panel"
+  class="group rounded-2xl border border-slate-200 bg-white shadow-sm mt-4"
+>
+  <summary
+    class="flex cursor-pointer select-none items-center justify-between gap-3 px-4 py-3"
+  >
+    <span class="text-slate-700 font-medium">Adicionar novo capítulo</span>
+    <svg
+      class="h-4 w-4 text-slate-400 transition-transform group-open:rotate-180"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.24 4.5a.75.75 0 01-1.08 0l-4.24-4.5a.75.75 0 01.02-1.06z"
+        clip-rule="evenodd"
+      />
+    </svg>
+  </summary>
+
+  <div class="px-4 pb-4">
+    <form
+      [formGroup]="formAdicionar"
+      (submit)="adicionar()"
+      class="grid grid-cols-1 md:grid-cols-12 gap-3"
+    >
+      <!-- Título -->
+      <div class="md:col-span-7">
+        <input
+          formControlName="nome"
+          type="text"
+          class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-fuchsia-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-200"
+          placeholder="Nome"
+          required
+        />
+      </div>
+
+      <!-- Concluído -->
+      <div class="md:col-span-3 flex items-center">
+        <label
+          class="inline-flex items-center gap-2 cursor-pointer select-none"
+        >
+          <input
+            formControlName="concluido"
+            class="peer sr-only"
+            type="checkbox"
+            aria-label="Marcar capítulo como concluído"
+          />
+          <span
+            class="h-5 w-5 rounded-full border border-slate-300 grid place-items-center transition peer-checked:bg-emerald-600 peer-checked:border-emerald-600"
+            aria-hidden="true"
+          >
+            <svg
+              class="h-3.5 w-3.5 text-white opacity-0 transition-opacity duration-150 peer-checked:opacity-100"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 5.29a1 1 0 010 1.414l-7.2 7.2a1 1 0 01-1.414 0l-3.2-3.2a1 1 0 111.414-1.414l2.493 2.493 6.493-6.493a1 1 0 011.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </span>
+          <span class="text-xs text-slate-600">Marcar como concluído</span>
+        </label>
+      </div>
+
+      <!-- Ações: ícones (cancelar/criar) -->
+      <div class="md:col-span-2 flex items-center justify-end gap-2">
+        <button
+          type="button"
+          class="inline-flex items-center rounded-xl bg-white px-4 py-2 text-sm font-medium border border-slate-200 hover:bg-slate-50"
+        >
+          Limpar
+        </button>
+
+        <button
+          type="submit"
+          class="inline-flex items-center rounded-xl bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white hover:bg-fuchsia-700"
+        >
+          Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</details>

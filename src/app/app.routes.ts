@@ -14,7 +14,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'livro/:id',
+    path: 'livro',
     loadComponent: () =>
       import('./features/livro/livro.component').then((m) => m.LivroComponent),
   },
@@ -22,6 +22,13 @@ export const routes: Routes = [
     path: 'livros',
     loadChildren: () =>
       import('./features/livros/livros.routes').then((m) => m.livrosRoutes),
+  },
+  {
+    path: 'capitulos/:livroId',
+    loadComponent: () =>
+      import('./features/capitulos/capitulos.component').then(
+        (m) => m.CapitulosComponent
+      ),
   },
   {
     path: 'categorias',

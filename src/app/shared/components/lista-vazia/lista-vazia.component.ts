@@ -19,6 +19,7 @@ interface IOpcoes {
   lido: IItemOpcoes;
   lendo: IItemOpcoes;
   desejo: IItemOpcoes;
+  capitulos: IItemOpcoes;
 }
 const opcoes: IOpcoes = {
   livros: {
@@ -69,6 +70,10 @@ const opcoes: IOpcoes = {
     titulo: 'Lista de desejos vazia',
     descricao: 'Adicione livros que você sonha em ler um dia.',
   },
+  capitulos: {
+    titulo: 'Lista de capítulos vazia',
+    descricao: 'Adicione novos para acompanhar seu progresso',
+  },
 };
 
 @Component({
@@ -84,7 +89,8 @@ export class ListaVaziaComponent implements OnInit {
     | 'lendo'
     | 'lido'
     | 'desejo'
-    | 'editoras';
+    | 'editoras'
+    | 'capitulos';
   @Input() public titulo!: string;
   @Input() public descricao!: string;
   @Input() public action: IAction | undefined;
