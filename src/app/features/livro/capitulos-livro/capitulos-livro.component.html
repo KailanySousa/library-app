@@ -1,20 +1,16 @@
 <!-- Seção: Capítulos do livro -->
 <section class="space-y-2">
-  <!-- Parte 1: Cabeçalho da seção + botão "Iniciar leitura" -->
-
   @if(capitulos().length) {
-  <!-- Parte 3: Accordion "Ver todos" (lista de capítulos) -->
   <details class="group border-y border-slate-200 bg-white shadow-sm">
     <summary
       class="flex cursor-pointer select-none items-center justify-between gap-2 px-4 py-3"
     >
-      <h3 class="text-slate-800 font-semibold">
-        Acompanhe seu progresso de leitura
-      </h3>
+      <h1 class="text-slate-800 font-semibold">Capítulos</h1>
 
       <div class="flex items-center gap-2">
         <span class="text-xs text-slate-500"
-          >{{ 1 }} de {{ capitulos().length }} capítulos lidos</span
+          >{{ qtdCapitulos() }} de {{ capitulos().length }} capítulos
+          lidos</span
         >
 
         <svg
@@ -32,9 +28,7 @@
       </div>
     </summary>
 
-    <!-- Conteúdo do accordion -->
     <div class="px-4 pb-4">
-      <!-- Parte 4: Template pronto para Angular (@for) — só HTML do repetidor -->
       <ul class="divide-y divide-slate-100" role="list">
         @for (c of capitulos(); track c.id) {
         <li class="py-3 flex items-center gap-3">
@@ -47,15 +41,17 @@
           <label
             class="inline-flex items-center gap-2 cursor-pointer select-none"
           >
+            @if(!c.concluido) {
             <span class="text-[11px] text-slate-600"
               >Marcar como concluído</span
             >
+            }
             <input
               class="peer sr-only"
               type="checkbox"
               [id]="'cap-' + c.id"
               [checked]="c.concluido"
-              aria-label="Marcar capítulo como concluído"
+              [disabled]="c.concluido"
             />
             <span
               class="h-5 w-5 rounded-full border border-slate-300 grid place-items-center transition peer-checked:bg-emerald-600 peer-checked:border-emerald-600"
@@ -82,7 +78,6 @@
   </details>
   } @else {
 
-  <!-- Parte 2: Estado vazio (antes de gerar capítulos) -->
   <div
     class="mt-4 rounded-2xl border border-dashed border-slate-300 p-6 text-center"
   >

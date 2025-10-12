@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { ICapitulo } from '../../../shared/interfaces/capitulo.interface';
 import { RouterModule } from '@angular/router';
 
@@ -9,4 +9,8 @@ import { RouterModule } from '@angular/router';
 })
 export class CapitulosLivroComponent {
   capitulos = input.required<ICapitulo[]>();
+
+  qtdCapitulos = computed(
+    () => this.capitulos().filter((c) => c.concluido).length
+  );
 }
