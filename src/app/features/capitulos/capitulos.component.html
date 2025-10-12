@@ -23,6 +23,7 @@
       "
     >
       <app-lista
+        [livroId]="livroId()"
         [capitulos]="capitulos()"
         (editarCapitulo)="editar($event)"
       ></app-lista>

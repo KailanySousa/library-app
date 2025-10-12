@@ -85,7 +85,10 @@
       </app-citacoes>
 
       <section>
-        <app-capitulos-livro [capitulos]="capitulos()"></app-capitulos-livro>
+        <app-capitulos-livro
+          [livroId]="l.id"
+          [capitulos]="capitulos()"
+        ></app-capitulos-livro>
       </section>
     </div>
 
