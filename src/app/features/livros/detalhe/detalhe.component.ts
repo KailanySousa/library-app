@@ -16,9 +16,7 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { EStatus } from '../../../shared/enums/status.enum';
 import ILivro from '../../../shared/interfaces/livro.interface';
-import { STATUS_OPTIONS } from '../../../shared/consts/status.const';
 import { CategoriaStore } from '../../../shared/stores/categoria.store';
 import { AutorStore } from '../../../shared/stores/autor.store';
 import { LivroStore } from '../../../shared/stores/livro.store';
@@ -34,7 +32,6 @@ export class DetalheLivroComponent {
 
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
-  readonly statusOptions = STATUS_OPTIONS;
 
   #formBuilder = inject(FormBuilder);
   #livroStore = inject(LivroStore);
@@ -58,7 +55,6 @@ export class DetalheLivroComponent {
     ],
     categoriaId: ['', [this.requiredHelper]],
     editoraId: ['', [this.requiredHelper]],
-    status: [EStatus.DESEJO, this.requiredHelper],
     descricao: [''],
   });
 
@@ -80,7 +76,6 @@ export class DetalheLivroComponent {
         ano: l.ano,
         categoriaId: l.categoriaId,
         editoraId: l.editoraId,
-        status: l.status,
         descricao: l.descricao,
       },
       { emitEvent: false }

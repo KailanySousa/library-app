@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
+  // computed,
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -29,7 +29,7 @@ export class ExplorarComponent {
   readonly EStatus = EStatus;
   #livroStore = inject(LivroStore);
 
-  lidos = computed(() => this.#livroStore.by('status', EStatus.LIDO));
-  desejos = computed(() => this.#livroStore.by('status', EStatus.DESEJO));
-  lendo = computed(() => this.#livroStore.by('status', EStatus.LENDO));
+  //lidos = computed(() => this.#livroStore.by('status', EStatus.LIDO));
+  //desejos = computed(() => this.#livroStore.by('status', EStatus.DESEJO));
+  //lendo = computed(() => this.#livroStore.by('status', EStatus.LENDO));
 }

@@ -4,19 +4,11 @@
 <section class="container mx-auto px-6 py-10 space-y-10">
   <header class="mb-6">
     <nav class="text-sm text-slate-500 mb-2">
-      <a
-        [routerLink]="['/explorar']"
-        [queryParams]="{ status: l.status }"
-        class="hover:underline"
-        >Explorar</a
-      >
+      <a [routerLink]="['/explorar']" class="hover:underline">Explorar</a>
       <span class="mx-1">/</span>
-      <a
-        [routerLink]="['/explorar/ver-mais']"
-        [queryParams]="{ status: l.status }"
-        class="hover:underline"
-        >{{ l.status | statusHeader }}</a
-      >
+      <a [routerLink]="['/explorar/ver-mais']" class="hover:underline">{{
+        l.titulo
+      }}</a>
     </nav>
   </header>
 
@@ -49,7 +41,7 @@
                 <span class="text-sm text-slate-500">{{
                   l.categoriaId | categoria
                 }}</span>
-                <span
+                <!-- <span
                   class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs"
                   [ngClass]="badgeClasses(l.status)"
                 >
@@ -58,7 +50,7 @@
                     [ngClass]="dotClasses(l.status)"
                   ></span>
                   {{ l.status | status }}
-                </span>
+                </span> -->
               </p>
 
               <p
@@ -81,7 +73,7 @@
         </p>
       </section>
 
-      @if (l.status === 'desejo') {
+      @if (!leituraIniciada()) {
       <section
         class="rounded-2xl border border-slate-200 bg-white p-5 flex items-center justify-between gap-4"
       >

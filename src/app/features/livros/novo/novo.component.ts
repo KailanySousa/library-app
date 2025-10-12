@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -13,14 +8,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { EStatus } from '../../../shared/enums/status.enum';
-import { STATUS_OPTIONS } from '../../../shared/consts/status.const';
 import { CategoriaStore } from '../../../shared/stores/categoria.store';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { AutorStore } from '../../../shared/stores/autor.store';
 import ILivro from '../../../shared/interfaces/livro.interface';
 import { LivroStore } from '../../../shared/stores/livro.store';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { EditoraStore } from '../../../shared/stores/editora.store';
 
 @Component({
@@ -43,7 +35,6 @@ export class NovoLivroComponent {
   private readonly requiredHelper = (c: AbstractControl) =>
     Validators.required(c);
 
-  readonly statusOptions = STATUS_OPTIONS;
   categorias = this.#categoriaStore.categorias;
   autores = this.#autorStore.autores;
   editoras = this.#editoraStore.editoras;
@@ -60,14 +51,8 @@ export class NovoLivroComponent {
     ],
     categoriaId: ['', [this.requiredHelper]],
     editoraId: ['', [this.requiredHelper]],
-    status: [EStatus.DESEJO, this.requiredHelper],
     descricao: [''],
   });
-
-  private readonly statusValue: Signal<EStatus> = toSignal(
-    this.form.get('status')!.valueChanges,
-    { initialValue: this.form.get('status')!.value as EStatus }
-  );
 
   salvar() {
     if (this.form.invalid) {

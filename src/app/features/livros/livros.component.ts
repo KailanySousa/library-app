@@ -11,7 +11,6 @@ import { ListaVaziaComponent } from '../../shared/components/lista-vazia/lista-v
 import { AutorPipe } from '../../shared/pipes/autor.pipe';
 import { CategoriaPipe } from '../../shared/pipes/categoria.pipe';
 import { EditoraPipe } from '../../shared/pipes/editora.pipe';
-import { StatusPipe } from '../../shared/pipes/status.pipe';
 import { LivroStore } from '../../shared/stores/livro.store';
 
 @Component({
@@ -26,7 +25,6 @@ import { LivroStore } from '../../shared/stores/livro.store';
     CategoriaPipe,
     EditoraPipe,
     ListaVaziaComponent,
-    StatusPipe,
   ],
   templateUrl: './livros.component.html',
 })

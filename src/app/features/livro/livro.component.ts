@@ -11,7 +11,6 @@ import { AutorStore } from '../../shared/stores/autor.store';
 import { CommonModule } from '@angular/common';
 import { CategoriaPipe } from '../../shared/pipes/categoria.pipe';
 import { GradientePorCategoriaPipe } from '../../shared/pipes/gradiente-por-categoria.pipe';
-import { StatusPipe, StatusHeaderPipe } from '../../shared/pipes/status.pipe';
 import { EStatus } from '../../shared/enums/status.enum';
 import { OutrosLivrosComponent } from './outros-livros/outros-livros.component';
 import { FormsModule } from '@angular/forms';
@@ -32,9 +31,7 @@ import { LeituraStore } from '../../shared/stores/leitura.store';
     CommonModule,
     CategoriaPipe,
     GradientePorCategoriaPipe,
-    StatusHeaderPipe,
     EditoraPipe,
-    StatusPipe,
     CapitulosPipe,
     OutrosLivrosComponent,
     AddCitacaoComponent,
@@ -66,6 +63,11 @@ export class LivroComponent {
   );
 
   capitulos = computed(() => this.#capituloStore.by('livroId', this.id()));
+
+  leituraIniciada = computed(() => {
+    const leitura = this.#leituraStore.item(this.id());
+    return !!leitura;
+  });
 
   badgeClasses(status?: string) {
     return {
