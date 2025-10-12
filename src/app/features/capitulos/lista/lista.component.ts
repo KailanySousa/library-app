@@ -1,6 +1,7 @@
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { ICapitulo } from '../../../shared/interfaces/capitulo.interface';
 import { CommonModule } from '@angular/common';
+import { CapituloStore } from '../../../shared/stores/capitulo.store';
 
 @Component({
   selector: 'app-lista',
@@ -11,7 +12,13 @@ export class ListaComponent {
   capitulos = input.required<ICapitulo[]>();
   editarCapitulo = output<ICapitulo>();
 
+  #store = inject(CapituloStore);
+
   editar(c: ICapitulo) {
     this.editarCapitulo.emit(c);
+  }
+
+  excluir(id: number) {
+    this.#store.remove(id);
   }
 }
