@@ -19,6 +19,9 @@ import { LivroStore } from '../../shared/stores/livro.store';
 import { EditoraPipe } from '../../shared/pipes/editora.pipe';
 import { AddCitacaoComponent } from './add-citacao/add-citacao.component';
 import { CitacoesComponent } from './citacoes/citacoes.component';
+import { CapitulosLivroComponent } from './capitulos-livro/capitulos-livro.component';
+import { CapituloStore } from '../../shared/stores/capitulo.store';
+import { CapitulosPipe } from '../../shared/pipes/capitulos.pipe';
 
 @Component({
   selector: 'app-livro',
@@ -31,9 +34,11 @@ import { CitacoesComponent } from './citacoes/citacoes.component';
     StatusHeaderPipe,
     EditoraPipe,
     StatusPipe,
+    CapitulosPipe,
     OutrosLivrosComponent,
     AddCitacaoComponent,
     CitacoesComponent,
+    CapitulosLivroComponent,
     FormsModule,
   ],
   templateUrl: './livro.component.html',
@@ -41,6 +46,7 @@ import { CitacoesComponent } from './citacoes/citacoes.component';
 export class LivroComponent {
   #livroStore = inject(LivroStore);
   #autorStore = inject(AutorStore);
+  #capituloStore = inject(CapituloStore);
 
   id = input(0, { transform: numberAttribute });
 
@@ -56,6 +62,8 @@ export class LivroComponent {
       .by('categoriaId', this.livro().autorId)
       .filter((l) => l.id !== this.id())
   );
+
+  capitulos = computed(() => this.#capituloStore.by('livroId', this.id()));
 
   badgeClasses(status?: string) {
     return {

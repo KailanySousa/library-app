@@ -1,0 +1,103 @@
+<!-- Seção: Capítulos do livro -->
+<section class="space-y-2">
+  <!-- Parte 1: Cabeçalho da seção + botão "Iniciar leitura" -->
+
+  @if(capitulos().length) {
+  <!-- Parte 3: Accordion "Ver todos" (lista de capítulos) -->
+  <details class="group border-y border-slate-200 bg-white shadow-sm">
+    <summary
+      class="flex cursor-pointer select-none items-center justify-between gap-2 px-4 py-3"
+    >
+      <h3 class="text-slate-800 font-semibold">
+        Acompanhe seu progresso de leitura
+      </h3>
+
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500"
+          >{{ 1 }} de {{ capitulos().length }} capítulos lidos</span
+        >
+
+        <svg
+          class="h-4 w-4 text-slate-400 transition-transform group-open:rotate-180"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.24 4.5a.75.75 0 01-1.08 0l-4.24-4.5a.75.75 0 01.02-1.06z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </summary>
+
+    <!-- Conteúdo do accordion -->
+    <div class="px-4 pb-4">
+      <!-- Parte 4: Template pronto para Angular (@for) — só HTML do repetidor -->
+      <ul class="divide-y divide-slate-100" role="list">
+        @for (c of capitulos(); track c.id) {
+        <li class="py-3 flex items-center gap-3">
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-slate-800 truncate">
+              {{ c.nome }}
+            </p>
+          </div>
+
+          <label
+            class="inline-flex items-center gap-2 cursor-pointer select-none"
+          >
+            <span class="text-[11px] text-slate-600"
+              >Marcar como concluído</span
+            >
+            <input
+              class="peer sr-only"
+              type="checkbox"
+              [id]="'cap-' + c.id"
+              [checked]="c.concluido"
+              aria-label="Marcar capítulo como concluído"
+            />
+            <span
+              class="h-5 w-5 rounded-full border border-slate-300 grid place-items-center transition peer-checked:bg-emerald-600 peer-checked:border-emerald-600"
+              aria-hidden="true"
+            >
+              <svg
+                class="h-3.5 w-3.5 text-white opacity-0 transition-opacity duration-150 peer-checked:opacity-100"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 5.29a1 1 0 010 1.414l-7.2 7.2a1 1 0 01-1.414 0l-3.2-3.2a1 1 0 111.414-1.414l2.493 2.493 6.493-6.493a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </span>
+          </label>
+        </li>
+        }
+      </ul>
+    </div>
+  </details>
+  } @else {
+
+  <!-- Parte 2: Estado vazio (antes de gerar capítulos) -->
+  <div
+    class="mt-4 rounded-2xl border border-dashed border-slate-300 p-6 text-center"
+  >
+    <p class="text-sm text-slate-600">
+      Nenhum capítulo adicionado ainda.
+      <span class="block text-xs text-slate-500"
+        >Clique
+        <a
+          class="underline text-fuchsia-500 font-semibold"
+          [routerLink]="['capitulos', this.capitulos()[0].livroId]"
+          >aqui</a
+        >
+        para criar a lista de capítulos.</span
+      >
+    </p>
+  </div>
+  }
+</section>

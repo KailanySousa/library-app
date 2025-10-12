@@ -14,7 +14,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'livro',
+    path: 'livro/:id',
     loadComponent: () =>
       import('./features/livro/livro.component').then((m) => m.LivroComponent),
   },

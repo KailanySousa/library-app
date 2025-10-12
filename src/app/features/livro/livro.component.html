@@ -20,8 +20,8 @@
     </nav>
   </header>
 
-  <div class="grid md:grid-cols-3 gap-8">
-    <div class="md:col-span-2 space-y-8">
+  <div class="grid md:grid-cols-4 gap-8">
+    <div class="md:col-span-3 space-y-8">
       <section>
         <div
           class="flex flex-col md:flex-row md:items-center md:justify-between gap-6"
@@ -66,10 +66,9 @@
               >
                 @if (l.ano) {
                 <span>🗓 {{ l.ano }}</span>
+                } @let qtdCapitulos = l.id | capitulos; @if(qtdCapitulos) {
+                <span>📄 {{ qtdCapitulos }} capítulos</span>
                 }
-                <!-- @if(l.capitulos) {
-                <span>📄 {{ l.capitulos }} capítulos</span>
-                } -->
               </p>
             </div>
           </div>
@@ -84,6 +83,10 @@
       <app-citacoes [livroId]="l.id">
         <app-add-citacao [livroId]="l.id"></app-add-citacao>
       </app-citacoes>
+
+      <section>
+        <app-capitulos-livro [capitulos]="capitulos()"></app-capitulos-livro>
+      </section>
     </div>
 
     <aside class="space-y-6">
