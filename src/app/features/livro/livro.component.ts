@@ -22,6 +22,7 @@ import { CitacoesComponent } from './citacoes/citacoes.component';
 import { CapitulosLivroComponent } from './capitulos-livro/capitulos-livro.component';
 import { CapituloStore } from '../../shared/stores/capitulo.store';
 import { CapitulosPipe } from '../../shared/pipes/capitulos.pipe';
+import { LeituraStore } from '../../shared/stores/leitura.store';
 
 @Component({
   selector: 'app-livro',
@@ -47,6 +48,7 @@ export class LivroComponent {
   #livroStore = inject(LivroStore);
   #autorStore = inject(AutorStore);
   #capituloStore = inject(CapituloStore);
+  #leituraStore = inject(LeituraStore);
 
   id = input(0, { transform: numberAttribute });
 
@@ -80,5 +82,16 @@ export class LivroComponent {
       'bg-amber-600': status === EStatus.LENDO,
       'bg-fuchsia-600': status === EStatus.DESEJO,
     };
+  }
+
+  iniciarLeitura(livroId: number) {
+    this.#leituraStore.add({ livroId: livroId, status: 'lendo' });
+
+    // Opcional: rolar até a seção de capítulos depois de iniciar
+    // setTimeout(() => {
+    //   document
+    //     .querySelector('app-capitulos-livro')
+    //     ?.scrollIntoView({ behavior: 'smooth' });
+    // }, 0);
   }
 }
