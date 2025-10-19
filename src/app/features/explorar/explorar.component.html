@@ -1,4 +1,4 @@
-<!-- <app-header></app-header>
+<app-header></app-header>
 <section class="container mx-auto px-6 py-8 space-y-10">
   <div>
     <div class="flex items-end justify-between gap-4">
@@ -13,7 +13,7 @@
       @if(lendo.length > 0) {
       <a
         routerLink="/explorar/ver-mais"
-        [queryParams]="{ status: EStatus.LENDO }"
+        [queryParams]="{ status: 'lendo' }"
         class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
       >
         Ver mais
@@ -40,7 +40,7 @@
       }
     </div>
     } @else {
-    <app-lista-vazia [modulo]="EStatus.LENDO"></app-lista-vazia>
+    <app-lista-vazia [modulo]="'lendo'"></app-lista-vazia>
     }
   </div>
   <div>
@@ -56,7 +56,7 @@
 
       <a
         routerLink="/explorar/ver-mais"
-        [queryParams]="{ status: EStatus.LIDO }"
+        [queryParams]="{ status: 'lido' }"
         class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
       >
         Ver mais
@@ -82,23 +82,23 @@
       }
     </div>
     } @else {
-    <app-lista-vazia [modulo]="EStatus.LIDO"></app-lista-vazia>
+    <app-lista-vazia [modulo]="'lido'"></app-lista-vazia>
     }
   </div>
-
   <div>
     <div class="flex items-end justify-between gap-4">
       <div>
-        <h2 class="text-xl font-semibold text-slate-800">Lista de desejos</h2>
+        <h2 class="text-xl font-semibold text-slate-800">Prontos para ler</h2>
         <p class="text-slate-500 text-sm">
-          Títulos que sussurram o meu nome — prontos para a próxima aventura.
+          Leituras concluídas recentemente — o que ficou na memória (e no
+          coração).
         </p>
       </div>
-      @if(desejos.length > 0) {
+      @if(iniciar.length > 0) {
 
       <a
         routerLink="/explorar/ver-mais"
-        [queryParams]="{ status: EStatus.DESEJO }"
+        [queryParams]="{ status: 'lido' }"
         class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
       >
         Ver mais
@@ -117,14 +117,14 @@
       </a>
       }
     </div>
-    @if(desejos().length > 0) {
+    @if(iniciar().length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for(livro of desejos(); track $index) {
+      @for(livro of iniciar(); track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>
       }
     </div>
     } @else {
-    <app-lista-vazia [modulo]="EStatus.DESEJO"></app-lista-vazia>
+    <app-lista-vazia [modulo]="'lido'"></app-lista-vazia>
     }
   </div>
-</section> -->
+</section>
