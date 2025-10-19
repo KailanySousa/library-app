@@ -1,0 +1,284 @@
+<app-header></app-header>
+
+<section class="container mx-auto px-6 py-8 space-y-8">
+  <!-- Toast simples -->
+  <div
+    *ngIf="toast()"
+    class="rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 px-4 py-2 text-sm"
+  >
+    {{ toast() }}
+  </div>
+
+  <!-- Cabeçalho -->
+  <header class="flex items-center justify-between gap-4">
+    <div>
+      <nav class="text-sm text-slate-500 mb-1">
+        <a [routerLink]="['/explorar']" class="hover:underline">Explorar</a>
+        <span class="mx-1">/</span>
+        <a
+          [routerLink]="['/explorar/livro', livro().id]"
+          class="hover:underline"
+          >Detalhes</a
+        >
+        <span class="mx-1">/</span>
+        <span>Progresso</span>
+      </nav>
+
+      <h1 class="text-2xl md:text-3xl font-semibold text-slate-800">
+        Progresso — {{ livro().titulo || "Livro" }}
+      </h1>
+
+      <p class="text-slate-500 text-sm" *ngIf="leitura() as ld">
+        Status da leitura: <strong>{{ ld.status }}</strong>
+      </p>
+    </div>
+
+    <a
+      [routerLink]="['/explorar/livro', livro().id]"
+      class="rounded-xl border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50"
+      >Voltar</a
+    >
+  </header>
+
+  @let t = total(); @let l = lidosQtd(); @let p = percent();
+
+  <div class="grid md:grid-cols-3 gap-6">
+    <!-- Resumo -->
+    <section
+      class="md:col-span-1 rounded-2xl border border-slate-200 bg-white p-5 space-y-4"
+    >
+      <h2 class="text-slate-800 font-semibold">Resumo</h2>
+
+      <div>
+        <div class="flex items-center justify-between text-sm text-slate-600">
+          <span>{{ l }} / {{ t }} capítulos</span>
+          <span>{{ p }}%</span>
+        </div>
+        <div class="mt-1 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+          <div
+            class="h-2 rounded-full bg-fuchsia-600 transition-all"
+            [style.width.%]="p"
+          ></div>
+        </div>
+      </div>
+
+      <!-- (6) Achievements -->
+      <div class="flex flex-wrap gap-2">
+        <span
+          *ngIf="comecouHoje()"
+          class="inline-flex items-center rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-xs text-sky-700"
+        >
+          🎯 Começou hoje
+        </span>
+        <span
+          *ngIf="metadeOuMais()"
+          class="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs text-amber-700"
+        >
+          🥇 50%+
+        </span>
+        <span
+          *ngIf="concluidoSemanaAtual()"
+          class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700"
+        >
+          ✅ Concluído nesta semana
+        </span>
+      </div>
+
+      <ul class="text-sm text-slate-600">
+        <li>
+          Restantes: <strong>{{ t - l }}</strong>
+        </li>
+      </ul>
+
+      <!-- Período da leitura (com edição) -->
+      <div class="mt-2 border-t border-slate-100 pt-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-slate-800 font-semibold text-sm">
+            Período da leitura
+          </h3>
+          <button
+            type="button"
+            class="text-xs rounded-lg border border-slate-300 px-2 py-1 hover:bg-slate-50"
+            (click)="toggleEditarDatas()"
+          >
+            {{ editandoDatas() ? "Cancelar" : "Editar" }}
+          </button>
+        </div>
+
+        <!-- Visualização -->
+        <div
+          *ngIf="!editandoDatas()"
+          class="mt-2 space-y-1 text-sm text-slate-600"
+        >
+          <p>
+            <span class="text-slate-500">Início:</span>
+            <strong>{{
+              leitura()?.inicio || null
+                ? (leitura()?.inicio | date : "dd/MM/yyyy")
+                : "—"
+            }}</strong>
+          </p>
+          <p>
+            <span class="text-slate-500">Fim:</span>
+            <strong>{{
+              leitura()?.fim || null
+                ? (leitura()?.fim | date : "dd/MM/yyyy")
+                : "—"
+            }}</strong>
+          </p>
+        </div>
+
+        <!-- Edição -->
+        <form
+          *ngIf="editandoDatas()"
+          (submit)="
+            salvarDatas(inicioInput.value, fimInput.value);
+            $event.preventDefault()
+          "
+          class="mt-2 grid grid-cols-1 gap-2"
+        >
+          <label class="text-sm">
+            <span class="block text-slate-600 mb-1">Início</span>
+            <input
+              #inicioInput
+              type="date"
+              class="w-full rounded-lg border border-slate-300 px-2 py-1"
+              [value]="leitura()?.inicio || ''"
+            />
+          </label>
+          <label class="text-sm">
+            <span class="block text-slate-600 mb-1">Fim (opcional)</span>
+            <input
+              #fimInput
+              type="date"
+              class="w-full rounded-lg border border-slate-300 px-2 py-1"
+              [value]="leitura()?.fim || ''"
+            />
+          </label>
+          <div class="flex items-center gap-2">
+            <button
+              class="px-3 py-1.5 rounded-lg bg-slate-800 text-white text-sm hover:bg-slate-900"
+              type="submit"
+            >
+              Salvar datas
+            </button>
+            <span *ngIf="dataErro()" class="text-xs text-rose-600">
+              {{ dataErro() }}
+            </span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Ações com proteções (10) -->
+      <div class="flex flex-wrap gap-2 pt-2">
+        <button
+          (click)="marcarTodos()"
+          [disabled]="t === 0 || l === t"
+          class="px-3 py-2 rounded-xl border border-slate-300 text-sm hover:bg-slate-50 disabled:opacity-50"
+        >
+          Marcar todos
+        </button>
+        <button
+          (click)="limparTudo()"
+          [disabled]="l === 0"
+          class="px-3 py-2 rounded-xl border border-rose-200 text-rose-700 text-sm hover:bg-rose-50 disabled:opacity-50"
+        >
+          Limpar
+        </button>
+      </div>
+    </section>
+
+    <!-- Capítulos -->
+    <section
+      class="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-5"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <h2 class="text-slate-800 font-semibold">Capítulos</h2>
+
+        <!-- (4) Filtros rápidos -->
+        <div class="flex items-center gap-1 text-xs">
+          <button
+            class="rounded-full px-3 py-1 border"
+            [ngClass]="
+              filtro() === 'todos'
+                ? 'border-fuchsia-300 bg-fuchsia-50 text-fuchsia-700'
+                : 'border-slate-300 hover:bg-slate-50'
+            "
+            (click)="filtro.set('todos')"
+          >
+            Todos
+          </button>
+          <button
+            class="rounded-full px-3 py-1 border"
+            [ngClass]="
+              filtro() === 'restantes'
+                ? 'border-amber-300 bg-amber-50 text-amber-700'
+                : 'border-slate-300 hover:bg-slate-50'
+            "
+            (click)="filtro.set('restantes')"
+          >
+            Restantes
+          </button>
+          <button
+            class="rounded-full px-3 py-1 border"
+            [ngClass]="
+              filtro() === 'lidos'
+                ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+                : 'border-slate-300 hover:bg-slate-50'
+            "
+            (click)="filtro.set('lidos')"
+          >
+            Lidos
+          </button>
+        </div>
+      </div>
+
+      @if (t > 0) {
+      <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+        @for (c of capitulosFiltrados(); track c.id) { @let estaLido =
+        !!c.concluido;
+
+        <div
+          class="group rounded-xl border px-3 py-3 text-sm flex items-center justify-between gap-2"
+          [ngClass]="
+            estaLido
+              ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+              : 'border-slate-200 bg-white hover:bg-slate-50'
+          "
+        >
+          <!-- Botão principal: alternar lido -->
+          <button
+            type="button"
+            (click)="toggleCapitulo(c.id)"
+            class="text-left min-w-0 flex-1"
+            [attr.aria-pressed]="estaLido"
+          >
+            <span class="font-medium block line-clamp-1">{{
+              c.nome || "Capítulo " + ($index + 1)
+            }}</span>
+            <span class="block text-[11px] opacity-70">{{
+              estaLido ? "lido" : "marcar"
+            }}</span>
+          </button>
+
+          <!-- (3) Ação secundária: marcar até aqui -->
+          <button
+            type="button"
+            (click)="$event.stopPropagation(); marcarAtePorId(c.id)"
+            class="text-[11px] rounded-lg border px-2 py-1 hover:bg-slate-100"
+            title="Marcar todos até este capítulo"
+          >
+            Até aqui
+          </button>
+        </div>
+        }
+      </div>
+      } @else {
+      <p class="mt-4 text-slate-500 text-sm">
+        Nenhum capítulo cadastrado. Adicione capítulos na tela do livro e volte
+        aqui para acompanhar.
+      </p>
+      }
+    </section>
+  </div>
+</section>

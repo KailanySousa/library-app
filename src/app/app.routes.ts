@@ -50,6 +50,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'progresso/:id',
+    loadComponent: () =>
+      import('./features/progresso/progresso.component').then(
+        (m) => m.ProgressoComponent
+      ),
+  },
+  {
     path: 'configuracoes',
     loadComponent: () =>
       import('./features/configuracoes/configuracoes.component').then(

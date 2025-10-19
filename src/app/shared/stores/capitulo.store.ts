@@ -36,7 +36,7 @@ export class CapituloStore extends BaseStore {
   }
 
   itemBy<K extends keyof ICapitulo>(key: K, value: ICapitulo[K]) {
-    return this._capitulos().find((l) => l[key] === value);
+    return this._capitulos().filter((l) => l[key] === value);
   }
 
   countBy<K extends keyof ICapitulo>(key: K, value: ICapitulo[K]) {
