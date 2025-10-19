@@ -19,9 +19,9 @@ import { EditoraPipe } from '../../shared/pipes/editora.pipe';
 import { AddCitacaoComponent } from './add-citacao/add-citacao.component';
 import { CitacoesComponent } from './citacoes/citacoes.component';
 import { CapitulosLivroComponent } from './capitulos-livro/capitulos-livro.component';
+import { AcompanharProgressoComponent } from './acompanhar-progresso/acompanhar-progresso.component';
 import { CapituloStore } from '../../shared/stores/capitulo.store';
 import { CapitulosPipe } from '../../shared/pipes/capitulos.pipe';
-import { LeituraStore } from '../../shared/stores/leitura.store';
 
 @Component({
   selector: 'app-livro',
@@ -37,6 +37,7 @@ import { LeituraStore } from '../../shared/stores/leitura.store';
     AddCitacaoComponent,
     CitacoesComponent,
     CapitulosLivroComponent,
+    AcompanharProgressoComponent,
     FormsModule,
   ],
   templateUrl: './livro.component.html',
@@ -45,7 +46,6 @@ export class LivroComponent {
   #livroStore = inject(LivroStore);
   #autorStore = inject(AutorStore);
   #capituloStore = inject(CapituloStore);
-  #leituraStore = inject(LeituraStore);
 
   id = input(0, { transform: numberAttribute });
 
@@ -63,11 +63,9 @@ export class LivroComponent {
   );
 
   capitulos = computed(() => this.#capituloStore.by('livroId', this.id()));
-
-  leituraIniciada = computed(() => {
-    const leitura = this.#leituraStore.item(this.id());
-    return !!leitura;
-  });
+  capitulosFinalizados = computed(() =>
+    this.#capituloStore.by('livroId', this.id()).filter((c) => c.concluido)
+  );
 
   badgeClasses(status?: string) {
     return {
@@ -84,16 +82,5 @@ export class LivroComponent {
       'bg-amber-600': status === EStatus.LENDO,
       'bg-fuchsia-600': status === EStatus.DESEJO,
     };
-  }
-
-  iniciarLeitura(livroId: number) {
-    this.#leituraStore.add({ livroId: livroId, status: 'lendo' });
-
-    // Opcional: rolar até a seção de capítulos depois de iniciar
-    // setTimeout(() => {
-    //   document
-    //     .querySelector('app-capitulos-livro')
-    //     ?.scrollIntoView({ behavior: 'smooth' });
-    // }, 0);
   }
 }

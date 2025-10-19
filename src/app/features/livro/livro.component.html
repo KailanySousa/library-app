@@ -73,26 +73,6 @@
         </p>
       </section>
 
-      @if (!leituraIniciada()) {
-      <section
-        class="rounded-2xl border border-slate-200 bg-white p-5 flex items-center justify-between gap-4"
-      >
-        <div>
-          <h3 class="text-slate-800 font-medium">Leitura ainda não iniciada</h3>
-          <p class="text-slate-500 text-sm">
-            Deseja começar agora? Você poderá acompanhar o progresso e adicionar
-            citações.
-          </p>
-        </div>
-        <button
-          (click)="iniciarLeitura(l.id)"
-          class="px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
-        >
-          Iniciar leitura
-        </button>
-      </section>
-      }
-
       <section>
         <app-capitulos-livro
           [livroId]="l.id"
@@ -136,6 +116,8 @@
           </h3>
         </app-outros-livros>
       </div>
+
+      <app-acompanhar-progresso [livroId]="id()"></app-acompanhar-progresso>
     </aside>
   </div>
 </section>
