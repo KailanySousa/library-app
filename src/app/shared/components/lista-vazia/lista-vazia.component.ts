@@ -16,7 +16,7 @@ interface IOpcoes {
   categorias: IItemOpcoes;
   autores: IItemOpcoes;
   editoras: IItemOpcoes;
-  lido: IItemOpcoes;
+  finalizado: IItemOpcoes;
   lendo: IItemOpcoes;
   desejo: IItemOpcoes;
   capitulos: IItemOpcoes;
@@ -58,7 +58,7 @@ const opcoes: IOpcoes = {
       router: '/editoras/nova',
     },
   },
-  lido: {
+  finalizado: {
     titulo: 'Ainda nenhum livro lido',
     descricao: 'Conclua sua primeira leitura e veja sua estante ganhar vida!',
   },
@@ -87,7 +87,7 @@ export class ListaVaziaComponent implements OnInit {
     | 'autores'
     | 'livros'
     | 'lendo'
-    | 'lido'
+    | 'finalizado'
     | 'desejo'
     | 'editoras'
     | 'capitulos';

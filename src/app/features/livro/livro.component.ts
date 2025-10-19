@@ -70,17 +70,17 @@ export class LivroComponent {
   badgeClasses(status?: string) {
     return {
       'bg-emerald-50 text-emerald-700 border-emerald-200':
-        status === EStatus.LIDO,
+        status === EStatus.FINALIZADO,
       'bg-amber-50 text-amber-700 border-amber-200': status === EStatus.LENDO,
       'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200':
-        status === EStatus.DESEJO,
+        status === EStatus.LER,
     };
   }
   dotClasses(status?: string) {
     return {
-      'bg-emerald-600': status === EStatus.LIDO,
+      'bg-emerald-600': status === EStatus.FINALIZADO,
       'bg-amber-600': status === EStatus.LENDO,
-      'bg-fuchsia-600': status === EStatus.DESEJO,
+      'bg-fuchsia-600': status === EStatus.LER,
     };
   }
 }

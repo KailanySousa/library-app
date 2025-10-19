@@ -42,6 +42,10 @@ export class LivroStore extends BaseStore {
     return this._livros().find((l) => l.id === livroId)!;
   }
 
+  allBy(livroId: number[]): ILivro[] {
+    return this._livros().filter((l) => livroId.includes(l.id));
+  }
+
   by<K extends keyof ILivro>(key: K, value: ILivro[K]) {
     return this._livros().filter((l) => l[key] === value);
   }

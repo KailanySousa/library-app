@@ -1,5 +1,6 @@
 export enum EStatus {
-  LIDO = 'lido',
+  FINALIZADO = 'finalizado',
+  PAUSA = 'pausa',
   LENDO = 'lendo',
-  DESEJO = 'desejo',
+  LER = 'ler',
 }

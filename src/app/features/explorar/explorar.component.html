@@ -35,7 +35,7 @@
 
     @if(lendo().length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for(livro of lendo(); track $index) {
+      @for(livro of lendo() | slice:0:3; track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>
       }
     </div>
@@ -52,11 +52,11 @@
           coração).
         </p>
       </div>
-      @if(lidos.length > 0) {
+      @if(lidos().length > 0) {
 
       <a
         routerLink="/explorar/ver-mais"
-        [queryParams]="{ status: 'lido' }"
+        [queryParams]="{ status: EStatus.FINALIZADO }"
         class="text-magenta-700 hover:text-magenta-800 font-medium inline-flex items-center gap-1"
       >
         Ver mais
@@ -77,12 +77,12 @@
     </div>
     @if(lidos().length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for(livro of lidos(); track $index) {
+      @for(livro of lidos() | slice:0:3; track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>
       }
     </div>
     } @else {
-    <app-lista-vazia [modulo]="'lido'"></app-lista-vazia>
+    <app-lista-vazia [modulo]="'finalizado'"></app-lista-vazia>
     }
   </div>
   <div>
@@ -94,7 +94,7 @@
           coração).
         </p>
       </div>
-      @if(iniciar.length > 0) {
+      @if(iniciar().length > 0) {
 
       <a
         routerLink="/explorar/ver-mais"
@@ -119,12 +119,12 @@
     </div>
     @if(iniciar().length > 0) {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for(livro of iniciar(); track $index) {
+      @for(livro of iniciar() | slice:0:3; track $index) {
       <app-card-livro [livro]="livro"></app-card-livro>
       }
     </div>
     } @else {
-    <app-lista-vazia [modulo]="'lido'"></app-lista-vazia>
+    <app-lista-vazia [modulo]="'finalizado'"></app-lista-vazia>
     }
   </div>
 </section>

@@ -12,6 +12,7 @@ import { CardLivroComponent } from './card-livro/card-livro.component';
 import { ListaVaziaComponent } from '../../shared/components/lista-vazia/lista-vazia.component';
 import { LivroStore } from '../../shared/stores/livro.store';
 import { LeituraStore } from '../../shared/stores/leitura.store';
+import { EStatus } from '../../shared/enums/status.enum';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,28 +28,31 @@ import { LeituraStore } from '../../shared/stores/leitura.store';
   templateUrl: './explorar.component.html',
 })
 export class ExplorarComponent {
+  EStatus = EStatus;
   #livroStore = inject(LivroStore);
   #leituraStore = inject(LeituraStore);
 
   lendo = computed(() => {
     const leiturasAndamento = this.#leituraStore
-      .by('status', 'lendo')
-      .flatMap((l) => (l.status === 'lendo' ? l.livroId : null), 'livroId')
+      .by('status', EStatus.LENDO)
+      .flatMap(
+        (l) => (l.status === EStatus.LENDO ? l.livroId : null),
+        'livroId'
+      )
       .filter((l) => l !== null);
 
-    return leiturasAndamento
-      .map((livroId) => this.#livroStore.item(livroId))
-      .slice(0, 3);
+    return leiturasAndamento.map((livroId) => this.#livroStore.item(livroId));
   });
   lidos = computed(() => {
     const leiturasFinalizadas = this.#leituraStore
-      .by('status', 'finalizado')
-      .flatMap((l) => (l.status === 'finalizado' ? l.livroId : null), 'livroId')
+      .by('status', EStatus.FINALIZADO)
+      .flatMap(
+        (l) => (l.status === EStatus.FINALIZADO ? l.livroId : null),
+        'livroId'
+      )
       .filter((l) => l !== null);
 
-    return leiturasFinalizadas
-      .map((livroId) => this.#livroStore.item(livroId))
-      .slice(0, 3);
+    return leiturasFinalizadas.map((livroId) => this.#livroStore.item(livroId));
   });
 
   iniciar = computed(() => {
@@ -59,7 +63,6 @@ export class ExplorarComponent {
         if (!leitura) return livro;
         return null;
       })
-      .filter((l) => l !== null)
-      .slice(0, 3);
+      .filter((l) => l !== null);
   });
 }
