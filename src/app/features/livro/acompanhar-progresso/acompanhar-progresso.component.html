@@ -8,22 +8,30 @@
   </a>
 
   <div class="flex gap-2 mt-4">
-    @if (ler()) {
+    @if (podeIniciarLeitura()) {
 
     <button
       (click)="iniciarLeitura()"
-      class="px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700 mt-4"
+      class="w-[100vw] px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
     >
       Iniciar leitura
     </button>
-    } @if(leituraIniciada() && !leituraPausada() && !leituraFinalizada()) {
+    }@if (leituraPausada()) {
+
+    <button
+      (click)="iniciarLeitura()"
+      class="w-[100vw] px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
+    >
+      Continuar leitura
+    </button>
+    } @if(podePausarLeitura()) {
     <button
       (click)="pausarLeitura()"
       class="w-[100vw] px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"
     >
       Pausar leitura
     </button>
-    } @if(!this.leituraFinalizada()) {
+    } @if(this.podeFinalizarLeitura()) {
     <button
       (click)="finalizarLeitura()"
       class="w-[100vw] px-4 py-2 rounded-xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700"

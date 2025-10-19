@@ -12,16 +12,28 @@ export class AcompanharProgressoComponent {
   livroId = input.required<number>();
   #leituraStore = inject(LeituraStore);
 
-  leituraFinalizada = computed(() => {
-    const leitura = this.#leituraStore.itemBy('livroId', this.livroId());
-
-    return leitura && leitura.status === 'finalizado';
+  podeIniciarLeitura = computed(() => {
+    return (
+      !this.leituraIniciada() &&
+      !this.leituraPausada() &&
+      !this.leituraFinalizada()
+    );
   });
 
-  leituraPausada = computed(() => {
-    const leitura = this.#leituraStore.itemBy('livroId', this.livroId());
+  podeFinalizarLeitura = computed(() => {
+    return (
+      this.leituraIniciada() &&
+      !this.leituraPausada() &&
+      !this.leituraFinalizada()
+    );
+  });
 
-    return leitura && leitura.status === 'pausa';
+  podePausarLeitura = computed(() => {
+    return (
+      this.leituraIniciada() &&
+      !this.leituraPausada() &&
+      !this.leituraFinalizada()
+    );
   });
 
   leituraIniciada = computed(() => {
@@ -30,13 +42,18 @@ export class AcompanharProgressoComponent {
     return leitura && leitura.status === 'lendo';
   });
 
-  ler = computed(() => {
-    return (
-      !this.leituraIniciada() &&
-      !this.leituraPausada() &&
-      !this.leituraFinalizada()
-    );
+  leituraPausada = computed(() => {
+    const leitura = this.#leituraStore.itemBy('livroId', this.livroId());
+
+    return leitura && leitura.status === 'pausa';
   });
+
+  leituraFinalizada = computed(() => {
+    const leitura = this.#leituraStore.itemBy('livroId', this.livroId());
+
+    return leitura && leitura.status === 'finalizado';
+  });
+
   iniciarLeitura() {
     const leitura = this.#leituraStore.itemBy('livroId', this.livroId());
     const livro = {
